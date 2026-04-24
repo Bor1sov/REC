@@ -1,23 +1,20 @@
 const main = document.querySelector(".main-container");
 const logoWrapper = document.querySelector(".logo-wrapper");
 const logo = document.querySelector(".main__container__logo");
-const menuLogo = document.querySelector(".menu__logo");
+const menuSection = document.querySelector(".menu");
 
-// ---------- ЗВУК ----------
 const clickSound = new Audio('./assets/звук кнопки.mp3');
 clickSound.volume = 0.5;
 clickSound.preload = 'auto';
 
-let isSoundEnabled = true; // Флаг включен ли звук
+let isSoundEnabled = true;
 
 function playSound() {
-    if (!isSoundEnabled) return; // Если звук выключен - не играем
-    
+    if (!isSoundEnabled) return;
     clickSound.currentTime = 0;
     clickSound.play().catch(e => console.log('Sound error:', e));
 }
 
-// ---------- УПРАВЛЕНИЕ ЗВУКОМ ЧЕРЕЗ КНОПКУ ГРОМКОСТИ ----------
 const volumeBtn = document.querySelector('.settings__valume-btn');
 const volumeIcon = document.querySelector('.settings__valume-btn__img');
 
@@ -40,7 +37,6 @@ if (volumeBtn) {
         e.stopPropagation();
         isSoundEnabled = !isSoundEnabled;
         updateVolumeIcon();
-        console.log(isSoundEnabled ? 'Sound ON' : 'Sound OFF');
     });
 }
 
@@ -53,51 +49,219 @@ main.classList.remove("hidden");
 let progress = 0;
 let targetProgress = 0;
 let isUIVisible = false;
-let clickCount = 0; // Счетчик кликов для анимации перемещения
+let clickCount = 0;
+let isLogoInMenu = false;
 
-// ---------- ФУНКЦИЯ ДЛЯ ПЕРЕМЕЩЕНИЯ ЛОГОТИПА В ЛЕВЫЙ ВЕРХНИЙ УГОЛ ----------
-function moveLogoToCorner() {
-    // Добавляем стили для перемещения
-    logoWrapper.style.transition = "all 0.8s cubic-bezier(0.7, 0, 0.2, 1)";
-    logoWrapper.style.position = "fixed";
-    logoWrapper.style.top = "20px";
-    logoWrapper.style.left = "20px";
-    logoWrapper.style.transform = "translate(0, 0) scale(0.5)";
-    logoWrapper.style.zIndex = "10000";
+function addGlowAnimation(element) {
+    if (!element) return;
     
-    // Также анимируем сам логотип
-    logo.style.transition = "all 0.8s cubic-bezier(0.7, 0, 0.2, 1)";
-    logo.style.width = "50px";
-    logo.style.height = "50px";
-    logo.style.borderWidth = "15px";
+    element.classList.add('menu__logo-cont');
     
-    // Скрываем текст логотипа при перемещении
-    const logoText = document.querySelector(".logo-text");
-    if (logoText) {
-        logoText.style.opacity = "0";
-        logoText.style.maxWidth = "0";
-    }
-    
-    console.log("Logo moved to corner");
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes menuLogoGlowRed {
+            0% {
+                box-shadow: 0 0 0px rgba(255, 0, 0, 0);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 0px rgba(255, 0, 0, 0);
+            }
+        }
+        
+        @keyframes menuLogoGlowWhite {
+            0% {
+                box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+            }
+        }
+        
+        .menu__logo-cont.red-glow {
+            animation: menuLogoGlowRed 2s ease-in-out infinite;
+        }
+        
+        .menu__logo-cont.white-glow {
+            animation: menuLogoGlowWhite 2s ease-in-out infinite;
+        }
+        
+        .menu__logo-cont {
+            transition: all 0.3s ease;
+        }
+        
+        .menu__logo-cont.red-glow:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 0, 1);
+        }
+        
+        .menu__logo-cont.white-glow:hover {
+            box-shadow: 0 0 25px rgba(255, 255, 255, 1);
+        }
+        
+        .menu__logo-cont:active {
+            transform: scale(0.95);
+        }
+    `;
+    document.head.appendChild(style);
 }
 
-// ---------- ФУНКЦИЯ ДЛЯ ВОЗВРАЩЕНИЯ ЛОГОТИПА В ЦЕНТР ----------
-function resetLogoPosition() {
-    logoWrapper.style.transition = "all 0.8s cubic-bezier(0.7, 0, 0.2, 1)";
-    logoWrapper.style.position = "absolute";
-    logoWrapper.style.top = "50%";
-    logoWrapper.style.left = "50%";
-    logoWrapper.style.transform = "translate(-50%, -50%) scale(1)";
+function moveLogoToMenuTop() {
+    if (isLogoInMenu) return;
     
-    logo.style.transition = "all 0.8s cubic-bezier(0.7, 0, 0.2, 1)";
+    isLogoInMenu = true;
+    
+    const logoRect = logo.getBoundingClientRect();
+    const menuRect = menuSection.getBoundingClientRect();
+    
+    const targetTop = menuRect.top + 20;
+    const targetLeft = menuRect.left + (menuRect.width / 2) - 20;
+    
+    const logoClone = logo.cloneNode(true);
+    logoClone.style.position = "fixed";
+    logoClone.style.top = logoRect.top + "px";
+    logoClone.style.left = logoRect.left + "px";
+    logoClone.style.width = logoRect.width + "px";
+    logoClone.style.height = logoRect.height + "px";
+    logoClone.style.margin = "0";
+    logoClone.style.zIndex = "10001";
+    logoClone.style.transition = "all 0.8s cubic-bezier(0.7, 0, 0.2, 1)";
+    logoClone.style.pointerEvents = "none";
+    logoClone.style.border = "25px solid rgb(255, 0, 0)";
+    logoClone.style.borderRadius = "50%";
+    logoClone.style.backgroundColor = "transparent";
+    
+    document.body.appendChild(logoClone);
+    
+    logo.style.opacity = "0";
+    logo.style.visibility = "hidden";
+    
+    setTimeout(() => {
+        logoClone.style.top = targetTop + "px";
+        logoClone.style.left = targetLeft + "px";
+        logoClone.style.width = "40px";
+        logoClone.style.height = "40px";
+        logoClone.style.borderWidth = "12px";
+    }, 10);
+    
+    setTimeout(() => {
+        if (logoClone && logoClone.remove) {
+            logoClone.remove();
+        }
+        
+        const oldMenuLogo = document.querySelector('.menu__logo-cont');
+        if (oldMenuLogo) oldMenuLogo.remove();
+        
+        const newMenuLogo = document.createElement('div');
+        newMenuLogo.className = 'menu__logo-cont red-glow';
+        newMenuLogo.style.width = "40px";
+        newMenuLogo.style.height = "40px";
+        newMenuLogo.style.border = "12px solid rgb(255, 0, 0)";
+        newMenuLogo.style.borderRadius = "50%";
+        newMenuLogo.style.margin = "20px auto 10px auto";
+        newMenuLogo.style.opacity = "0.8";
+        newMenuLogo.style.cursor = "pointer";
+        newMenuLogo.style.display = "block";
+        newMenuLogo.style.position = "relative";
+        newMenuLogo.style.flexShrink = "0";
+        
+        addGlowAnimation(newMenuLogo);
+        
+        newMenuLogo.addEventListener("click", (e) => {
+            e.stopPropagation();
+            playSound();
+            
+            if (newMenuLogo.style.border === "12px solid rgb(255, 0, 0)") {
+             
+                newMenuLogo.style.border = "12px solid rgb(255, 255, 255)";
+                newMenuLogo.classList.remove('red-glow');
+                newMenuLogo.classList.add('white-glow');
+            } else {
+                newMenuLogo.style.border = "12px solid rgb(255, 0, 0)";
+                newMenuLogo.classList.remove('white-glow');
+                newMenuLogo.classList.add('red-glow');
+            }
+            
+            newMenuLogo.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                newMenuLogo.style.transform = 'scale(1)';
+            }, 150);
+        });
+        
+        newMenuLogo.addEventListener("mouseenter", () => {
+            if (newMenuLogo.style.border === "12px solid rgb(255, 0, 0)") {
+                newMenuLogo.style.boxShadow = '0 0 25px rgba(255, 0, 0, 1)';
+            } else {
+                newMenuLogo.style.boxShadow = '0 0 25px rgba(255, 255, 255, 1)';
+            }
+        });
+        
+        newMenuLogo.addEventListener("mouseleave", () => {
+            newMenuLogo.style.boxShadow = '';
+        });
+        
+        const menuBlock = menuSection.querySelector('.menu-block');
+        if (menuBlock) {
+            menuSection.insertBefore(newMenuLogo, menuBlock);
+        } else {
+            menuSection.insertBefore(newMenuLogo, menuSection.firstChild);
+        }
+        
+        if (logo) {
+            logo.style.display = "none";
+        }
+        
+        const logoText = document.querySelector(".logo-text");
+        if (logoText) {
+            logoText.style.transition = "opacity 0.5s ease";
+            logoText.style.opacity = "0";
+        }
+        
+        logoWrapper.style.pointerEvents = "none";
+        
+        console.log("Logo moved inside menu with glow animation");
+    }, 800);
+}
+
+function resetLogoPosition() {
+    if (!isLogoInMenu) return;
+    
+    isLogoInMenu = false;
+    
+    const menuLogo = document.querySelector('.menu__logo-cont');
+    if (menuLogo && menuLogo.remove) {
+        menuLogo.remove();
+    }
+    
+    logo.style.display = "";
+    logo.style.position = "";
+    logo.style.top = "";
+    logo.style.left = "";
     logo.style.width = "75px";
     logo.style.height = "75px";
     logo.style.borderWidth = "25px";
+    logo.style.border = "25px solid rgb(255, 0, 0)";
+    logo.style.transform = "";
+    logo.style.opacity = "0.8";
+    logo.style.visibility = "visible";
+    logo.style.zIndex = "";
+    logo.style.margin = "";
     
-    console.log("Logo reset to center");
+    logoWrapper.style.pointerEvents = "";
+    
+    const logoText = document.querySelector(".logo-text");
+    if (logoText) {
+        logoText.style.transition = "";
+        logoText.style.opacity = "";
+    }
+    
+    console.log("Logo reset from menu");
 }
 
-/* ---------- UI ---------- */
 function showUI() {
     if (!isUIVisible) {
         main.classList.remove("ui-hidden");
@@ -106,7 +270,6 @@ function showUI() {
     }
 }
 
-/* ---------- RESET ---------- */
 function resetScene() {
     main.classList.remove("ui-visible");
     main.classList.add("ui-hidden");
@@ -116,15 +279,13 @@ function resetScene() {
     progress = 0;
     targetProgress = 0;
     isUIVisible = false;
-    clickCount = 0; // Сбрасываем счетчик кликов
+    clickCount = 0;
     
-    // Возвращаем логотип в центр при сбросе
     resetLogoPosition();
 
     updateScene(0);
 }
 
-/* ---------- ЭЛЕМЕНТЫ ---------- */
 function getSceneElements() {
     return {
         baseImg: document.querySelector(".about__img"),
@@ -134,7 +295,6 @@ function getSceneElements() {
     };
 }
 
-/* ---------- СЦЕНА ---------- */
 function updateScene(p) {
     const { baseImg, paralaxText, infoBlock, title } = getSceneElements();
 
@@ -162,7 +322,6 @@ function updateScene(p) {
     }
 }
 
-/* ---------- АНИМАЦИЯ ---------- */
 function animate() {
     progress += (targetProgress - progress) * 0.08;
     updateScene(progress);
@@ -170,66 +329,35 @@ function animate() {
 }
 animate();
 
-/* ---------- СКРОЛЛ ---------- */
 window.addEventListener("wheel", (e) => {
     showUI();
     targetProgress += e.deltaY * 0.002;
     targetProgress = Math.max(0, Math.min(1, targetProgress));
 });
 
-/* ---------- КЛИК ПО ЛОГОТИПУ С АНИМАЦИЕЙ ПЕРЕМЕЩЕНИЯ ---------- */
 logo.addEventListener("click", (e) => {
     e.stopPropagation();
     
-    // Воспроизводим звук
     playSound();
-    
-    // Увеличиваем счетчик кликов
     clickCount++;
-    console.log("Click count:", clickCount);
     
-    // При третьем клике - перемещаем логотип в угол
-    if (clickCount === 3) {
-        moveLogoToCorner();
+    if (clickCount === 2 && !isLogoInMenu) {
+        moveLogoToMenuTop();
+        showUI();
+        targetProgress = 0.3;
         return;
     }
     
-    // если UI открыт → reset
     if (isUIVisible) {
         resetScene();
         return;
     }
 
-    // показать текст
     if (!logoWrapper.classList.contains("active")) {
         logoWrapper.classList.add("active");
         return;
     }
 
-    // Показываем UI
     showUI();
     targetProgress += 0.05;
-});
-
-/* ---------- КЛИК ПО MENU LOGO ---------- */
-if (menuLogo) {
-    menuLogo.addEventListener("click", (e) => {
-        e.stopPropagation();
-        playSound();
-        menuLogo.classList.toggle("red-logo");
-        
-        menuLogo.style.transform = 'scale(0.9)';
-        setTimeout(() => {
-            menuLogo.style.transform = 'scale(1)';
-        }, 150);
-    });
-}
-
-// ---------- ДОПОЛНИТЕЛЬНО: ВОЗВРАТ ЛОГОТИПА ПРИ КЛИКЕ НА НЕГО В УГЛУ ----------
-logo.addEventListener("dblclick", (e) => {
-    e.stopPropagation();
-    // При двойном клике возвращаем логотип в центр
-    resetLogoPosition();
-    clickCount = 0;
-    console.log("Logo position reset by double click");
 });

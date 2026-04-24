@@ -1,6 +1,3 @@
-/* ---------- HOLGADA FULL FAMILY ---------- */
-
-/* Thin */
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Thin.otf") format("opentype");
@@ -12,8 +9,6 @@
     font-weight: 100;
     font-style: italic;
 }
-
-/* Light */
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Light.otf") format("opentype");
@@ -25,8 +20,6 @@
     font-weight: 300;
     font-style: italic;
 }
-
-/* Regular */
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Regular.otf") format("opentype");
@@ -38,8 +31,6 @@
     font-weight: 400;
     font-style: italic;
 }
-
-/* Medium */
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Medium.otf") format("opentype");
@@ -51,8 +42,6 @@
     font-weight: 500;
     font-style: italic;
 }
-
-/* Bold */
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Bold.otf") format("opentype");
@@ -64,8 +53,6 @@
     font-weight: 700;
     font-style: italic;
 }
-
-/* Black */
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Black.otf") format("opentype");
@@ -78,7 +65,6 @@
     font-style: italic;
 }
 
-/* ---------- RESET ---------- */
 * {
     margin: 0;
     padding: 0;
@@ -92,7 +78,6 @@ html, body {
     font-family: "Holgada", sans-serif;
 }
 
-/* ---------- INTRO ---------- */
 .intro {
     position: fixed;
     inset: 0;
@@ -114,7 +99,6 @@ html, body {
     object-fit: cover;
 }
 
-/* ---------- MAIN ---------- */
 .main-container {
     position: relative;
     display: flex;
@@ -134,7 +118,6 @@ html, body {
     pointer-events: none;
 }
 
-/* ---------- LOGO WRAPPER (центральный с анимацией) ---------- */
 .logo-wrapper {
     position: absolute;
     top: 50%;
@@ -210,7 +193,6 @@ html, body {
     transform: scaleX(1); 
 }
 
-/* Активное состояние логотипа (после клика) */
 .logo-wrapper.active .main__container__logo {
     transform: translateX(-10px);
 }
@@ -220,7 +202,6 @@ html, body {
     opacity: 1;
 }
 
-/* ---------- UI STATES (АЛЬТЕРНАТИВНЫЙ ВАРИАНТ - SETTINGS ВСЕГДА ВИДЕН) ---------- */
 .ui-hidden .menu,
 .ui-hidden .content {
     opacity: 0;
@@ -240,7 +221,6 @@ html, body {
     transition: opacity 0.5s ease;
 }
 
-/* SETTINGS - всегда видим и активен */
 .settings {
     position: fixed;
     display: flex;
@@ -252,14 +232,12 @@ html, body {
     pointer-events: auto !important;
 }
 
-/* Гарантия что settings всегда поверх и видим */
 .main-container.ui-hidden .settings,
 .main-container.ui-visible .settings {
     opacity: 1;
     pointer-events: auto;
 }
 
-/* ---------- SETTINGS ---------- */
 .settings__lang-btn {
     background: none;
     border: none;
@@ -296,8 +274,6 @@ html, body {
 .settings__valume-btn__img:active {
     transform: scale(0.95);
 }
-
-/* ---------- МЕНЮ (вертикальное) ---------- */
 .menu {
     position: absolute;
     left: 0;
@@ -401,7 +377,6 @@ html, body {
     background: #ccc;
 }
 
-/* ---------- КОНТЕНТ (слои) ---------- */
 .content {
     position: fixed;
     inset: 0;
@@ -422,12 +397,10 @@ html, body {
     will-change: transform;
 }
 
-/* ----- БАЗОВЫЙ СЛОЙ (фон) ----- */
 .about--base {
     z-index: 1;
 }
 
-/* ----- ВЕРХНИЙ СЛОЙ с МАСКОЙ (наезжает) ----- */
 .about--top {
     position: absolute;
     inset: 0;
@@ -436,7 +409,6 @@ html, body {
     pointer-events: none;
 }
 
-/* ТЕКСТ-МАСКА */
 .about__background {
     position: relative;
     width: auto;
@@ -472,7 +444,6 @@ html, body {
     display: inline-block;
 }
 
-/* ----- НИЖНИЙ БЛОК (blur + текст) ----- */
 .about-info {
     position: relative;
     bottom: auto;
@@ -516,7 +487,6 @@ html, body {
     font-size: clamp(14px, 4vw, 20px);
     font-family: "Holgada", sans-serif;
 }
-/* Добавьте в конец style.css для плавного перемещения логотипа */
 .logo-wrapper {
     transition: all 0.8s cubic-bezier(0.7, 0, 0.2, 1);
 }
@@ -525,7 +495,6 @@ html, body {
     transition: all 0.8s cubic-bezier(0.7, 0, 0.2, 1);
 }
 
-/* Стили для логотипа в углу */
 .logo-wrapper.corner-position {
     position: fixed !important;
     top: 20px !important;
@@ -533,7 +502,24 @@ html, body {
     transform: translate(0, 0) scale(0.5) !important;
     z-index: 10000 !important;
 }
-/* Адаптация для мобильных */
+.main__container__logo {
+    transition: all 0.8s cubic-bezier(0.7, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+}
+
+.main__container__logo[style*="fixed"] {
+    box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.5);
+}
+.menu__logo {
+    transition: all 0.3s ease;
+}
+
+.menu__logo.red-logo {
+    border: 12px solid rgb(248, 27, 27);
+    animation: red-light 10s infinite;
+}
 @media (max-width: 768px) {
     .about__background {
         height: 150px;
