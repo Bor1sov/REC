@@ -52,6 +52,104 @@ let isUIVisible = false;
 let clickCount = 0;
 let isLogoInMenu = false;
 
+function syncImagesPosition(move) {
+    const aboutImg = document.querySelector('.about__img');
+    const aboutTitle = document.querySelector('.about__title');
+    
+    if (aboutImg) {
+        const scale = 1 + move * 0.2;
+        aboutImg.style.transform = `translateY(${move}px) scale(${scale})`;
+    }
+    
+    if (aboutTitle) {
+        const viewportHeight = window.innerHeight;
+        const baseOffset = viewportHeight * 0.35;
+        const scrollOffset = move * 80;
+        aboutTitle.style.backgroundPosition = `calc(50% - 15px) -${baseOffset + scrollOffset}px`;
+        aboutTitle.style.backgroundSize = '120% auto';
+    }
+}
+
+function setInitialImagePosition() {
+    const aboutTitle = document.querySelector('.about__title');
+    if (aboutTitle) {
+        const viewportHeight = window.innerHeight;
+        const baseOffset = viewportHeight * 0.10;
+        aboutTitle.style.backgroundPosition = `calc(50% - 15px) -${baseOffset}px`;
+        aboutTitle.style.backgroundSize = '122% auto';
+    }
+}
+
+setInitialImagePosition();
+
+window.addEventListener('resize', () => {
+    setInitialImagePosition();
+    syncImagesPosition(progress);
+});
+
+function setImageSize(percent) {
+    const aboutTitle = document.querySelector('.about__title');
+    if (aboutTitle) {
+        aboutTitle.style.backgroundSize = `${percent}% auto`;
+    }
+}
+
+function setImagePosition(percentFromTop) {
+    const aboutTitle = document.querySelector('.about__title');
+    if (aboutTitle) {
+        const viewportHeight = window.innerHeight;
+        const offset = viewportHeight * (percentFromTop / 100);
+        aboutTitle.style.backgroundPosition = `calc(50%) -${offset}px`;
+        return offset;
+    }
+    return null;
+}
+
+function setImageLeftOffset(pixels) {
+    const aboutTitle = document.querySelector('.about__title');
+    if (aboutTitle) {
+        const currentPos = aboutTitle.style.backgroundPosition;
+        const match = currentPos.match(/-?\d+px/);
+        const yValue = match ? match[0] : '-0px';
+        aboutTitle.style.backgroundPosition = `calc(50% - ${pixels}px) ${yValue}`;
+    }
+}
+
+setImageLeftOffset(50);
+
+let currentSize = 200;
+let currentPosition = 5;
+
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+        currentLeftOffset = Math.max(0, currentLeftOffset - 10);
+        setImageLeftOffset(currentLeftOffset);
+        console.log(`Left offset: ${currentLeftOffset}px`);
+    } else if (e.key === 'ArrowRight') {
+        currentLeftOffset = currentLeftOffset + 10;
+        setImageLeftOffset(currentLeftOffset);
+        console.log(`Left offset: ${currentLeftOffset}px`);
+    } else if (e.key === 'ArrowUp') {
+        currentPosition = Math.max(0, currentPosition - 5);
+        setImagePosition(currentPosition);
+        console.log(`Position: ${currentPosition}%`);
+    } else if (e.key === 'ArrowDown') {
+        currentPosition = Math.min(50, currentPosition + 5);
+        setImagePosition(currentPosition);
+        console.log(`Position: ${currentPosition}%`);
+    } else if (e.key === '+') {
+        currentSize = Math.min(500, currentSize + 25);
+        setImageSize(currentSize);
+        console.log(`Size: ${currentSize}%`);
+    } else if (e.key === '-') {
+        currentSize = Math.max(100, currentSize - 25);
+        setImageSize(currentSize);
+        console.log(`Size: ${currentSize}%`);
+    }
+});
+
+let currentLeftOffset = 50;
+
 function addGlowAnimation(element) {
     if (!element) return;
     
@@ -176,7 +274,6 @@ function moveLogoToMenuTop() {
             playSound();
             
             if (newMenuLogo.style.border === "12px solid rgb(255, 0, 0)") {
-             
                 newMenuLogo.style.border = "12px solid rgb(255, 255, 255)";
                 newMenuLogo.classList.remove('red-glow');
                 newMenuLogo.classList.add('white-glow');
@@ -301,16 +398,19 @@ function updateScene(p) {
     if (baseImg) {
         const move = p * 80;
         const scale = 1 + p * 0.2;
-
         baseImg.style.transform = `translateY(${move}px) scale(${scale})`;
-
+        
         if (title) {
-            title.style.backgroundPositionY = `${-move}px`;
+            const viewportHeight = window.innerHeight;
+            const baseOffset = viewportHeight * 0.35;
+            const scrollOffset = move;
+            title.style.backgroundPosition = `calc(50% - 15px) -${baseOffset + scrollOffset}px`;
         }
     }
 
     if (paralaxText) {
-        paralaxText.style.transform = `translateY(${100 - p * 100}%)`;
+        const textMove = p * 100;
+        paralaxText.style.transform = `translateY(${100 - textMove}%)`;
     }
 
     if (infoBlock) {

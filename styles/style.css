@@ -415,7 +415,7 @@ html, body {
     height: 250px;
     padding: 0;
     z-index: 25;
-    background-color: #000;
+    background-image: url("../assets/mainbackground.jpg");
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -423,7 +423,6 @@ html, body {
     margin: 0 auto;
     clip-path: inset(0);
 }
-
 .about__title {
     font-size: 390px;
     font-weight: 900;
@@ -436,7 +435,7 @@ html, body {
     z-index: 26;
     pointer-events: none;
     white-space: nowrap;
-    background: #000 url("../assets/О нас Моб.jpg") center/cover;
+    background: #000 url("../assets/О нас Моб.jpg") center / cover;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
