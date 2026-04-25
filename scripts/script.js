@@ -413,13 +413,7 @@ function updateScene(p) {
         paralaxText.style.transform = `translateY(${100 - textMove}%)`;
     }
 
-    if (infoBlock) {
-        if (p > 0.5) {
-            infoBlock.style.opacity = (p - 0.5) * 2;
-        } else {
-            infoBlock.style.opacity = 0;
-        }
-    }
+
 }
 
 function animate() {
