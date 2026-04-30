@@ -69,8 +69,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* border: 1px solid red; */
 }
-
+:root{
+    --mask-image: url("../assets/О-нас-Моб.png");
+}
 html, body {
     background: #000;
     height: 100%;
@@ -278,7 +281,7 @@ html, body {
     position: absolute;
     left: 0;
     top: 0;
-    width: 95px;
+    width: 5%;
     height: 100vh;
   background-image: 
     linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
@@ -355,10 +358,10 @@ html, body {
 .menu-text {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
-    font-size: 28px;
-    letter-spacing: 6px;
+    font-size: 29px;
+    letter-spacing: 2px;
     color: #fff;
-    font-weight: 600;
+    font-weight: 900;
     opacity: 0.3;
 }
 .burger {
@@ -370,8 +373,8 @@ html, body {
     padding: 8px;
 }
 .burger span {
-    width: 28px;
-    height: 2px;
+    width: 25px;
+    height: 4.5px;
     background: #fff;
     transition: 0.2s;
 }
@@ -426,23 +429,74 @@ html, body {
     clip-path: inset(0);
 }
 .about__title {
-    font-size: 390px;
+    font-size: clamp(90px, 22vw, 390px);
     font-weight: 900;
     text-transform: uppercase;
+    line-height: 0.8;
+    width: 100%;
+    text-align: center;
     letter-spacing: 0.05em;
+
     margin: 0;
-    margin-left: 50px;
-    padding: 2px 6px;
-    line-height: 1;
-    z-index: 26;
-    pointer-events: none;
-    white-space: nowrap;
-    background: #000 url("../assets/О нас Моб.jpg") center / cover;
-    background-clip: text;
-    -webkit-background-clip: text;
+    margin-bottom: clamp(-45px, -3vw, -20px);
+
+    padding: 0;
+
+    position: relative;
+    z-index: 99999999;
+
+    background-image: url("../assets/О-нас-Моб.png");
+    background-repeat: no-repeat;
+    background-size: 100vw auto;
+    background-position: center var(--about-bg-y, 160%);
+
     color: transparent;
-    transform: scale(1.03);
-    display: inline-block;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    transform: translateY(-30px); /* чуть поднять */
+    will-change: background-position;
+}
+
+.paralax-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 15;
+    transform: translateY(100%);
+    will-change: transform;
+    transition: transform 0.1s linear;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    isolation: isolate;
+    overflow: visible;
+}
+
+/* рамка прижата к about-info */
+.paralax-text::before {
+    content: "";
+    position: absolute;
+
+    left: 60px;
+    right: 0;
+    width: 100%;
+    bottom: 310px;
+
+    height: clamp(76px, 15vw, 240px);
+
+    background: url("../assets/mainbackground.jpg");
+    z-index: 0;
+    pointer-events: none;
+}
+.mask {
+    -webkit-mask-image: none;
+    mask-image: none;
 }
 
 .about-info {
@@ -523,10 +577,105 @@ html, body {
 .menu__logo {
     transition: all 0.3s ease;
 }
-
+.menu__logo-cont {
+    width: 40px;
+    height: 40px;
+    border: 12px solid rgb(255, 0, 0);
+    box-shadow: 0px 0px 0px rgb(255, 0, 0);
+    border-radius: 50%;
+    margin: 20px auto 10px auto;
+    opacity: 0.8;
+    animation: red-light 10s infinite;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    flex-shrink: 0;
+}
 .menu__logo.red-logo {
     border: 12px solid rgb(248, 27, 27);
     animation: red-light 10s infinite;
+}
+.content__links{
+    display:flex;
+    flex-direction: column;
+    width: 80%;
+    height:96%;
+    align-items: left;
+    margin-left:12% ;
+    padding: 0;
+    margin-top: 5.3%;
+    gap: 0;
+}
+.content__links__item {
+    position: relative;
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    height: 16%;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    background-image: url("../assets/adobe_126953722.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    text-decoration: none;
+    font-size: 110px;
+    font-weight: 900;
+    line-height: 150px;
+
+    overflow: visible;
+}
+
+/* второй слой текста с hover-картинкой */
+.content__links__item::before {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    background-image: var(--hover-bg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    opacity: 0;
+    transition: opacity 0.7s ease;
+
+    pointer-events: none;
+}
+
+/* плавное появление hover-картинки */
+.content__links__item:hover::before {
+    opacity: 1;
+}
+.content__links__item:hover {
+    opacity: 1;
+    filter: brightness(1.15);
+}
+/* По умолчанию текст "МЕНЮ" скрыт на всех страницах */
+.menu-text {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Только на странице about показываем текст "МЕНЮ" */
+.about-page .menu-text {
+    opacity: 0.3;
+    visibility: visible;
+    pointer-events: auto;
 }
 @media (max-width: 768px) {
     .about__background {
