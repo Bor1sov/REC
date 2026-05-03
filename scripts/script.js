@@ -18,21 +18,27 @@ let currentSize = 200;
 let currentPosition = 5;
 let currentLeftOffset = 50;
 
-const hasContentLinks = document.querySelector(".content__links");
-const shouldSkipIntro = sessionStorage.getItem("recStudioSkipIntro") === "true";
-const logoAlreadyMoved = localStorage.getItem("recStudioLogoMoved") === "true";
+let pageScrollbar = null;
+let pageScrollbarThumb = null;
+let scrollbarTimer = null;
 
-/*
-    index.html:
-    - первый заход: показываем стартовую сцену с logo-wrapper
-    - после первой анимации logo: сразу показываем меню
-    - возврат с внутренних страниц: сразу показываем меню
-*/
+let aboutTextScrollbar = null;
+let aboutTextScrollbarFill = null;
+
+const hasContentLinks = document.querySelector(".content__links");
+const contentPage = document.querySelector(".content--page");
+const aboutInfoText = document.querySelector(".about-info-text");
+const shouldSkipIntro = sessionStorage.getItem("recStudioSkipIntro") === "true";
+
+/* =========================
+   INDEX START LOGIC
+========================= */
+
 if (main) {
     main.classList.add("show");
     main.classList.remove("hidden");
 
-    if ((shouldSkipIntro || logoAlreadyMoved) && hasContentLinks) {
+    if (shouldSkipIntro && hasContentLinks) {
         main.classList.remove("ui-hidden");
         main.classList.add("ui-visible");
 
@@ -41,6 +47,8 @@ if (main) {
         }
 
         isUIVisible = true;
+        isLogoInMenu = true;
+
         sessionStorage.removeItem("recStudioSkipIntro");
     } else {
         main.classList.add("ui-hidden");
@@ -51,15 +59,14 @@ if (main) {
         }
 
         isUIVisible = false;
+        isLogoInMenu = false;
     }
 }
 
-/*
-    Поведение logo в левом меню:
-    - index.html первый заход: скрыт
-    - index.html после первой анимации: виден всегда
-    - about.html: виден всегда
-*/
+/* =========================
+   MENU LOGO
+========================= */
+
 function initMenuLogoVisibility() {
     const menuLogo = menuSection
         ? menuSection.querySelector(".menu__logo-cont")
@@ -67,20 +74,18 @@ function initMenuLogoVisibility() {
 
     if (!menuLogo) return;
 
-    const moved = localStorage.getItem("recStudioLogoMoved") === "true";
-
     if (main) {
-        if (moved || isLogoInMenu) {
-            menuLogo.style.display = "block";
-        } else {
-            menuLogo.style.display = "none";
-        }
+        menuLogo.style.display = isLogoInMenu ? "block" : "none";
     } else {
         menuLogo.style.display = "block";
     }
 }
 
 initMenuLogoVisibility();
+
+/* =========================
+   SOUND
+========================= */
 
 function playSound() {
     if (!isSoundEnabled) return;
@@ -116,6 +121,10 @@ if (volumeBtn) {
 
 updateVolumeIcon();
 
+/* =========================
+   ELEMENTS
+========================= */
+
 function getSceneElements() {
     return {
         baseImg: document.querySelector(".about__img"),
@@ -125,9 +134,96 @@ function getSceneElements() {
     };
 }
 
-/*
-    Фон внутри текста полностью повторяет положение основной картинки.
-*/
+/* =========================
+   PAGE SCROLLBAR
+========================= */
+
+function initPageScrollbar() {
+    if (!contentPage) return;
+
+    pageScrollbar = document.createElement("div");
+    pageScrollbar.className = "page-scrollbar";
+
+    pageScrollbarThumb = document.createElement("div");
+    pageScrollbarThumb.className = "page-scrollbar__thumb";
+
+    pageScrollbar.appendChild(pageScrollbarThumb);
+    document.body.appendChild(pageScrollbar);
+
+    updatePageScrollbar(progress);
+}
+
+initPageScrollbar();
+
+function updatePageScrollbar(p) {
+    if (!pageScrollbar || !pageScrollbarThumb) return;
+
+    const fill = Math.max(0, Math.min(100, p * 100));
+    pageScrollbarThumb.style.height = `${fill}%`;
+}
+
+function setScrollbarScrollingState() {
+    if (!pageScrollbar) return;
+
+    pageScrollbar.classList.add("is-scrolling");
+
+    clearTimeout(scrollbarTimer);
+
+    scrollbarTimer = setTimeout(() => {
+        pageScrollbar.classList.remove("is-scrolling");
+    }, 350);
+}
+
+/* =========================
+   ABOUT TEXT SCROLLBAR
+========================= */
+
+function initAboutTextScrollbar() {
+    if (!aboutInfoText) return;
+
+    aboutInfoText.style.position = "relative";
+
+    aboutTextScrollbar = document.createElement("div");
+    aboutTextScrollbar.className = "about-text-scrollbar";
+
+    aboutTextScrollbarFill = document.createElement("div");
+    aboutTextScrollbarFill.className = "about-text-scrollbar__fill";
+
+    const arrow = document.createElement("div");
+    arrow.className = "about-text-scrollbar__arrow";
+
+    aboutTextScrollbar.appendChild(aboutTextScrollbarFill);
+    aboutTextScrollbar.appendChild(arrow);
+
+    aboutInfoText.appendChild(aboutTextScrollbar);
+
+    updateAboutTextScrollbar();
+
+    aboutInfoText.addEventListener("scroll", updateAboutTextScrollbar);
+}
+
+function updateAboutTextScrollbar() {
+    if (!aboutInfoText || !aboutTextScrollbarFill) return;
+
+    const maxScroll = aboutInfoText.scrollHeight - aboutInfoText.clientHeight;
+
+    if (maxScroll <= 0) {
+        aboutTextScrollbarFill.style.height = "100%";
+        return;
+    }
+
+    const textProgress = aboutInfoText.scrollTop / maxScroll;
+    const fill = Math.max(0, Math.min(100, textProgress * 100));
+
+    aboutTextScrollbarFill.style.height = `${fill}%`;
+}
+
+initAboutTextScrollbar();
+
+/* =========================
+   ABOUT PARALLAX
+========================= */
+
 function syncTitleBackgroundWithImage(baseImg, title) {
     if (!baseImg || !title) return;
 
@@ -142,12 +238,6 @@ function syncTitleBackgroundWithImage(baseImg, title) {
     title.style.backgroundRepeat = "no-repeat";
 }
 
-/*
-    Параллакс для about:
-    - основная картинка двигается и немного увеличивается
-    - сам текст НЕ увеличивается
-    - изображение внутри текста повторяет основную картинку секции
-*/
 function syncAboutImageAndTitle(progressValue) {
     const { baseImg, title } = getSceneElements();
 
@@ -175,6 +265,9 @@ function setInitialImagePosition() {
     if (baseImg && title) {
         syncTitleBackgroundWithImage(baseImg, title);
     }
+
+    updatePageScrollbar(progress);
+    updateAboutTextScrollbar();
 }
 
 setInitialImagePosition();
@@ -183,6 +276,10 @@ window.addEventListener("resize", () => {
     setInitialImagePosition();
     updateScene(progress);
 });
+
+/* =========================
+   DEBUG CONTROLS
+========================= */
 
 function setImageSize(percent) {
     const { title } = getSceneElements();
@@ -239,6 +336,10 @@ window.addEventListener("keydown", (e) => {
     }
 });
 
+/* =========================
+   LOGO ANIMATION
+========================= */
+
 function addGlowAnimation(element) {
     if (!element) return;
 
@@ -275,7 +376,7 @@ function addGlowAnimation(element) {
         }
 
         .menu__logo-cont.white-glow {
-            animation: menuLogoGlowWhite 2s ease-in-out infinite;
+            animation: menuLogoWhite 2s ease-in-out infinite;
         }
 
         .menu__logo-cont {
@@ -363,39 +464,6 @@ function moveLogoToMenuTop() {
 
         addGlowAnimation(newMenuLogo);
 
-        newMenuLogo.addEventListener("click", (e) => {
-            e.stopPropagation();
-            playSound();
-
-            if (newMenuLogo.style.border === "12px solid rgb(255, 0, 0)") {
-                newMenuLogo.style.border = "12px solid rgb(255, 255, 255)";
-                newMenuLogo.classList.remove("red-glow");
-                newMenuLogo.classList.add("white-glow");
-            } else {
-                newMenuLogo.style.border = "12px solid rgb(255, 0, 0)";
-                newMenuLogo.classList.remove("white-glow");
-                newMenuLogo.classList.add("red-glow");
-            }
-
-            newMenuLogo.style.transform = "scale(0.9)";
-
-            setTimeout(() => {
-                newMenuLogo.style.transform = "scale(1)";
-            }, 150);
-        });
-
-        newMenuLogo.addEventListener("mouseenter", () => {
-            if (newMenuLogo.style.border === "12px solid rgb(255, 0, 0)") {
-                newMenuLogo.style.boxShadow = "0 0 25px rgba(255, 0, 0, 1)";
-            } else {
-                newMenuLogo.style.boxShadow = "0 0 25px rgba(255, 255, 255, 1)";
-            }
-        });
-
-        newMenuLogo.addEventListener("mouseleave", () => {
-            newMenuLogo.style.boxShadow = "";
-        });
-
         const menuBlock = menuSection.querySelector(".menu-block");
 
         if (menuBlock) {
@@ -415,7 +483,7 @@ function moveLogoToMenuTop() {
 
         logoWrapper.style.pointerEvents = "none";
 
-        localStorage.setItem("recStudioLogoMoved", "true");
+        initMenuLogoVisibility();
 
         console.log("Logo moved inside menu with glow animation");
     }, 800);
@@ -427,17 +495,11 @@ function resetLogoPosition() {
 
     isLogoInMenu = false;
 
-    const moved = localStorage.getItem("recStudioLogoMoved") === "true";
-
     const menuLogo = main && menuSection
         ? menuSection.querySelector(".menu__logo-cont")
         : null;
 
-    /*
-        Если logo уже один раз был перенесён,
-        больше не удаляем его из меню.
-    */
-    if (menuLogo && menuLogo.remove && !moved) {
+    if (menuLogo && menuLogo.remove) {
         menuLogo.remove();
     }
 
@@ -484,25 +546,6 @@ function showUI() {
 function resetScene() {
     if (!main || !logoWrapper) return;
 
-    const moved = localStorage.getItem("recStudioLogoMoved") === "true";
-
-    /*
-        После первой анимации logo меню больше не возвращаем
-        в стартовую сцену и не скрываем меню.
-    */
-    if (moved) {
-        main.classList.remove("ui-hidden");
-        main.classList.add("ui-visible");
-
-        if (logoWrapper) {
-            logoWrapper.style.display = "none";
-        }
-
-        isUIVisible = true;
-        initMenuLogoVisibility();
-        return;
-    }
-
     main.classList.remove("ui-visible");
     main.classList.add("ui-hidden");
 
@@ -512,11 +555,17 @@ function resetScene() {
     targetProgress = 0;
     isUIVisible = false;
     clickCount = 0;
+    isLogoInMenu = false;
 
     resetLogoPosition();
 
     updateScene(0);
+    initMenuLogoVisibility();
 }
+
+/* =========================
+   SCENE UPDATE
+========================= */
 
 function updateScene(p) {
     const { paralaxText } = getSceneElements();
@@ -527,6 +576,9 @@ function updateScene(p) {
         const textMove = p * 100;
         paralaxText.style.transform = `translateY(${100 - textMove}%)`;
     }
+
+    updatePageScrollbar(p);
+    updateAboutTextScrollbar();
 }
 
 function animate() {
@@ -537,12 +589,58 @@ function animate() {
 
 animate();
 
-window.addEventListener("wheel", (e) => {
+/* =========================
+   SCROLL LOGIC
+========================= */
+
+function handleVirtualScroll(e) {
+    e.preventDefault();
+
     showUI();
 
     targetProgress += e.deltaY * 0.002;
     targetProgress = Math.max(0, Math.min(1, targetProgress));
-});
+
+    setScrollbarScrollingState();
+}
+
+if (aboutInfoText) {
+    aboutInfoText.addEventListener(
+        "wheel",
+        (e) => {
+            const delta = e.deltaY;
+
+            const atTop = aboutInfoText.scrollTop <= 0;
+            const atBottom =
+                aboutInfoText.scrollTop + aboutInfoText.clientHeight >=
+                aboutInfoText.scrollHeight - 1;
+
+            const canScrollUp = delta < 0 && !atTop;
+            const canScrollDown = delta > 0 && !atBottom;
+
+            if (canScrollUp || canScrollDown) {
+                e.stopPropagation();
+            }
+
+            requestAnimationFrame(updateAboutTextScrollbar);
+        },
+        { passive: false }
+    );
+}
+
+if (contentPage) {
+    contentPage.addEventListener("wheel", handleVirtualScroll, {
+        passive: false
+    });
+} else {
+    window.addEventListener("wheel", handleVirtualScroll, {
+        passive: false
+    });
+}
+
+/* =========================
+   LOGO CLICK
+========================= */
 
 if (logo && logoWrapper) {
     logo.addEventListener("click", (e) => {
@@ -573,15 +671,10 @@ if (logo && logoWrapper) {
     });
 }
 
-/*
-    Плавная смена изображения внутри пунктов навигации.
-    Берётся дополнительный класс:
-    faq -> ./assets/faq.png
-    projects -> ./assets/projects.png
-    help -> ./assets/help.png
-    news -> ./assets/news.png
-    contacts -> ./assets/contacts.png
-*/
+/* =========================
+   INDEX LINKS
+========================= */
+
 function initContentLinksImages() {
     const links = document.querySelectorAll(".content__links__item");
 
@@ -598,18 +691,17 @@ function initContentLinksImages() {
 
         link.style.setProperty(
             "--hover-bg",
-            `url("../assets/${imageClass}.png")`
+            `url("./assets/${imageClass}.png")`
         );
     });
 }
 
 initContentLinksImages();
 
-/*
-    Плавный переход с index.html на внутренние страницы.
-    skipIntro здесь НЕ ставим.
-    Он нужен только при возврате с внутренней страницы на index.html.
-*/
+/* =========================
+   PAGE TRANSITIONS
+========================= */
+
 function initPageTransitions() {
     const links = document.querySelectorAll(".content__links__item");
 
@@ -632,12 +724,6 @@ function initPageTransitions() {
 
 initPageTransitions();
 
-/*
-    Возврат с внутренних страниц на index.html.
-    Работает для:
-    - ссылок <a href="index.html">
-    - onclick на .menu-block на внутренних страницах
-*/
 function initMenuReturnToIndex() {
     document.addEventListener(
         "click",

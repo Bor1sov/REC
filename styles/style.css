@@ -486,7 +486,7 @@ html, body {
     left: 60px;
     right: 0;
     width: 100%;
-    bottom: 310px;
+    bottom: 300px;
 
     height: clamp(76px, 15vw, 240px);
 
@@ -511,22 +511,111 @@ html, body {
     font-size: 1.2rem;
     line-height: 1.5;
     font-weight: 400;
-    backdrop-filter: blur(16px);
-    background: rgba(0, 0, 0, 0.65);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+
+    /* убираем фон и blur с самого блока */
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    border-top: none;
+    outline: none;
+    box-shadow: none;
+
     opacity: 1;
-    pointer-events: none;
+    pointer-events: auto;
     margin-top: 0;
     height: 310px;
+
+    overflow: hidden;
 }
-.about-info-text{
-    width: 40%;
-    height: 210px;
-    margin-left: 50%;
-    margin-top: 6%;
+.about-info::before {
+    content: "";
+    position: absolute;
+    inset: -2px 0 0 0;
+
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    z-index: 0;
+    pointer-events: none;
+}
+.about-info {
+    pointer-events: auto;
+}
+
+.about-info-text {
+    position: relative;
+    z-index: 2;
+
+    width: 962px;
+    height: 379px;
+
+    margin-left: auto;
+    margin-right: 140px;
+    margin-top: 0;
+
+    padding-top: 4px;
+    padding-right: 55px;
+    padding-bottom: 20px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    pointer-events: auto;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+
+/* Chrome / Safari / Edge / Yandex */
+.about-info-text::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 .about-info.visible {
     opacity: 1;
+}
+.about-text-scrollbar {
+    position: absolute;
+    top: 0;
+    right: 20px;
+
+    width: 3px;
+    height: 50%;
+
+    background: rgba(255, 255, 255, 0.35);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.about-text-scrollbar__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 0%;
+
+    background: #ffffff;
+    transition: height 0.08s linear;
+}
+
+.about-text-scrollbar__arrow {
+    position: absolute;
+    right: 50%;
+    bottom: 0px;
+
+    width: 12px;
+    height: 12px;
+
+    transform: translateX(50%) rotate(45deg);
+
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+
+    opacity: 0.9;
 }
 .paralax-text {
     position: absolute;
@@ -663,19 +752,11 @@ html, body {
     opacity: 1;
     filter: brightness(1.15);
 }
-/* По умолчанию текст "МЕНЮ" скрыт на всех страницах */
 .menu-text {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-/* Только на странице about показываем текст "МЕНЮ" */
-.about-page .menu-text {
     opacity: 0.3;
     visibility: visible;
     pointer-events: auto;
+    transition: opacity 0.3s ease;
 }
 @media (max-width: 768px) {
     .about__background {
@@ -696,4 +777,108 @@ html, body {
     .about__title {
         font-size: 32px;
     }
+}
+.page-scrollbar {
+    position: fixed;
+    top: 0;
+    left: 5%;
+    width: 2px;
+    height: 100vh;
+    z-index: 300;
+    pointer-events: none;
+
+    transition: width 0.2s ease;
+
+    /* маска пунктира: она режет и серый слой, и белую заливку */
+    -webkit-mask-image:
+        linear-gradient(
+            to bottom,
+            #000 0%,
+            #000 24%,
+            transparent 24%,
+            transparent 25%,
+
+            #000 25%,
+            #000 49%,
+            transparent 49%,
+            transparent 50%,
+
+            #000 50%,
+            #000 74%,
+            transparent 74%,
+            transparent 75%,
+
+            #000 75%,
+            #000 100%
+        );
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            #000 0%,
+            #000 24%,
+            transparent 24%,
+            transparent 25%,
+
+            #000 25%,
+            #000 49%,
+            transparent 49%,
+            transparent 50%,
+
+            #000 50%,
+            #000 74%,
+            transparent 74%,
+            transparent 75%,
+
+            #000 75%,
+            #000 100%
+        );
+}
+
+/* серый пунктир сверху */
+.page-scrollbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: rgba(160, 160, 160, 0.45);
+}
+
+/* белая заливка снизу */
+.page-scrollbar__thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 2px;
+    height: 0%;
+
+    z-index: 1;
+    background: #fff;
+
+    transition:
+        width 0.2s ease,
+        height 0.12s linear;
+}
+
+/* во время скролла */
+.page-scrollbar.is-scrolling {
+    width: 3px;
+}
+
+.page-scrollbar.is-scrolling .page-scrollbar__thumb {
+    width: 3px;
+}
+/* чтобы wheel работал на about */
+.content--page {
+    pointer-events: auto;
+}
+/* если ширина меню поменяется */
+@media (max-width: 768px) {
+    .page-scrollbar {
+        left: 5%;
+    }
+}
+.content--page {
+    pointer-events: auto;
 }
