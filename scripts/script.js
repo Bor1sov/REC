@@ -224,12 +224,12 @@ function positionAboutTextScrollbar() {
         Высота скроллбара.
         0.6 = 60% от высоты текстового блока.
     */
-    const scrollbarHeightRatio = 0.6;
+    const scrollbarHeightRatio = 0.8;
 
     /*
         Чем больше значение, тем правее скроллбар.
     */
-    const scrollbarGap = 85;
+    const scrollbarGap = 180;
 
     /*
         Чем меньше значение, тем выше скроллбар.
