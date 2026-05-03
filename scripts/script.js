@@ -29,6 +29,9 @@ let aboutTextScrollbarFill = null;
 const hasContentLinks = document.querySelector(".content__links");
 const contentPage = document.querySelector(".content--page");
 const aboutInfoText = document.querySelector(".about-info-text");
+const isContactsPage =
+    document.body.classList.contains("contacts-page") ||
+    document.querySelector(".contacts");
 
 const navigationEntry = performance.getEntriesByType("navigation")[0];
 const isPageReload = navigationEntry && navigationEntry.type === "reload";
@@ -363,12 +366,22 @@ initPageScrollbar();
 function updatePageScrollbar(p) {
     if (!pageScrollbar || !pageScrollbarThumb) return;
 
+    if (isContactsPage) {
+        pageScrollbarThumb.style.height = "0%";
+        return;
+    }
+
     const fill = Math.max(0, Math.min(100, p * 100));
     pageScrollbarThumb.style.height = `${fill}%`;
 }
 
 function setScrollbarScrollingState() {
     if (!pageScrollbar) return;
+
+    if (isContactsPage) {
+        pageScrollbar.classList.remove("is-scrolling");
+        return;
+    }
 
     pageScrollbar.classList.add("is-scrolling");
 
@@ -788,6 +801,12 @@ function animate() {
 animate();
 
 function handleVirtualScroll(e) {
+    if (isContactsPage) {
+        e.preventDefault();
+        updatePageScrollbar(0);
+        return;
+    }
+
     e.preventDefault();
 
     showUI();

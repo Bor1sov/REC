@@ -1,77 +1,77 @@
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Thin.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Thin.otf") format("opentype");
     font-weight: 100;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Thin Italic.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Thin Italic.otf") format("opentype");
     font-weight: 100;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Light.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Light.otf") format("opentype");
     font-weight: 300;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Light Italic.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Light Italic.otf") format("opentype");
     font-weight: 300;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Regular.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Regular.otf") format("opentype");
     font-weight: 400;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Regular Italic.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Regular Italic.otf") format("opentype");
     font-weight: 400;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Medium.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Medium.otf") format("opentype");
     font-weight: 500;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Medium Italic.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Medium Italic.otf") format("opentype");
     font-weight: 500;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Bold.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Bold.otf") format("opentype");
     font-weight: 700;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Bold Italic.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Bold Italic.otf") format("opentype");
     font-weight: 700;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Black.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Black.otf") format("opentype");
     font-weight: 900;
 }
 
 @font-face {
     font-family: "Holgada";
-    src: url("../assets/fonts/Holgada Black Italic.otf") format("opentype");
+    src: url("../../assets/fonts/Holgada Black Italic.otf") format("opentype");
     font-weight: 900;
     font-style: italic;
 }
