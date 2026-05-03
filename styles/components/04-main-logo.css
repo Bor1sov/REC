@@ -64,11 +64,11 @@
 .main__container__logo {
     width: 75px;
     height: 75px;
-    border: 25px solid rgb(255, 255, 255);
+    border: 25px solid rgb(209, 33, 33);
     border-radius: 50%;
     opacity: 0.8;
 
-    animation: mainLogoPulseWhite 2.2s ease-in-out infinite;
+    animation: mainLogoPulseRed 2.2s ease-in-out infinite;
 
     transition:
         border-color 0.35s ease,

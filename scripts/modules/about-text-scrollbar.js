@@ -44,8 +44,8 @@ export function positionAboutTextScrollbar() {
     const infoRect = aboutInfo.getBoundingClientRect();
 
     const scrollbarHeightRatio = 0.6;
-    const scrollbarGap = 85;
-    const scrollbarOffsetY = -60;
+    const scrollbarGap = -85;
+    const scrollbarOffsetY = -70;
 
     const top =
         textRect.top -

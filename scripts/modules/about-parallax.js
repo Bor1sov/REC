@@ -76,7 +76,7 @@ export function updateScene(p) {
     syncAboutImageAndTitle(p);
 
     if (paralaxText) {
-        const textMove = p * 120;
+        const textMove = p * 115;
         paralaxText.style.transform = `translateY(${100 - textMove}%)`;
     }
 
