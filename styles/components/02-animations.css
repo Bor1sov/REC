@@ -1,0 +1,68 @@
+@keyframes light-menu {
+    0% {
+        box-shadow: 0 0 0 rgb(255, 255, 255);
+    }
+
+    20% {
+        box-shadow: 0 0 5px rgb(255, 255, 255);
+    }
+
+    30% {
+        box-shadow: 0 0 10px rgb(255, 255, 255);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgb(255, 255, 255);
+    }
+
+    80% {
+        box-shadow: 0 0 10px rgb(255, 255, 255);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgb(255, 255, 255);
+    }
+}
+
+@keyframes red-light {
+    0% {
+        box-shadow: 0 0 0 rgb(248, 27, 27);
+    }
+
+    20% {
+        box-shadow: 0 0 5px rgb(248, 27, 27);
+    }
+
+    30% {
+        box-shadow: 0 0 10px rgb(248, 27, 27);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgb(248, 27, 27);
+    }
+
+    80% {
+        box-shadow: 0 0 10px rgb(248, 27, 27);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgb(248, 27, 27);
+    }
+}
+
+@keyframes logoPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0.4);
+    }
+
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 24px rgba(255, 0, 0, 0.85);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0.4);
+    }
+}

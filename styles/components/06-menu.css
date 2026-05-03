@@ -1,0 +1,92 @@
+.menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5%;
+    height: 100vh;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    z-index: 140;
+}
+
+.menu__logo {
+    width: 40px;
+    height: 40px;
+    border: 12px solid rgb(255, 255, 255);
+    box-shadow: 0 0 0 rgb(255, 255, 255);
+    border-radius: 50%;
+    margin: 20px auto 0;
+    opacity: 0.8;
+    animation: light-menu 10s infinite;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu__logo.red-logo {
+    border: 12px solid rgb(248, 27, 27);
+    animation: red-light 10s infinite;
+}
+
+.menu__logo-cont {
+    width: 40px;
+    height: 40px;
+    border: 12px solid rgb(255, 0, 0);
+    box-shadow: 0 0 0 rgb(255, 0, 0);
+    border-radius: 50%;
+    margin: 20px auto 10px auto;
+    opacity: 0.8;
+    animation: logoPulse 2.4s ease-in-out infinite;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.menu-block {
+    margin-top: auto;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+}
+
+.menu-text {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 29px;
+    letter-spacing: 2px;
+    color: #fff;
+    font-weight: 900;
+    opacity: 0.3;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.3s ease;
+}
+
+.burger {
+    all: unset;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+}
+
+.burger span {
+    width: 25px;
+    height: 4.5px;
+    background: #fff;
+    transition: 0.2s;
+}
+
+.burger:hover span {
+    background: #ccc;
+}
