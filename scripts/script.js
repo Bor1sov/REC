@@ -181,7 +181,10 @@ function setScrollbarScrollingState() {
 function initAboutTextScrollbar() {
     if (!aboutInfoText) return;
 
-    aboutInfoText.style.position = "relative";
+    const aboutInfo = aboutInfoText.closest(".about-info");
+    if (!aboutInfo) return;
+
+    aboutInfo.style.position = "relative";
 
     aboutTextScrollbar = document.createElement("div");
     aboutTextScrollbar.className = "about-text-scrollbar";
@@ -195,11 +198,63 @@ function initAboutTextScrollbar() {
     aboutTextScrollbar.appendChild(aboutTextScrollbarFill);
     aboutTextScrollbar.appendChild(arrow);
 
-    aboutInfoText.appendChild(aboutTextScrollbar);
+    /*
+        Важно:
+        скроллбар добавляется в .about-info,
+        а не внутрь .about-info-text.
+        Так он не становится частью прокручиваемого текста.
+    */
+    aboutInfo.appendChild(aboutTextScrollbar);
 
+    positionAboutTextScrollbar();
     updateAboutTextScrollbar();
 
     aboutInfoText.addEventListener("scroll", updateAboutTextScrollbar);
+
+    window.addEventListener("resize", () => {
+        positionAboutTextScrollbar();
+        updateAboutTextScrollbar();
+    });
+}
+
+function positionAboutTextScrollbar() {
+    if (!aboutInfoText || !aboutTextScrollbar) return;
+
+    const aboutInfo = aboutInfoText.closest(".about-info");
+    if (!aboutInfo) return;
+
+    const textRect = aboutInfoText.getBoundingClientRect();
+    const infoRect = aboutInfo.getBoundingClientRect();
+
+    /*
+        Высота скроллбара.
+        0.6 = 60% от высоты текстового блока.
+        Если нужен выше — поставь 0.7 / 0.8 / 0.9.
+    */
+    const scrollbarHeightRatio = 0.6;
+
+    /*
+        Чем больше значение, тем правее скроллбар.
+    */
+    const scrollbarGap = 85;
+
+    /*
+        Чем меньше значение, тем выше скроллбар.
+        Например: -30, -45, -60.
+    */
+    const scrollbarOffsetY = -60;
+
+    const top =
+        textRect.top -
+        infoRect.top +
+        textRect.height * ((1 - scrollbarHeightRatio) / 2) +
+        scrollbarOffsetY;
+
+    const left = textRect.right - infoRect.left + scrollbarGap;
+
+    aboutTextScrollbar.style.top = `${top}px`;
+    aboutTextScrollbar.style.left = `${left}px`;
+    aboutTextScrollbar.style.height = `${textRect.height * scrollbarHeightRatio}px`;
 }
 
 function updateAboutTextScrollbar() {
@@ -208,7 +263,7 @@ function updateAboutTextScrollbar() {
     const maxScroll = aboutInfoText.scrollHeight - aboutInfoText.clientHeight;
 
     if (maxScroll <= 0) {
-        aboutTextScrollbarFill.style.height = "100%";
+        aboutTextScrollbarFill.style.height = "0%";
         return;
     }
 
@@ -227,6 +282,11 @@ initAboutTextScrollbar();
 function syncTitleBackgroundWithImage(baseImg, title) {
     if (!baseImg || !title) return;
 
+    /*
+        getBoundingClientRect() берёт уже трансформированный размер .about__img.
+        Поэтому фон внутри текста получает точно такой же zoom,
+        как и основное изображение.
+    */
     const imgRect = baseImg.getBoundingClientRect();
     const titleRect = title.getBoundingClientRect();
 
@@ -241,12 +301,17 @@ function syncTitleBackgroundWithImage(baseImg, title) {
 function syncAboutImageAndTitle(progressValue) {
     const { baseImg, title } = getSceneElements();
 
-    if (baseImg) {
-        const move = progressValue * 80;
-        const scale = 1 + progressValue * 0.2;
+    /*
+        Единый zoom для:
+        1. основной картинки .about__img
+        2. изображения внутри текста .about__title
+    */
+    const zoom = 1 + progressValue * 0.4;
+    const move = progressValue * 80;
 
+    if (baseImg) {
         baseImg.style.transformOrigin = "center center";
-        baseImg.style.transform = `translateY(${move}px) scale(${scale})`;
+        baseImg.style.transform = `translateY(${move}px) scale(${zoom})`;
     }
 
     if (baseImg && title) {
@@ -267,6 +332,7 @@ function setInitialImagePosition() {
     }
 
     updatePageScrollbar(progress);
+    positionAboutTextScrollbar();
     updateAboutTextScrollbar();
 }
 
@@ -376,7 +442,7 @@ function addGlowAnimation(element) {
         }
 
         .menu__logo-cont.white-glow {
-            animation: menuLogoWhite 2s ease-in-out infinite;
+            animation: menuLogoGlowWhite 2s ease-in-out infinite;
         }
 
         .menu__logo-cont {
@@ -573,11 +639,12 @@ function updateScene(p) {
     syncAboutImageAndTitle(p);
 
     if (paralaxText) {
-        const textMove = p * 100;
+        const textMove = p * 120;
         paralaxText.style.transform = `translateY(${100 - textMove}%)`;
     }
 
     updatePageScrollbar(p);
+    positionAboutTextScrollbar();
     updateAboutTextScrollbar();
 }
 
@@ -604,6 +671,11 @@ function handleVirtualScroll(e) {
     setScrollbarScrollingState();
 }
 
+/*
+    Внутренний скролл текста about-info-text.
+    Пока текст может скроллиться внутри блока,
+    колесо НЕ отдаётся параллаксу страницы.
+*/
 if (aboutInfoText) {
     aboutInfoText.addEventListener(
         "wheel",
@@ -620,14 +692,24 @@ if (aboutInfoText) {
 
             if (canScrollUp || canScrollDown) {
                 e.stopPropagation();
-            }
+                e.preventDefault();
 
-            requestAnimationFrame(updateAboutTextScrollbar);
+                aboutInfoText.scrollTop += delta;
+
+                requestAnimationFrame(() => {
+                    positionAboutTextScrollbar();
+                    updateAboutTextScrollbar();
+                });
+            }
         },
         { passive: false }
     );
 }
 
+/*
+    На about.html скролл привязан к .content--page.
+    На index.html оставляем window.
+*/
 if (contentPage) {
     contentPage.addEventListener("wheel", handleVirtualScroll, {
         passive: false

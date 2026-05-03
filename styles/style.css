@@ -3,61 +3,72 @@
     src: url("../assets/fonts/Holgada Thin.otf") format("opentype");
     font-weight: 100;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Thin Italic.otf") format("opentype");
     font-weight: 100;
     font-style: italic;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Light.otf") format("opentype");
     font-weight: 300;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Light Italic.otf") format("opentype");
     font-weight: 300;
     font-style: italic;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Regular.otf") format("opentype");
     font-weight: 400;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Regular Italic.otf") format("opentype");
     font-weight: 400;
     font-style: italic;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Medium.otf") format("opentype");
     font-weight: 500;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Medium Italic.otf") format("opentype");
     font-weight: 500;
     font-style: italic;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Bold.otf") format("opentype");
     font-weight: 700;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Bold Italic.otf") format("opentype");
     font-weight: 700;
     font-style: italic;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Black.otf") format("opentype");
     font-weight: 900;
 }
+
 @font-face {
     font-family: "Holgada";
     src: url("../assets/fonts/Holgada Black Italic.otf") format("opentype");
@@ -65,21 +76,28 @@
     font-style: italic;
 }
 
+:root {
+    --mask-image: url("../assets/О-нас-Моб.png");
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* border: 1px solid red; */
 }
-:root{
-    --mask-image: url("../assets/О-нас-Моб.png");
-}
-html, body {
-    background: #000;
+
+html,
+body {
+    width: 100%;
     height: 100%;
     overflow: hidden;
+    background: #000;
     font-family: "Holgada", sans-serif;
 }
+
+/* =========================
+   INTRO
+========================= */
 
 .intro {
     position: fixed;
@@ -92,15 +110,21 @@ html, body {
     opacity: 1;
     transition: opacity 1s ease;
 }
+
 .intro.fade-out {
     opacity: 0;
     pointer-events: none;
 }
+
 .intro__video {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+
+/* =========================
+   MAIN
+========================= */
 
 .main-container {
     position: relative;
@@ -114,12 +138,18 @@ html, body {
     transition: opacity 1s ease;
     overflow: hidden;
 }
+
 .main-container.show {
     opacity: 1;
 }
+
 .hidden {
     pointer-events: none;
 }
+
+/* =========================
+   MAIN LOGO
+========================= */
 
 .logo-wrapper {
     position: absolute;
@@ -130,17 +160,25 @@ html, body {
     align-items: center;
     z-index: 999;
     cursor: pointer;
+    transition: all 0.8s cubic-bezier(0.7, 0, 0.2, 1);
 }
 
 .main__container__logo {
+    width: 75px;
+    height: 75px;
     border: 25px solid rgb(255, 0, 0);
-    box-shadow: 0px 0px 0px rgb(255, 0, 0);
+    box-shadow: 0 0 0 rgb(255, 0, 0);
     border-radius: 50%;
     opacity: 0.8;
     animation: red-light 10s infinite;
-    width: 75px;
-    height: 75px;
-    transition: transform 0.7s cubic-bezier(0.7, 0, 0.2, 1);
+    transition: all 0.8s cubic-bezier(0.7, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+}
+
+.main__container__logo[style*="fixed"] {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
 }
 
 .logo-text {
@@ -153,15 +191,17 @@ html, body {
     margin-left: 15px;
     margin-top: 25px;
     opacity: 0;
-    transition: max-width 2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+    transition:
+        max-width 2s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.6s ease;
 }
 
 .logo-top {
     display: flex;
     line-height: 1;
-    gap: 0;          
-    margin: 0;  
-    margin-left: -12px;     
+    gap: 0;
+    margin: 0;
+    margin-left: -12px;
     padding: 0;
     overflow: visible;
 }
@@ -170,30 +210,30 @@ html, body {
     font-weight: 500;
     font-size: 70px;
     letter-spacing: -6px;
-    transform: scaleX(0.9); 
+    transform: scaleX(0.9);
     color: #e6e6e6;
-    margin: 0;        
-    padding: 0;    
+    margin: 0;
+    padding: 0;
 }
 
 .studio {
     font-weight: 200;
     font-size: 70px;
     letter-spacing: -8px;
-    transform: scaleX(0.8); 
+    transform: scaleX(0.8);
     color: #e6e6e6;
-    margin: 0;        
-    margin-left: -25px; 
-    padding: 0; 
+    margin: 0;
+    margin-left: -25px;
+    padding: 0;
 }
 
 .logo-sub {
     font-weight: 500;
     font-size: 22px;
     letter-spacing: 2px;
-    color: #ffffff;
+    color: #fff;
     margin-top: 6px;
-    transform: scaleX(1); 
+    transform: scaleX(1);
 }
 
 .logo-wrapper.active .main__container__logo {
@@ -204,6 +244,18 @@ html, body {
     max-width: 500px;
     opacity: 1;
 }
+
+.logo-wrapper.corner-position {
+    position: fixed !important;
+    top: 20px !important;
+    left: 20px !important;
+    transform: translate(0, 0) scale(0.5) !important;
+    z-index: 10000 !important;
+}
+
+/* =========================
+   UI VISIBILITY
+========================= */
 
 .ui-hidden .menu,
 .ui-hidden .content {
@@ -223,6 +275,10 @@ html, body {
     pointer-events: none;
     transition: opacity 0.5s ease;
 }
+
+/* =========================
+   SETTINGS
+========================= */
 
 .settings {
     position: fixed;
@@ -252,9 +308,11 @@ html, body {
     transition: opacity 0.2s;
     font-family: "Holgada", sans-serif;
 }
+
 .settings__lang-btn:hover {
     opacity: 1;
 }
+
 .settings__valume-btn {
     background: none;
     border: none;
@@ -263,6 +321,7 @@ html, body {
     align-items: center;
     padding: 0;
 }
+
 .settings__valume-btn__img {
     width: 22px;
     height: 22px;
@@ -270,407 +329,59 @@ html, body {
     opacity: 0.7;
     transition: all 0.2s ease;
 }
+
 .settings__valume-btn__img:hover {
     opacity: 1;
     transform: scale(1.05);
 }
+
 .settings__valume-btn__img:active {
     transform: scale(0.95);
 }
+
+/* =========================
+   MENU
+========================= */
+
 .menu {
     position: absolute;
     left: 0;
     top: 0;
     width: 5%;
     height: 100vh;
-  background-image: 
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-    url('../assets/mainbackground.jpg');
-  background-size: cover;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url("../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
     display: flex;
     flex-direction: column;
     z-index: 140;
 }
+
 .menu__logo {
     width: 40px;
     height: 40px;
     border: 12px solid rgb(255, 255, 255);
-    box-shadow: 0px 0px 0px rgb(255, 255, 255);
+    box-shadow: 0 0 0 rgb(255, 255, 255);
     border-radius: 50%;
     margin: 20px auto 0;
     opacity: 0.8;
     animation: light-menu 10s infinite;
     cursor: pointer;
-}
-@keyframes light-menu {
-    0%{
-        box-shadow: 0px 0px 0px rgb(255, 255, 255);       
-    }
-    20%{
-        box-shadow: 0px 0px 5px rgb(255, 255, 255);       
-    }
-    30%{
-        box-shadow: 0px 0px 10px rgb(255, 255, 255);       
-    }
-    50%{
-        box-shadow: 0px 0px 20px rgb(255, 255, 255);       
-    }
-    80%{
-        box-shadow: 0px 0px 10px rgb(255, 255, 255);       
-    }
-    100%{
-        box-shadow: 0px 0px 5px rgb(255, 255, 255);       
-    }
-}
-.red-logo{
-    border: 12px solid rgb(248, 27, 27);   
-    animation: red-light 10s infinite;
-    transition: 0.3s;
-}
-@keyframes red-light {
-    0%{
-        box-shadow: 0px 0px 0px rgb(248, 27, 27);       
-    }
-    20%{
-        box-shadow: 0px 0px 5px rgb(248, 27, 27);       
-    }
-    30%{
-        box-shadow: 0px 0px 10px rgb(248, 27, 27);       
-    }
-    50%{
-        box-shadow: 0px 0px 20px rgb(248, 27, 27);       
-    }
-    80%{
-        box-shadow: 0px 0px 10px rgb(248, 27, 27);       
-    }
-    100%{
-        box-shadow: 0px 0px 5px rgb(248, 27, 27);       
-    }
-}
-.menu-block {
-    margin-top: auto;
-    margin-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-.menu-text {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    font-size: 29px;
-    letter-spacing: 2px;
-    color: #fff;
-    font-weight: 900;
-    opacity: 0.3;
-}
-.burger {
-    all: unset;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 8px;
-}
-.burger span {
-    width: 25px;
-    height: 4.5px;
-    background: #fff;
-    transition: 0.2s;
-}
-.burger:hover span {
-    background: #ccc;
-}
-
-.content {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    pointer-events: none;
-}
-
-.about {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-}
-
-.about__img {
-    width: 100%;
-    height: 110%;
-    object-fit: cover;
-    will-change: transform;
-}
-
-.about--base {
-    z-index: 1;
-}
-
-.about--top {
-    position: absolute;
-    inset: 0;
-    z-index: 20;
-    background-color: url("../assets/О нас Моб.jpg");
-    pointer-events: none;
-}
-
-.about__background {
-    position: relative;
-    width: auto;
-    height: 250px;
-    padding: 0;
-    z-index: 25;
-    background-image: url("../assets/mainbackground.jpg");
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    overflow: visible;
-    margin: 0 auto;
-    clip-path: inset(0);
-}
-.about__title {
-    font-size: clamp(90px, 22vw, 390px);
-    font-weight: 900;
-    text-transform: uppercase;
-    line-height: 0.8;
-    width: 100%;
-    text-align: center;
-    letter-spacing: 0.05em;
-
-    margin: 0;
-    margin-bottom: clamp(-45px, -3vw, -20px);
-
-    padding: 0;
-
-    position: relative;
-    z-index: 99999999;
-
-    background-image: url("../assets/О-нас-Моб.png");
-    background-repeat: no-repeat;
-    background-size: 100vw auto;
-    background-position: center var(--about-bg-y, 160%);
-
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    transform: translateY(-30px); /* чуть поднять */
-    will-change: background-position;
-}
-
-.paralax-text {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 15;
-    transform: translateY(100%);
-    will-change: transform;
-    transition: transform 0.1s linear;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-
-    isolation: isolate;
-    overflow: visible;
-}
-
-/* рамка прижата к about-info */
-.paralax-text::before {
-    content: "";
-    position: absolute;
-
-    left: 60px;
-    right: 0;
-    width: 100%;
-    bottom: 300px;
-
-    height: clamp(76px, 15vw, 240px);
-
-    background: url("../assets/mainbackground.jpg");
-    z-index: 0;
-    pointer-events: none;
-}
-.mask {
-    -webkit-mask-image: none;
-    mask-image: none;
-}
-
-.about-info {
-    position: relative;
-    display: flex;
-    bottom: auto;
-    left: auto;
-    width: 100%;
-    padding: 2rem 2rem 3rem 2rem;
-    z-index: 20;
-    color: white;
-    font-size: 1.2rem;
-    line-height: 1.5;
-    font-weight: 400;
-
-    /* убираем фон и blur с самого блока */
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-
-    border-top: none;
-    outline: none;
-    box-shadow: none;
-
-    opacity: 1;
-    pointer-events: auto;
-    margin-top: 0;
-    height: 310px;
-
-    overflow: hidden;
-}
-.about-info::before {
-    content: "";
-    position: absolute;
-    inset: -2px 0 0 0;
-
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-
-    z-index: 0;
-    pointer-events: none;
-}
-.about-info {
-    pointer-events: auto;
-}
-
-.about-info-text {
-    position: relative;
-    z-index: 2;
-
-    width: 962px;
-    height: 379px;
-
-    margin-left: auto;
-    margin-right: 140px;
-    margin-top: 0;
-
-    padding-top: 4px;
-    padding-right: 55px;
-    padding-bottom: 20px;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    pointer-events: auto;
-
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-
-/* Chrome / Safari / Edge / Yandex */
-.about-info-text::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-.about-info.visible {
-    opacity: 1;
-}
-.about-text-scrollbar {
-    position: absolute;
-    top: 0;
-    right: 20px;
-
-    width: 3px;
-    height: 50%;
-
-    background: rgba(255, 255, 255, 0.35);
-    z-index: 5;
-    pointer-events: none;
-}
-
-.about-text-scrollbar__fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 0%;
-
-    background: #ffffff;
-    transition: height 0.08s linear;
-}
-
-.about-text-scrollbar__arrow {
-    position: absolute;
-    right: 50%;
-    bottom: 0px;
-
-    width: 12px;
-    height: 12px;
-
-    transform: translateX(50%) rotate(45deg);
-
-    border-right: 2px solid #ffffff;
-    border-bottom: 2px solid #ffffff;
-
-    opacity: 0.9;
-}
-.paralax-text {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 15;
-    transform: translateY(100%);
-    will-change: transform;
-    transition: transform 0.1s linear;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-.about-info p {
-    max-width: 800px;
-    margin: 0 auto;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    font-size: clamp(14px, 4vw, 20px);
-    font-family: "Holgada", sans-serif;
-}
-.logo-wrapper {
-    transition: all 0.8s cubic-bezier(0.7, 0, 0.2, 1);
-}
-
-.main__container__logo {
-    transition: all 0.8s cubic-bezier(0.7, 0, 0.2, 1);
-}
-
-.logo-wrapper.corner-position {
-    position: fixed !important;
-    top: 20px !important;
-    left: 20px !important;
-    transform: translate(0, 0) scale(0.5) !important;
-    z-index: 10000 !important;
-}
-.main__container__logo {
-    transition: all 0.8s cubic-bezier(0.7, 0, 0.2, 1);
-    cursor: pointer;
-    position: relative;
-    z-index: 10;
-}
-
-.main__container__logo[style*="fixed"] {
-    box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.5);
-}
-.menu__logo {
     transition: all 0.3s ease;
 }
+
+.menu__logo.red-logo {
+    border: 12px solid rgb(248, 27, 27);
+    animation: red-light 10s infinite;
+}
+
 .menu__logo-cont {
     width: 40px;
     height: 40px;
     border: 12px solid rgb(255, 0, 0);
-    box-shadow: 0px 0px 0px rgb(255, 0, 0);
+    box-shadow: 0 0 0 rgb(255, 0, 0);
     border-radius: 50%;
     margin: 20px auto 10px auto;
     opacity: 0.8;
@@ -679,28 +390,145 @@ html, body {
     display: block;
     position: relative;
     flex-shrink: 0;
+    transition: all 0.3s ease;
 }
-.menu__logo.red-logo {
-    border: 12px solid rgb(248, 27, 27);
-    animation: red-light 10s infinite;
+
+.menu-block {
+    margin-top: auto;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
 }
-.content__links{
-    display:flex;
+
+.menu-text {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 29px;
+    letter-spacing: 2px;
+    color: #fff;
+    font-weight: 900;
+    opacity: 0.3;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.3s ease;
+}
+
+.burger {
+    all: unset;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+}
+
+.burger span {
+    width: 25px;
+    height: 4.5px;
+    background: #fff;
+    transition: 0.2s;
+}
+
+.burger:hover span {
+    background: #ccc;
+}
+
+/* =========================
+   MENU ANIMATIONS
+========================= */
+
+@keyframes light-menu {
+    0% {
+        box-shadow: 0 0 0 rgb(255, 255, 255);
+    }
+
+    20% {
+        box-shadow: 0 0 5px rgb(255, 255, 255);
+    }
+
+    30% {
+        box-shadow: 0 0 10px rgb(255, 255, 255);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgb(255, 255, 255);
+    }
+
+    80% {
+        box-shadow: 0 0 10px rgb(255, 255, 255);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgb(255, 255, 255);
+    }
+}
+
+@keyframes red-light {
+    0% {
+        box-shadow: 0 0 0 rgb(248, 27, 27);
+    }
+
+    20% {
+        box-shadow: 0 0 5px rgb(248, 27, 27);
+    }
+
+    30% {
+        box-shadow: 0 0 10px rgb(248, 27, 27);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgb(248, 27, 27);
+    }
+
+    80% {
+        box-shadow: 0 0 10px rgb(248, 27, 27);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgb(248, 27, 27);
+    }
+}
+
+/* =========================
+   CONTENT COMMON
+========================= */
+
+.content {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.content--page {
+    pointer-events: auto;
+}
+
+/* =========================
+   INDEX LINKS
+========================= */
+
+.content__links {
+    display: flex;
     flex-direction: column;
     width: 80%;
-    height:96%;
-    align-items: left;
-    margin-left:12% ;
-    padding: 0;
+    height: 96%;
+    align-items: flex-start;
+    margin-left: 12%;
     margin-top: 5.3%;
+    padding: 0;
     gap: 0;
 }
+
 .content__links__item {
     position: relative;
     display: flex;
-    padding: 0;
     flex-direction: column;
     height: 16%;
+    padding: 0;
 
     color: transparent;
     -webkit-text-fill-color: transparent;
@@ -721,7 +549,6 @@ html, body {
     overflow: visible;
 }
 
-/* второй слой текста с hover-картинкой */
 .content__links__item::before {
     content: attr(data-text);
     position: absolute;
@@ -744,52 +571,311 @@ html, body {
     pointer-events: none;
 }
 
-/* плавное появление hover-картинки */
 .content__links__item:hover::before {
     opacity: 1;
 }
+
 .content__links__item:hover {
     opacity: 1;
     filter: brightness(1.15);
 }
-.menu-text {
-    opacity: 0.3;
-    visibility: visible;
-    pointer-events: auto;
-    transition: opacity 0.3s ease;
-}
-@media (max-width: 768px) {
-    .about__background {
-        height: 150px;
-    }
-    .about__title {
-        font-size: 40px;
-    }
-    .about-info {
-        padding: 1.5rem;
-    }
-    .about-info p {
-        font-size: 14px;
-    }
+
+/* =========================
+   ABOUT BASE IMAGE
+========================= */
+
+.about {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
 }
 
-@media (max-width: 480px) {
-    .about__title {
-        font-size: 32px;
-    }
+.about__img {
+    width: 100%;
+    height: 110%;
+    object-fit: cover;
+    will-change: transform;
 }
+
+.about--base {
+    z-index: 1;
+}
+
+.about--top {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    background-color: transparent;
+    pointer-events: none;
+}
+
+.about__background {
+    position: relative;
+    width: auto;
+    height: 250px;
+    padding: 0;
+    z-index: 25;
+    background-image: url("../assets/mainbackground.jpg");
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    margin: 0 auto;
+    clip-path: inset(0);
+}
+
+/* =========================
+   ABOUT PARALLAX TEXT
+========================= */
+
+.paralax-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    z-index: 15;
+    transform: translateY(100%);
+    will-change: transform;
+    transition: transform 0.1s linear;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    isolation: isolate;
+    overflow: visible;
+    gap: 0;
+}
+
+/* задний фон заголовка */
+.paralax-text::before {
+    content: "";
+    position: absolute;
+
+    left: 60px;
+    right: 0;
+    width: 100%;
+
+    /*
+       если фон заголовка должен сильнее наезжать на about-info,
+       уменьши bottom: 300px -> 290px / 280px
+    */
+    bottom: 300px;
+
+    height: clamp(90px, 12.5vw, 420px);
+
+    background: url("../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+
+    z-index: 0;
+    pointer-events: none;
+}
+
+.about__title {
+    font-size: clamp(50px, 20vw, 390px);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.8;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 0;
+
+    margin: 0;
+    margin-bottom: clamp(-45px, -3vw, -20px);
+    margin-left: -20%;
+    padding: 0;
+
+    position: relative;
+    z-index: 25;
+
+    background-image: url("../assets/О-нас-Моб.png");
+    background-repeat: no-repeat;
+    background-size: 100vw auto;
+    background-position: center var(--about-bg-y, 160%);
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    transform: translateY(-30px);
+    will-change: background-position;
+}
+
+.mask {
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+/* =========================
+   ABOUT INFO
+========================= */
+
+.about-info {
+    position: relative;
+    display: flex;
+    bottom: auto;
+    left: auto;
+
+    width: 100%;
+    height: 310px;
+
+    padding: 2rem 2rem 3rem 2rem;
+
+    z-index: 20;
+    color: white;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: 400;
+
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    border-top: none;
+    outline: none;
+    box-shadow: none;
+
+    opacity: 1;
+    pointer-events: auto;
+    margin-top: 0;
+
+    /*
+       важно: visible, чтобы текст 379px и скроллбар
+       не обрезались высотой блока 310px
+    */
+    overflow: visible;
+}
+
+.about-info::before {
+    content: "";
+    position: absolute;
+
+    /*
+       фон начинается чуть выше блока и растягивается вниз,
+       не меняя фактическую высоту about-info и не двигая h1
+    */
+    inset: -2px 0 -100vh 0;
+
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    z-index: 0;
+    pointer-events: none;
+}
+
+.about-info.visible {
+    opacity: 1;
+}
+
+.about-info-text {
+    position: relative;
+    z-index: 2;
+    font-weight: 500;
+    font-size: 22px;
+    width: 72%;
+    height: 379px;
+    font-family: "Holgada", sans-serif;
+    text-transform: uppercase;
+        transform: scaleX(0.8);
+    transform-origin: left center;
+    margin-left: 40%;
+    margin-right: auto;
+    margin-top: 5.2%;
+
+    padding-top: 4px;
+    padding-right: 95px;
+    padding-bottom: 180px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    pointer-events: auto;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.about-info-text::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.about-info p {
+    max-width: 800px;
+    margin: 0 auto;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-size: clamp(14px, 4vw, 20px);
+    font-family: "Holgada", sans-serif;
+}
+
+/* =========================
+   ABOUT TEXT CUSTOM SCROLLBAR
+========================= */
+
+
+.about-text-scrollbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 3px;
+    height: 60%;
+
+    background: rgba(255, 255, 255, 0.35);
+    z-index: 50;
+    pointer-events: none;
+}
+
+.about-text-scrollbar__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 0%;
+
+    background: #fff;
+    transition: height 0.08s linear;
+}
+
+.about-text-scrollbar__arrow {
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+
+    width: 12px;
+    height: 12px;
+
+    transform: translateX(50%) rotate(45deg);
+
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+
+    opacity: 0.9;
+}
+
+/* =========================
+   ABOUT PAGE SCROLLBAR
+========================= */
+
 .page-scrollbar {
     position: fixed;
     top: 0;
     left: 5%;
+
     width: 2px;
     height: 100vh;
+
     z-index: 300;
     pointer-events: none;
 
     transition: width 0.2s ease;
 
-    /* маска пунктира: она режет и серый слой, и белую заливку */
     -webkit-mask-image:
         linear-gradient(
             to bottom,
@@ -835,7 +921,6 @@ html, body {
         );
 }
 
-/* серый пунктир сверху */
 .page-scrollbar::before {
     content: "";
     position: absolute;
@@ -844,7 +929,6 @@ html, body {
     background: rgba(160, 160, 160, 0.45);
 }
 
-/* белая заливка снизу */
 .page-scrollbar__thumb {
     position: absolute;
     top: 0;
@@ -861,7 +945,6 @@ html, body {
         height 0.12s linear;
 }
 
-/* во время скролла */
 .page-scrollbar.is-scrolling {
     width: 3px;
 }
@@ -869,16 +952,82 @@ html, body {
 .page-scrollbar.is-scrolling .page-scrollbar__thumb {
     width: 3px;
 }
-/* чтобы wheel работал на about */
-.content--page {
-    pointer-events: auto;
-}
-/* если ширина меню поменяется */
-@media (max-width: 768px) {
-    .page-scrollbar {
-        left: 5%;
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+    .about-info-text {
+        width: 720px;
+        margin-right: 80px;
+    }
+
+    .content__links__item {
+        font-size: 90px;
+        line-height: 120px;
     }
 }
-.content--page {
-    pointer-events: auto;
+
+@media (max-width: 768px) {
+    .menu {
+        width: 60px;
+    }
+
+    .page-scrollbar {
+        left: 60px;
+    }
+
+    .about__background {
+        height: 150px;
+    }
+
+    .about__title {
+        font-size: 40px;
+        margin-left: 0;
+    }
+
+    .about-info {
+        padding: 1.5rem;
+    }
+
+    .about-info-text {
+        width: calc(100vw - 120px);
+        height: 300px;
+        margin-left: 80px;
+        margin-right: 20px;
+        padding-right: 35px;
+    }
+
+    .about-info p {
+        font-size: 14px;
+    }
+
+    .content__links {
+        margin-left: 80px;
+        width: calc(100% - 100px);
+    }
+
+    .content__links__item {
+        font-size: 54px;
+        line-height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about__title {
+        font-size: 32px;
+    }
+
+    .about-info-text {
+        width: calc(100vw - 90px);
+        height: 260px;
+        margin-left: 70px;
+        margin-right: 10px;
+    }
+
+    .content__links__item {
+        font-size: 38px;
+        line-height: 60px;
+    }
 }
