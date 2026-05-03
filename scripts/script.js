@@ -198,12 +198,6 @@ function initAboutTextScrollbar() {
     aboutTextScrollbar.appendChild(aboutTextScrollbarFill);
     aboutTextScrollbar.appendChild(arrow);
 
-    /*
-        Важно:
-        скроллбар добавляется в .about-info,
-        а не внутрь .about-info-text.
-        Так он не становится частью прокручиваемого текста.
-    */
     aboutInfo.appendChild(aboutTextScrollbar);
 
     positionAboutTextScrollbar();
@@ -229,7 +223,6 @@ function positionAboutTextScrollbar() {
     /*
         Высота скроллбара.
         0.6 = 60% от высоты текстового блока.
-        Если нужен выше — поставь 0.7 / 0.8 / 0.9.
     */
     const scrollbarHeightRatio = 0.6;
 
@@ -279,21 +272,46 @@ initAboutTextScrollbar();
    ABOUT PARALLAX
 ========================= */
 
+/*
+    Синхронизация изображения внутри h1 с реальным object-fit: cover у .about__img.
+    Это убирает рассинхрон при zoom / transform.
+*/
 function syncTitleBackgroundWithImage(baseImg, title) {
     if (!baseImg || !title) return;
 
-    /*
-        getBoundingClientRect() берёт уже трансформированный размер .about__img.
-        Поэтому фон внутри текста получает точно такой же zoom,
-        как и основное изображение.
-    */
     const imgRect = baseImg.getBoundingClientRect();
     const titleRect = title.getBoundingClientRect();
 
-    const bgX = imgRect.left - titleRect.left;
-    const bgY = imgRect.top - titleRect.top;
+    const naturalWidth = baseImg.naturalWidth || imgRect.width;
+    const naturalHeight = baseImg.naturalHeight || imgRect.height;
 
-    title.style.backgroundSize = `${imgRect.width}px ${imgRect.height}px`;
+    const imageRatio = naturalWidth / naturalHeight;
+    const rectRatio = imgRect.width / imgRect.height;
+
+    let renderedWidth;
+    let renderedHeight;
+
+    /*
+        Повторяем object-fit: cover.
+    */
+    if (imageRatio > rectRatio) {
+        renderedHeight = imgRect.height;
+        renderedWidth = renderedHeight * imageRatio;
+    } else {
+        renderedWidth = imgRect.width;
+        renderedHeight = renderedWidth / imageRatio;
+    }
+
+    /*
+        Повторяем object-position: center center.
+    */
+    const offsetX = (imgRect.width - renderedWidth) / 2;
+    const offsetY = (imgRect.height - renderedHeight) / 2;
+
+    const bgX = imgRect.left + offsetX - titleRect.left;
+    const bgY = imgRect.top + offsetY - titleRect.top;
+
+    title.style.backgroundSize = `${renderedWidth}px ${renderedHeight}px`;
     title.style.backgroundPosition = `${bgX}px ${bgY}px`;
     title.style.backgroundRepeat = "no-repeat";
 }
@@ -337,6 +355,19 @@ function setInitialImagePosition() {
 }
 
 setInitialImagePosition();
+
+const aboutImage = document.querySelector(".about__img");
+
+if (aboutImage) {
+    if (aboutImage.complete) {
+        setInitialImagePosition();
+    } else {
+        aboutImage.addEventListener("load", () => {
+            setInitialImagePosition();
+            updateScene(progress);
+        });
+    }
+}
 
 window.addEventListener("resize", () => {
     setInitialImagePosition();
@@ -671,11 +702,6 @@ function handleVirtualScroll(e) {
     setScrollbarScrollingState();
 }
 
-/*
-    Внутренний скролл текста about-info-text.
-    Пока текст может скроллиться внутри блока,
-    колесо НЕ отдаётся параллаксу страницы.
-*/
 if (aboutInfoText) {
     aboutInfoText.addEventListener(
         "wheel",
@@ -706,10 +732,6 @@ if (aboutInfoText) {
     );
 }
 
-/*
-    На about.html скролл привязан к .content--page.
-    На index.html оставляем window.
-*/
 if (contentPage) {
     contentPage.addEventListener("wheel", handleVirtualScroll, {
         passive: false
