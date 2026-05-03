@@ -436,7 +436,7 @@ function positionAboutTextScrollbar() {
 
     const scrollbarHeightRatio = 0.6;
     const scrollbarGap = 85;
-    const scrollbarOffsetY = 0;
+    const scrollbarOffsetY = -60;
 
     const top =
         textRect.top -
