@@ -90,3 +90,61 @@
 .burger:hover span {
     background: #ccc;
 }
+@keyframes logoPulseRed {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0.4);
+    }
+
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 24px rgba(255, 0, 0, 0.85);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0.4);
+    }
+}
+
+@keyframes logoPulseWhite {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 24px rgba(255, 255, 255, 0.85);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+}
+
+.menu__logo-cont.red-glow {
+    border-color: rgb(255, 0, 0);
+    animation: logoPulseRed 2.4s ease-in-out infinite;
+}
+
+.menu__logo-cont.white-glow {
+    border-color: rgb(255, 255, 255);
+    animation: logoPulseWhite 2.4s ease-in-out infinite;
+}
+/* На index.html лого в меню скрыто, пока JS не разрешит его показать */
+.main-container:not(.menu-logo-ready) .menu__logo-cont {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* После реального переноса лого в меню */
+.main-container.menu-logo-ready .menu__logo-cont {
+    display: block;
+    opacity: 0.8;
+    visibility: visible;
+    pointer-events: auto;
+}

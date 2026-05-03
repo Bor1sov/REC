@@ -14,6 +14,7 @@ let targetProgress = 0;
 let isUIVisible = false;
 let clickCount = 0;
 let isLogoInMenu = false;
+let isLogoMovingToMenu = false;
 let currentSize = 200;
 let currentPosition = 5;
 let currentLeftOffset = 50;
@@ -28,11 +29,46 @@ let aboutTextScrollbarFill = null;
 const hasContentLinks = document.querySelector(".content__links");
 const contentPage = document.querySelector(".content--page");
 const aboutInfoText = document.querySelector(".about-info-text");
-const shouldSkipIntro = sessionStorage.getItem("recStudioSkipIntro") === "true";
 
-/* =========================
-   INDEX START LOGIC
-========================= */
+const navigationEntry = performance.getEntriesByType("navigation")[0];
+const isPageReload = navigationEntry && navigationEntry.type === "reload";
+
+const shouldSkipIntro =
+    sessionStorage.getItem("recStudioSkipIntro") === "true" && !isPageReload;
+
+if (isPageReload) {
+    sessionStorage.removeItem("recStudioSkipIntro");
+}
+
+const menuLogoGuardStyle = document.createElement("style");
+menuLogoGuardStyle.textContent = `
+    .main-container:not(.menu-logo-ready) .menu__logo-cont {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    .main-container.menu-logo-ready .menu__logo-cont {
+        display: block;
+        opacity: 0.8;
+        visibility: visible;
+        pointer-events: auto;
+    }
+`;
+document.head.appendChild(menuLogoGuardStyle);
+
+const initialMenuLogo = menuSection
+    ? menuSection.querySelector(".menu__logo-cont")
+    : null;
+
+if (initialMenuLogo) {
+    if (main && !(shouldSkipIntro && hasContentLinks)) {
+        initialMenuLogo.remove();
+    } else {
+        initialMenuLogo.style.display = "block";
+    }
+}
 
 if (main) {
     main.classList.add("show");
@@ -41,6 +77,7 @@ if (main) {
     if (shouldSkipIntro && hasContentLinks) {
         main.classList.remove("ui-hidden");
         main.classList.add("ui-visible");
+        main.classList.add("menu-logo-ready");
 
         if (logoWrapper) {
             logoWrapper.style.display = "none";
@@ -48,11 +85,16 @@ if (main) {
 
         isUIVisible = true;
         isLogoInMenu = true;
+        isLogoMovingToMenu = false;
+
+        createMenuLogo();
+        initMenuLogoVisibility();
 
         sessionStorage.removeItem("recStudioSkipIntro");
     } else {
         main.classList.add("ui-hidden");
         main.classList.remove("ui-visible");
+        main.classList.remove("menu-logo-ready");
 
         if (logoWrapper) {
             logoWrapper.style.display = "";
@@ -60,32 +102,9 @@ if (main) {
 
         isUIVisible = false;
         isLogoInMenu = false;
+        isLogoMovingToMenu = false;
     }
 }
-
-/* =========================
-   MENU LOGO
-========================= */
-
-function initMenuLogoVisibility() {
-    const menuLogo = menuSection
-        ? menuSection.querySelector(".menu__logo-cont")
-        : null;
-
-    if (!menuLogo) return;
-
-    if (main) {
-        menuLogo.style.display = isLogoInMenu ? "block" : "none";
-    } else {
-        menuLogo.style.display = "block";
-    }
-}
-
-initMenuLogoVisibility();
-
-/* =========================
-   SOUND
-========================= */
 
 function playSound() {
     if (!isSoundEnabled) return;
@@ -121,9 +140,199 @@ if (volumeBtn) {
 
 updateVolumeIcon();
 
-/* =========================
-   ELEMENTS
-========================= */
+function setMenuLogoColor(menuLogo, color) {
+    if (!menuLogo) return;
+
+    if (color === "white") {
+        menuLogo.dataset.logoColor = "white";
+
+        menuLogo.classList.remove("red-glow");
+        menuLogo.classList.add("white-glow");
+
+        menuLogo.style.borderColor = "rgb(255, 255, 255)";
+        menuLogo.style.boxShadow = "0 0 24px rgba(255, 255, 255, 0.85)";
+    } else {
+        menuLogo.dataset.logoColor = "red";
+
+        menuLogo.classList.remove("white-glow");
+        menuLogo.classList.add("red-glow");
+
+        menuLogo.style.borderColor = "rgb(255, 0, 0)";
+        menuLogo.style.boxShadow = "0 0 24px rgba(255, 0, 0, 0.85)";
+    }
+}
+
+function initMenuLogoColorToggle(menuLogo) {
+    if (!menuLogo) return;
+    if (menuLogo.dataset.colorToggleReady === "true") return;
+
+    if (!menuLogo.dataset.logoColor) {
+        setMenuLogoColor(menuLogo, "red");
+    }
+
+    menuLogo.addEventListener("click", (e) => {
+        e.stopPropagation();
+        playSound();
+
+        const currentColor = menuLogo.dataset.logoColor;
+        const nextColor = currentColor === "white" ? "red" : "white";
+
+        setMenuLogoColor(menuLogo, nextColor);
+
+        menuLogo.style.transform = "scale(0.9)";
+
+        setTimeout(() => {
+            menuLogo.style.transform = "scale(1)";
+        }, 150);
+    });
+
+    menuLogo.dataset.colorToggleReady = "true";
+}
+
+function addGlowAnimation(element) {
+    if (!element) return;
+
+    element.classList.add("menu__logo-cont");
+
+    const oldStyle = document.querySelector("#menu-logo-glow-style");
+
+    if (oldStyle) return;
+
+    const style = document.createElement("style");
+    style.id = "menu-logo-glow-style";
+    style.textContent = `
+        @keyframes menuLogoGlowRed {
+            0% {
+                box-shadow: 0 0 0px rgba(255, 0, 0, 0);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 0px rgba(255, 0, 0, 0);
+            }
+        }
+
+        @keyframes menuLogoGlowWhite {
+            0% {
+                box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+            }
+        }
+
+        .menu__logo-cont.red-glow {
+            animation: menuLogoGlowRed 2s ease-in-out infinite;
+        }
+
+        .menu__logo-cont.white-glow {
+            animation: menuLogoGlowWhite 2s ease-in-out infinite;
+        }
+
+        .menu__logo-cont {
+            transition: all 0.3s ease;
+        }
+
+        .menu__logo-cont.red-glow:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 0, 1);
+        }
+
+        .menu__logo-cont.white-glow:hover {
+            box-shadow: 0 0 25px rgba(255, 255, 255, 1);
+        }
+
+        .menu__logo-cont:active {
+            transform: scale(0.95);
+        }
+    `;
+
+    document.head.appendChild(style);
+}
+
+function createMenuLogo() {
+    if (!menuSection) return null;
+
+    let menuLogo = menuSection.querySelector(".menu__logo-cont");
+
+    if (menuLogo) {
+        setMenuLogoColor(menuLogo, menuLogo.dataset.logoColor || "red");
+        initMenuLogoColorToggle(menuLogo);
+        return menuLogo;
+    }
+
+    menuLogo = document.createElement("div");
+    menuLogo.className = "menu__logo-cont red-glow";
+    menuLogo.style.width = "40px";
+    menuLogo.style.height = "40px";
+    menuLogo.style.border = "12px solid rgb(255, 0, 0)";
+    menuLogo.style.borderRadius = "50%";
+    menuLogo.style.margin = "20px auto 10px auto";
+    menuLogo.style.opacity = "0.8";
+    menuLogo.style.cursor = "pointer";
+    menuLogo.style.display = "block";
+    menuLogo.style.position = "relative";
+    menuLogo.style.flexShrink = "0";
+
+    addGlowAnimation(menuLogo);
+    setMenuLogoColor(menuLogo, "red");
+    initMenuLogoColorToggle(menuLogo);
+
+    const menuBlock = menuSection.querySelector(".menu-block");
+
+    if (menuBlock) {
+        menuSection.insertBefore(menuLogo, menuBlock);
+    } else {
+        menuSection.insertBefore(menuLogo, menuSection.firstChild);
+    }
+
+    return menuLogo;
+}
+
+function initMenuLogoVisibility() {
+    let menuLogo = menuSection
+        ? menuSection.querySelector(".menu__logo-cont")
+        : null;
+
+    if (main) {
+        if (isLogoInMenu && !isLogoMovingToMenu) {
+            menuLogo = createMenuLogo();
+
+            if (!menuLogo) return;
+
+            main.classList.add("menu-logo-ready");
+
+            menuLogo.style.display = "block";
+            menuLogo.style.opacity = "0.8";
+            menuLogo.style.visibility = "visible";
+            menuLogo.style.pointerEvents = "auto";
+
+            initMenuLogoColorToggle(menuLogo);
+        } else {
+            if (menuLogo) {
+                menuLogo.remove();
+            }
+
+            main.classList.remove("menu-logo-ready");
+        }
+    } else {
+        menuLogo = createMenuLogo();
+
+        if (!menuLogo) return;
+
+        menuLogo.style.display = "block";
+        menuLogo.style.opacity = "0.8";
+        menuLogo.style.visibility = "visible";
+        menuLogo.style.pointerEvents = "auto";
+
+        initMenuLogoColorToggle(menuLogo);
+    }
+}
+
+initMenuLogoVisibility();
 
 function getSceneElements() {
     return {
@@ -133,10 +342,6 @@ function getSceneElements() {
         title: document.querySelector(".about__title")
     };
 }
-
-/* =========================
-   PAGE SCROLLBAR
-========================= */
 
 function initPageScrollbar() {
     if (!contentPage) return;
@@ -173,10 +378,6 @@ function setScrollbarScrollingState() {
         pageScrollbar.classList.remove("is-scrolling");
     }, 350);
 }
-
-/* =========================
-   ABOUT TEXT SCROLLBAR
-========================= */
 
 function initAboutTextScrollbar() {
     if (!aboutInfoText) return;
@@ -220,22 +421,9 @@ function positionAboutTextScrollbar() {
     const textRect = aboutInfoText.getBoundingClientRect();
     const infoRect = aboutInfo.getBoundingClientRect();
 
-    /*
-        Высота скроллбара.
-        0.6 = 60% от высоты текстового блока.
-    */
-    const scrollbarHeightRatio = 0.8;
-
-    /*
-        Чем больше значение, тем правее скроллбар.
-    */
-    const scrollbarGap = 180;
-
-    /*
-        Чем меньше значение, тем выше скроллбар.
-        Например: -30, -45, -60.
-    */
-    const scrollbarOffsetY = -60;
+    const scrollbarHeightRatio = 0.6;
+    const scrollbarGap = 85;
+    const scrollbarOffsetY = 0;
 
     const top =
         textRect.top -
@@ -268,14 +456,6 @@ function updateAboutTextScrollbar() {
 
 initAboutTextScrollbar();
 
-/* =========================
-   ABOUT PARALLAX
-========================= */
-
-/*
-    Синхронизация изображения внутри h1 с реальным object-fit: cover у .about__img.
-    Это убирает рассинхрон при zoom / transform.
-*/
 function syncTitleBackgroundWithImage(baseImg, title) {
     if (!baseImg || !title) return;
 
@@ -291,9 +471,6 @@ function syncTitleBackgroundWithImage(baseImg, title) {
     let renderedWidth;
     let renderedHeight;
 
-    /*
-        Повторяем object-fit: cover.
-    */
     if (imageRatio > rectRatio) {
         renderedHeight = imgRect.height;
         renderedWidth = renderedHeight * imageRatio;
@@ -302,9 +479,6 @@ function syncTitleBackgroundWithImage(baseImg, title) {
         renderedHeight = renderedWidth / imageRatio;
     }
 
-    /*
-        Повторяем object-position: center center.
-    */
     const offsetX = (imgRect.width - renderedWidth) / 2;
     const offsetY = (imgRect.height - renderedHeight) / 2;
 
@@ -319,11 +493,6 @@ function syncTitleBackgroundWithImage(baseImg, title) {
 function syncAboutImageAndTitle(progressValue) {
     const { baseImg, title } = getSceneElements();
 
-    /*
-        Единый zoom для:
-        1. основной картинки .about__img
-        2. изображения внутри текста .about__title
-    */
     const zoom = 1 + progressValue * 0.4;
     const move = progressValue * 80;
 
@@ -373,10 +542,6 @@ window.addEventListener("resize", () => {
     setInitialImagePosition();
     updateScene(progress);
 });
-
-/* =========================
-   DEBUG CONTROLS
-========================= */
 
 function setImageSize(percent) {
     const { title } = getSceneElements();
@@ -433,74 +598,11 @@ window.addEventListener("keydown", (e) => {
     }
 });
 
-/* =========================
-   LOGO ANIMATION
-========================= */
-
-function addGlowAnimation(element) {
-    if (!element) return;
-
-    element.classList.add("menu__logo-cont");
-
-    const style = document.createElement("style");
-    style.textContent = `
-        @keyframes menuLogoGlowRed {
-            0% {
-                box-shadow: 0 0 0px rgba(255, 0, 0, 0);
-            }
-            50% {
-                box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-            }
-            100% {
-                box-shadow: 0 0 0px rgba(255, 0, 0, 0);
-            }
-        }
-
-        @keyframes menuLogoGlowWhite {
-            0% {
-                box-shadow: 0 0 0px rgba(255, 255, 255, 0);
-            }
-            50% {
-                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-            }
-            100% {
-                box-shadow: 0 0 0px rgba(255, 255, 255, 0);
-            }
-        }
-
-        .menu__logo-cont.red-glow {
-            animation: menuLogoGlowRed 2s ease-in-out infinite;
-        }
-
-        .menu__logo-cont.white-glow {
-            animation: menuLogoGlowWhite 2s ease-in-out infinite;
-        }
-
-        .menu__logo-cont {
-            transition: all 0.3s ease;
-        }
-
-        .menu__logo-cont.red-glow:hover {
-            box-shadow: 0 0 25px rgba(255, 0, 0, 1);
-        }
-
-        .menu__logo-cont.white-glow:hover {
-            box-shadow: 0 0 25px rgba(255, 255, 255, 1);
-        }
-
-        .menu__logo-cont:active {
-            transform: scale(0.95);
-        }
-    `;
-
-    document.head.appendChild(style);
-}
-
 function moveLogoToMenuTop() {
-    if (isLogoInMenu) return;
+    if (isLogoInMenu || isLogoMovingToMenu) return;
     if (!main || !logo || !menuSection || !logoWrapper) return;
 
-    isLogoInMenu = true;
+    isLogoMovingToMenu = true;
 
     const logoRect = logo.getBoundingClientRect();
     const menuRect = menuSection.getBoundingClientRect();
@@ -546,27 +648,16 @@ function moveLogoToMenuTop() {
             oldMenuLogo.remove();
         }
 
-        const newMenuLogo = document.createElement("div");
-        newMenuLogo.className = "menu__logo-cont red-glow";
-        newMenuLogo.style.width = "40px";
-        newMenuLogo.style.height = "40px";
-        newMenuLogo.style.border = "12px solid rgb(255, 0, 0)";
-        newMenuLogo.style.borderRadius = "50%";
-        newMenuLogo.style.margin = "20px auto 10px auto";
-        newMenuLogo.style.opacity = "0.8";
-        newMenuLogo.style.cursor = "pointer";
-        newMenuLogo.style.display = "block";
-        newMenuLogo.style.position = "relative";
-        newMenuLogo.style.flexShrink = "0";
+        isLogoMovingToMenu = false;
+        isLogoInMenu = true;
 
-        addGlowAnimation(newMenuLogo);
+        const newMenuLogo = createMenuLogo();
 
-        const menuBlock = menuSection.querySelector(".menu-block");
-
-        if (menuBlock) {
-            menuSection.insertBefore(newMenuLogo, menuBlock);
-        } else {
-            menuSection.insertBefore(newMenuLogo, menuSection.firstChild);
+        if (newMenuLogo) {
+            newMenuLogo.style.display = "block";
+            newMenuLogo.style.opacity = "0.8";
+            newMenuLogo.style.visibility = "visible";
+            newMenuLogo.style.pointerEvents = "auto";
         }
 
         logo.style.display = "none";
@@ -580,6 +671,10 @@ function moveLogoToMenuTop() {
 
         logoWrapper.style.pointerEvents = "none";
 
+        if (main) {
+            main.classList.add("menu-logo-ready");
+        }
+
         initMenuLogoVisibility();
 
         console.log("Logo moved inside menu with glow animation");
@@ -587,10 +682,11 @@ function moveLogoToMenuTop() {
 }
 
 function resetLogoPosition() {
-    if (!isLogoInMenu) return;
+    if (!isLogoInMenu && !isLogoMovingToMenu) return;
     if (!logo || !logoWrapper) return;
 
     isLogoInMenu = false;
+    isLogoMovingToMenu = false;
 
     const menuLogo = main && menuSection
         ? menuSection.querySelector(".menu__logo-cont")
@@ -598,6 +694,10 @@ function resetLogoPosition() {
 
     if (menuLogo && menuLogo.remove) {
         menuLogo.remove();
+    }
+
+    if (main) {
+        main.classList.remove("menu-logo-ready");
     }
 
     initMenuLogoVisibility();
@@ -637,7 +737,9 @@ function showUI() {
         isUIVisible = true;
     }
 
-    initMenuLogoVisibility();
+    if (!isLogoMovingToMenu) {
+        initMenuLogoVisibility();
+    }
 }
 
 function resetScene() {
@@ -645,6 +747,7 @@ function resetScene() {
 
     main.classList.remove("ui-visible");
     main.classList.add("ui-hidden");
+    main.classList.remove("menu-logo-ready");
 
     logoWrapper.classList.remove("active");
 
@@ -653,16 +756,13 @@ function resetScene() {
     isUIVisible = false;
     clickCount = 0;
     isLogoInMenu = false;
+    isLogoMovingToMenu = false;
 
     resetLogoPosition();
 
     updateScene(0);
     initMenuLogoVisibility();
 }
-
-/* =========================
-   SCENE UPDATE
-========================= */
 
 function updateScene(p) {
     const { paralaxText } = getSceneElements();
@@ -686,10 +786,6 @@ function animate() {
 }
 
 animate();
-
-/* =========================
-   SCROLL LOGIC
-========================= */
 
 function handleVirtualScroll(e) {
     e.preventDefault();
@@ -742,10 +838,6 @@ if (contentPage) {
     });
 }
 
-/* =========================
-   LOGO CLICK
-========================= */
-
 if (logo && logoWrapper) {
     logo.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -753,14 +845,14 @@ if (logo && logoWrapper) {
         playSound();
         clickCount++;
 
-        if (clickCount === 2 && !isLogoInMenu) {
+        if (clickCount === 2 && !isLogoInMenu && !isLogoMovingToMenu) {
             moveLogoToMenuTop();
             showUI();
             targetProgress = 0.3;
             return;
         }
 
-        if (isUIVisible) {
+        if (isUIVisible && !isLogoMovingToMenu) {
             resetScene();
             return;
         }
@@ -775,10 +867,6 @@ if (logo && logoWrapper) {
     });
 }
 
-/* =========================
-   INDEX LINKS
-========================= */
-
 function initContentLinksImages() {
     const links = document.querySelectorAll(".content__links__item");
 
@@ -791,20 +879,17 @@ function initContentLinksImages() {
 
         if (!imageClass) return;
 
-        link.dataset.text = link.textContent.trim();
+        const imageUrl = new URL(
+            `./assets/${imageClass}.png`,
+            window.location.href
+        ).href;
 
-        link.style.setProperty(
-            "--hover-bg",
-            `url("./assets/${imageClass}.png")`
-        );
+        link.dataset.text = link.textContent.trim();
+        link.style.setProperty("--hover-bg", `url("${imageUrl}")`);
     });
 }
 
 initContentLinksImages();
-
-/* =========================
-   PAGE TRANSITIONS
-========================= */
 
 function initPageTransitions() {
     const links = document.querySelectorAll(".content__links__item");
