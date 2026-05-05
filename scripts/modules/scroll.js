@@ -29,8 +29,13 @@ function handleVirtualScroll(e) {
 
     showUI();
 
+    const maxProgress = state.pageProgressMax || 1;
+
     state.targetProgress += e.deltaY * 0.002;
-    state.targetProgress = Math.max(0, Math.min(1, state.targetProgress));
+    state.targetProgress = Math.max(
+        0,
+        Math.min(maxProgress, state.targetProgress)
+    );
 
     setScrollbarScrollingState();
 }

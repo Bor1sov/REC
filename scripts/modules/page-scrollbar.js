@@ -24,7 +24,10 @@ export function updatePageScrollbar(p) {
         return;
     }
 
-    const fill = Math.max(0, Math.min(100, p * 100));
+    const maxProgress = state.pageProgressMax || 1;
+    const normalizedProgress = p / maxProgress;
+    const fill = Math.max(0, Math.min(100, normalizedProgress * 100));
+
     state.pageScrollbarThumb.style.height = `${fill}%`;
 }
 

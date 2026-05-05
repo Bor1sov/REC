@@ -3,6 +3,7 @@ export const state = {
 
     progress: 0,
     targetProgress: 0,
+    pageProgressMax: 1,
 
     isUIVisible: false,
     clickCount: 0,

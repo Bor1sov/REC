@@ -5,7 +5,15 @@ import { initMenuLogoVisibility } from "./modules/menu-logo.js";
 import { initIntroLogo } from "./modules/intro-logo.js";
 import { initPageScrollbar, updatePageScrollbar } from "./modules/page-scrollbar.js";
 import { initAboutTextScrollbar } from "./modules/about-text-scrollbar.js";
-import { initAboutParallax, setInitialImagePosition, updateScene } from "./modules/about-parallax.js";
+import {
+    initAboutParallax,
+    setInitialImagePosition,
+    updateScene
+} from "./modules/about-parallax.js";
+import {
+    initProjectsParallax,
+    updateProjectsScene
+} from "./modules/projects-parallax.js";
 import { initScroll } from "./modules/scroll.js";
 import { initContentLinksImages } from "./modules/links.js";
 import { initPageTransitions, initMenuReturnToIndex } from "./modules/transitions.js";
@@ -16,6 +24,8 @@ const isPageReload = navigationEntry && navigationEntry.type === "reload";
 
 state.shouldSkipIntro =
     sessionStorage.getItem("recStudioSkipIntro") === "true" && !isPageReload;
+
+state.pageProgressMax = document.body.classList.contains("projects-page") ? 4 : 1;
 
 if (isPageReload) {
     sessionStorage.removeItem("recStudioSkipIntro");
@@ -51,7 +61,7 @@ if (dom.main) {
         }
 
         if (dom.logo) {
-            dom.logo.classList.remove("is-red");
+            dom.logo.classList.add("is-red");
         }
 
         state.isUIVisible = false;
@@ -65,6 +75,7 @@ initMenuLogoVisibility();
 initPageScrollbar();
 initAboutTextScrollbar();
 initAboutParallax();
+initProjectsParallax();
 setInitialImagePosition();
 initDebugControls();
 initScroll();
@@ -75,14 +86,25 @@ initMenuReturnToIndex();
 
 function animate() {
     state.progress += (state.targetProgress - state.progress) * 0.08;
-    updateScene(state.progress);
+
+    if (document.body.classList.contains("projects-page")) {
+        updateProjectsScene(state.progress);
+    } else {
+        updateScene(state.progress);
+    }
+
     requestAnimationFrame(animate);
 }
 
 animate();
 
 window.addEventListener("resize", () => {
-    setInitialImagePosition();
-    updateScene(state.progress);
+    if (document.body.classList.contains("projects-page")) {
+        updateProjectsScene(state.progress);
+    } else {
+        setInitialImagePosition();
+        updateScene(state.progress);
+    }
+
     updatePageScrollbar(state.progress);
 });

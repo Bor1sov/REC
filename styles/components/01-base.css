@@ -30,19 +30,13 @@ body::before {
     background-position: center;
     background-repeat: no-repeat;
 
-    opacity: 0.9;
-    mix-blend-mode: screen;
-
+    opacity: 1;
+    mix-blend-mode: multiply;
+    filter: brightness(9) saturate(6) contrast(1.1);
     z-index: 100;
     pointer-events: none;
 }
 
-.main-container,
-.menu,
-.content,
-.contacts {
-    filter: brightness(0.82) saturate(1.4) contrast(1.22);
-}
 body.home-page::before {
     content: none;
 }
@@ -55,13 +49,15 @@ body.home-page::before {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
-    opacity: 0.50;
-    mix-blend-mode: screen;
-
+    filter: brightness(10) saturate(1) contrast(0.2);
+    opacity: 1;
+    mix-blend-mode: multiply;
     z-index: 100;
     pointer-events: none;
 }
 .home-page .main-container {
     filter: brightness(1.15) saturate(1.15) contrast(1.05);
+}
+body.projects-page::before {
+    content: none;
 }
