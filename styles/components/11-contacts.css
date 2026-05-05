@@ -77,6 +77,23 @@
     white-space: nowrap;
 }
 
+.contacts__phone .contacts__social,
+.contacts__phone .contacts__phone-number {
+    transition:
+        opacity 0.25s ease,
+        filter 0.25s ease,
+        color 0.25s ease;
+}
+
+.contacts__phone .contacts__social:hover {
+    filter: grayscale(1) brightness(0.65);
+    opacity: 0.85;
+}
+
+.contacts__phone .contacts__phone-number:hover {
+    color: #8f8f8f;
+}
+
 .contacts__phone-number {
     color: #fff;
     text-decoration: none;
@@ -110,6 +127,17 @@
     gap: 7px;
 
     flex: 0 0 auto;
+}
+
+.contacts__socials .contacts__social {
+    transition:
+        opacity 0.25s ease,
+        filter 0.25s ease;
+}
+
+.contacts__socials .contacts__social:hover {
+    filter: grayscale(1) brightness(0.65);
+    opacity: 0.85;
 }
 
 .contacts__social {
@@ -181,23 +209,28 @@
     height: 46px;
 
     border-radius: 50%;
-    background: #fff;
+    border: 15px solid #fff;
+    background: transparent;
     position: relative;
     flex: 0 0 46px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
 }
 
 .contacts__pin::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    content: none;
+}
 
-    width: 14px;
-    height: 14px;
-
-    background: #111;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
+.contacts__pin:hover {
+    border-color: #ff0000;
+    background: transparent;
+    box-shadow: 0 0 18px rgba(255, 0, 0, 0.75);
+    transform: scale(1.04);
 }
 
 .contacts__place-content {

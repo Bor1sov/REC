@@ -77,3 +77,33 @@
     opacity: 1;
     filter: brightness(1.15);
 }
+
+/* =========================================================
+   HOVER IMAGE POSITIONING PER MENU ITEM
+   Настройка изображения внутри текста при наведении
+   ========================================================= */
+
+.content__links__item.faq::before {
+    background-position: 12% 12%;
+    background-size: 340% auto;
+}
+
+.content__links__item.projects::before {
+    background-position: 18% 32%;
+    background-size: 140% auto;
+}
+
+.content__links__item.help::before {
+    background-position: 30% 10%;
+    background-size: 215% auto;
+}
+
+.content__links__item.news::before {
+    background-position: 42% 8%;
+    background-size: 115% auto;
+}
+
+.content__links__item.contact::before {
+    background-position: 55% 45%;
+    background-size: 110% auto;
+}

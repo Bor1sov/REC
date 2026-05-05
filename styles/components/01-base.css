@@ -40,24 +40,11 @@ body::before {
 body.home-page::before {
     content: none;
 }
-.home-page .main-container::before {
-    content: "";
-    position: absolute;
-    inset: 0;
 
-    background-image: url("../../assets/mainbackground.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: brightness(10) saturate(1) contrast(0.2);
-    opacity: 1;
-    mix-blend-mode: multiply;
-    z-index: 100;
-    pointer-events: none;
-}
-.home-page .main-container {
-    filter: brightness(1.15) saturate(1.15) contrast(1.05);
-}
 body.projects-page::before {
+    content: none;
+}
+body.contacts-page::before,
+body.contacts-page::after {
     content: none;
 }

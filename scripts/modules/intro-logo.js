@@ -1,7 +1,23 @@
 import { state } from "./state.js";
 import { dom } from "./dom.js";
 import { createMenuLogo, initMenuLogoVisibility } from "./menu-logo.js";
-import { showUI } from "./scroll.js";
+
+const TEXT_REVEAL_DELAY = 1100;
+const TEXT_REVEAL_DURATION = 850;
+const AUTO_MOVE_AFTER_TEXT_READY = 0;
+const AUTO_MOVE_DELAY =
+    TEXT_REVEAL_DELAY + TEXT_REVEAL_DURATION + AUTO_MOVE_AFTER_TEXT_READY;
+
+let autoMoveTimer = null;
+
+function revealUI() {
+    if (!dom.main) return;
+
+    dom.main.classList.remove("ui-hidden");
+    dom.main.classList.add("ui-visible");
+
+    state.isUIVisible = true;
+}
 
 export function moveLogoToMenuTop() {
     if (state.isLogoInMenu || state.isLogoMovingToMenu) return;
@@ -16,6 +32,7 @@ export function moveLogoToMenuTop() {
     const targetLeft = menuRect.left + menuRect.width / 2 - 20;
 
     const logoClone = dom.logo.cloneNode(true);
+
     logoClone.classList.add("is-red");
     logoClone.style.position = "fixed";
     logoClone.style.top = logoRect.top + "px";
@@ -29,19 +46,20 @@ export function moveLogoToMenuTop() {
     logoClone.style.border = "25px solid rgb(255, 0, 0)";
     logoClone.style.borderRadius = "50%";
     logoClone.style.backgroundColor = "transparent";
+    logoClone.style.opacity = "0.8";
 
     document.body.appendChild(logoClone);
 
     dom.logo.style.opacity = "0";
     dom.logo.style.visibility = "hidden";
 
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         logoClone.style.top = targetTop + "px";
         logoClone.style.left = targetLeft + "px";
         logoClone.style.width = "40px";
         logoClone.style.height = "40px";
         logoClone.style.borderWidth = "12px";
-    }, 10);
+    });
 
     setTimeout(() => {
         if (logoClone && logoClone.remove) {
@@ -77,23 +95,47 @@ export function moveLogoToMenuTop() {
 
         dom.logoWrapper.style.pointerEvents = "none";
 
-        if (dom.main) {
-            dom.main.classList.add("menu-logo-ready");
-        }
+        dom.main.classList.add("menu-logo-ready");
 
+        revealUI();
         initMenuLogoVisibility();
-    }, 800);
+
+        state.targetProgress = 0.3;
+    }, 850);
+}
+
+function scheduleAutoMoveToMenu() {
+    clearTimeout(autoMoveTimer);
+
+    autoMoveTimer = setTimeout(() => {
+        if (!dom.logoWrapper) return;
+
+        const isTextVisible = dom.logoWrapper.classList.contains("text-visible");
+
+        if (
+            isTextVisible &&
+            !state.isLogoInMenu &&
+            !state.isLogoMovingToMenu
+        ) {
+            moveLogoToMenuTop();
+        }
+    }, AUTO_MOVE_DELAY);
 }
 
 export function resetLogoPosition() {
     if (!dom.logo || !dom.logoWrapper) return;
 
+    clearTimeout(autoMoveTimer);
+    autoMoveTimer = null;
+
     state.isLogoInMenu = false;
     state.isLogoMovingToMenu = false;
+    state.clickCount = 0;
 
-    const menuLogo = dom.main && dom.menuSection
-        ? dom.menuSection.querySelector(".menu__logo-cont")
-        : null;
+    const menuLogo =
+        dom.main && dom.menuSection
+            ? dom.menuSection.querySelector(".menu__logo-cont")
+            : null;
 
     if (menuLogo && menuLogo.remove) {
         menuLogo.remove();
@@ -105,7 +147,9 @@ export function resetLogoPosition() {
 
     dom.logoWrapper.classList.remove("active", "logo-shifted", "text-visible");
 
-    dom.logo.classList.remove("is-red", "is-pressed");
+    dom.logo.classList.remove("is-pressed");
+    dom.logo.classList.add("is-red");
+
     dom.logo.style.display = "";
     dom.logo.style.position = "";
     dom.logo.style.top = "";
@@ -137,6 +181,8 @@ export function resetLogoPosition() {
 export function initIntroLogo(playSound) {
     if (!dom.logo || !dom.logoWrapper) return;
 
+    dom.logo.classList.add("is-red");
+
     dom.logo.addEventListener("pointerdown", () => {
         dom.logo.classList.add("is-pressed");
     });
@@ -152,21 +198,11 @@ export function initIntroLogo(playSound) {
     dom.logo.addEventListener("click", (e) => {
         e.stopPropagation();
 
+        if (state.isLogoMovingToMenu || state.isLogoInMenu) return;
+
         playSound();
-        state.clickCount++;
 
         dom.logo.classList.add("is-red");
-
-        if (
-            state.clickCount === 2 &&
-            !state.isLogoInMenu &&
-            !state.isLogoMovingToMenu
-        ) {
-            moveLogoToMenuTop();
-            showUI();
-            state.targetProgress = 0.3;
-            return;
-        }
 
         if (state.isUIVisible && !state.isLogoMovingToMenu) {
             resetScene();
@@ -177,21 +213,25 @@ export function initIntroLogo(playSound) {
             dom.logoWrapper.classList.add("logo-shifted");
 
             setTimeout(() => {
-                if (dom.logoWrapper.classList.contains("logo-shifted")) {
+                if (
+                    dom.logoWrapper.classList.contains("logo-shifted") &&
+                    !state.isLogoInMenu &&
+                    !state.isLogoMovingToMenu
+                ) {
                     dom.logoWrapper.classList.add("text-visible");
                 }
-            }, 1100);
+            }, TEXT_REVEAL_DELAY);
 
-            return;
+            scheduleAutoMoveToMenu();
         }
-
-        showUI();
-        state.targetProgress += 0.05;
     });
 }
 
 export function resetScene() {
     if (!dom.main || !dom.logoWrapper) return;
+
+    clearTimeout(autoMoveTimer);
+    autoMoveTimer = null;
 
     dom.main.classList.remove("ui-visible");
     dom.main.classList.add("ui-hidden");
