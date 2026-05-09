@@ -5,6 +5,7 @@ import { initMenuLogoVisibility } from "./modules/menu-logo.js";
 import { initIntroLogo } from "./modules/intro-logo.js";
 import { initPageScrollbar, updatePageScrollbar } from "./modules/page-scrollbar.js";
 import { initAboutTextScrollbar } from "./modules/about-text-scrollbar.js";
+import { initProjectCardHover } from "./modules/project-card-hover.js";
 import {
     initAboutParallax,
     setInitialImagePosition,
@@ -83,6 +84,7 @@ initIntroLogo(playSound);
 initContentLinksImages();
 initPageTransitions();
 initMenuReturnToIndex();
+initProjectCardHover();
 
 function animate() {
     state.progress += (state.targetProgress - state.progress) * 0.08;

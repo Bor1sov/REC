@@ -27,6 +27,8 @@ function getProjectsElements() {
         detailGenre: document.querySelector(".project-detail__genre"),
         detailNote: document.querySelector(".project-detail__note"),
         detailDescription: document.querySelector(".project-detail__description"),
+        detailText: document.querySelector(".project-detail__text"),
+        detailScrollbarFill: document.querySelector(".project-detail__scrollbar-fill"),
         detailAge: document.querySelector(".project-detail__age"),
         detailFormat: document.querySelector(".project-detail__format"),
         detailDuration: document.querySelector(".project-detail__duration"),
@@ -104,6 +106,67 @@ function syncProjectsTitleBackground(bgImg, title) {
     title.style.backgroundRepeat = "no-repeat";
 }
 
+function updateProjectDetailTextScrollbar() {
+    const {
+        detailText,
+        detailScrollbarFill
+    } = getProjectsElements();
+
+    if (!detailText || !detailScrollbarFill) return;
+
+    const scrollableHeight = detailText.scrollHeight - detailText.clientHeight;
+
+    if (scrollableHeight <= 0) {
+        detailScrollbarFill.style.height = "0%";
+        return;
+    }
+
+    const progress = detailText.scrollTop / scrollableHeight;
+    const fill = Math.max(0, Math.min(100, progress * 100));
+
+    detailScrollbarFill.style.height = `${fill}%`;
+}
+
+function initProjectDetailTextScrollbar() {
+    const { detailText } = getProjectsElements();
+
+    if (!detailText) return;
+    if (detailText.dataset.scrollbarReady === "true") return;
+
+    detailText.addEventListener("scroll", () => {
+        updateProjectDetailTextScrollbar();
+    });
+
+    detailText.addEventListener(
+        "wheel",
+        (e) => {
+            const delta = e.deltaY;
+
+            const atTop = detailText.scrollTop <= 0;
+            const atBottom =
+                detailText.scrollTop + detailText.clientHeight >=
+                detailText.scrollHeight - 1;
+
+            const canScrollUp = delta < 0 && !atTop;
+            const canScrollDown = delta > 0 && !atBottom;
+
+            if (canScrollUp || canScrollDown) {
+                e.stopPropagation();
+                e.preventDefault();
+
+                detailText.scrollTop += delta;
+
+                requestAnimationFrame(() => {
+                    updateProjectDetailTextScrollbar();
+                });
+            }
+        },
+        { passive: false }
+    );
+
+    detailText.dataset.scrollbarReady = "true";
+}
+
 function initProjectsServicesHorizontalScroll() {
     const { servicesViewport } = getProjectsElements();
 
@@ -149,6 +212,7 @@ function openProjectDetail(card) {
         detailGenre,
         detailNote,
         detailDescription,
+        detailText,
         detailAge,
         detailFormat,
         detailDuration
@@ -181,9 +245,17 @@ function openProjectDetail(card) {
     if (detailFormat) detailFormat.textContent = format;
     if (detailDuration) detailDuration.textContent = duration;
 
+    if (detailText) {
+        detailText.scrollTop = 0;
+    }
+
     detail.classList.add("is-open");
     detail.setAttribute("aria-hidden", "false");
     document.body.classList.add("projects-detail-open");
+
+    requestAnimationFrame(() => {
+        updateProjectDetailTextScrollbar();
+    });
 }
 
 function closeProjectDetail() {
@@ -366,6 +438,7 @@ export function initProjectsParallax() {
     initProjectsServicesHorizontalScroll();
     initProjectDetailCards();
     initProjectRequestPopup();
+    initProjectDetailTextScrollbar();
 
     if (bgImg) {
         if (bgImg.complete) {
