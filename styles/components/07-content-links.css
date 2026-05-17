@@ -99,11 +99,11 @@
 }
 
 .content__links__item.news::before {
-    background-position: 42% 8%;
-    background-size: 115% auto;
+    background-position: 42% 20%;
+    background-size: 215% auto;
 }
 
 .content__links__item.contact::before {
-    background-position: 52% 36%;
-    background-size: 170% auto;
+    background-position: 65% 30%;
+    background-size: 120% auto;
 }

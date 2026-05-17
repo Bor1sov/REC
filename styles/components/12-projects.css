@@ -279,7 +279,7 @@
 
 .project-card:hover img {
     transform: scale(1.05);
-    filter: brightness(0.42) saturate(0.85);
+    filter: brightness(0.68) saturate(0.9) blur(6px);
 }
 
 .project-card__hover {
@@ -320,8 +320,8 @@
     justify-content: space-between;
     gap: 16px;
 
-    font-size: clamp(18px, 1.55vw, 32px);
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: 300;
     line-height: 1;
     letter-spacing: -0.02em;
 }
@@ -329,16 +329,16 @@
 .project-card__hover-bottom {
     max-width: 94%;
     max-height: 62%;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .project-card__hover-title {
     margin: 0 0 10px;
-
-    font-size: clamp(20px, 1.85vw, 40px);
-    font-weight: 900;
+    font-family: "Holgada";
+    font-size: 26px;
+    font-weight: 600;
     line-height: 0.9;
-    letter-spacing: -0.04em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
 
     overflow-wrap: normal;
@@ -368,7 +368,7 @@
 .project-card__hover-genre {
     margin: 0;
 
-    font-size: clamp(15px, 1.2vw, 26px);
+    font-size: 15px;
     font-weight: 400;
     line-height: 1.08;
     letter-spacing: -0.025em;
@@ -580,38 +580,15 @@
 }
 
 .project-detail__scrollbar {
-    position: absolute;
-    top: 0;
-    right: 2%;
-
-    width: 3px;
-    height: calc(100% - 6px);
-
-    background: rgba(255, 255, 255, 0.16);
-    pointer-events: none;
+    display: none;
 }
 
 .project-detail__scrollbar::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: -6px;
-
-    width: 8px;
-    height: 8px;
-
-    border-right: 2px solid rgba(255, 255, 255, 0.85);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.85);
-
-    transform: translateX(-50%) rotate(45deg);
+    content: none;
 }
 
 .project-detail__scrollbar-fill {
-    width: 100%;
-    height: 0%;
-
-    background: rgba(255, 255, 255, 0.85);
-    transition: height 0.08s linear;
+    display: none;
 }
 
 .project-detail__description {

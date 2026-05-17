@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>REC Studio — О нас</title>
+    <title>REC Studio — Услуги</title>
     <link rel="stylesheet" href="./styles/style.css" />
     <link rel="icon" href="./assets/logo.png" type="image/png" />
   </head>
 
-  <body class="about-page">
+  <body class="help-page">
     <section class="menu">
       <div class="menu__logo-cont"></div>
 
@@ -23,27 +23,261 @@
       </div>
     </section>
 
-    <section class="content content--page">
-      <div class="about about--base">
-        <img src="./assets/О-нас-Моб.png" class="about__img" alt="О нас" />
+    <section class="content content--page help-content">
+      <div class="help-bg">
+        <img
+          src="./assets/help.png"
+          class="help-bg__img"
+          alt="Услуги REC Studio"
+        />
       </div>
 
-      <div class="paralax-text">
-        <h1 class="about__title mask">О НАС</h1>
+      <div class="help-stage">
+        <section class="help-hero">
+          <div class="help-paralax-text">
+            <h1 class="help__title mask">УСЛУГИ</h1>
 
-        <div class="about-info">
-          <div class="about-info-text">
-            В команду РЕК СТУДИЯ входят продюсеры, режиссеры и сценаристы,
-            которые преимущественно предпочитают работать в жанрах — детективы,
-            триллеры, драмы и приключения. <br><br>Мы создаем нон-фикшн контент,
-            основанный на реальных событиях, с напряженным и драматичным
-            сюжетом. Герои наших историй – сильные и неординарные личности,
-            которые вызывают большой зрительский интерес в любой точке Мира.
+            <p class="help__subtitle">
+              Помогаем создать проекты
+            </p>
+
+            <div class="help-services-viewport">
+              <div class="help-services">
+                <div class="help-service">
+                  <span></span>
+                  <p>Проекты<br />под ключ</p>
+                </div>
+
+                <div class="help-service">
+                  <span></span>
+                  <p>Заявки<br />на субсидии</p>
+                </div>
+
+                <div class="help-service">
+                  <span></span>
+                  <p>Разработка<br />презентаций</p>
+                </div>
+
+                <div class="help-service" aria-hidden="true">
+                  <span></span>
+                  <p>Проекты<br />под ключ</p>
+                </div>
+
+                <div class="help-service" aria-hidden="true">
+                  <span></span>
+                  <p>Заявки<br />на субсидии</p>
+                </div>
+
+                <div class="help-service" aria-hidden="true">
+                  <span></span>
+                  <p>Разработка<br />презентаций</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="help-cards-section">
+          <article
+            class="help-large-card"
+            data-help-kind="support"
+            data-help-title="СОПРОВОЖДЕНИЕ ПРОЕКТОВ"
+          >
+            <img
+              src="./assets/сопровождение проектов.jpg"
+              alt="Сопровождение проектов"
+            />
+
+            <div class="help-large-card__overlay">
+              <h2>СОПРОВОЖДЕНИЕ<br />ПРОЕКТОВ</h2>
+            </div>
+          </article>
+
+          <article
+            class="help-large-card"
+            data-help-kind="advertising"
+            data-help-title="РЕКЛАМНЫЙ ДЕПАРТАМЕНТ"
+          >
+            <img
+              src="./assets/рекламный департамент.jpg"
+              alt="Рекламный департамент"
+            />
+
+            <div class="help-large-card__overlay">
+              <h2>РЕКЛАМНЫЙ<br />ДЕПАРТАМЕНТ</h2>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <div class="help-detail" aria-hidden="true">
+        <button class="help-detail__close" type="button" aria-label="Закрыть">
+          ×
+        </button>
+
+        <div class="help-detail__nav">
+          <div class="help-detail__breadcrumbs">
+            Услуги &gt; <span class="help-detail__breadcrumbs-current"></span>
+          </div>
+
+          <div class="help-detail__nav-list"></div>
+
+          <div class="help-detail__downloads">
+            <a href="#" class="help-detail__download-link">
+              Скачать презентацию
+            </a>
+
+            <a href="#" class="help-detail__download-price">
+              Скачать прайс
+            </a>
+          </div>
+        </div>
+
+        <div class="help-detail__info">
+          <div class="help-detail__text">
+            <p class="help-detail__description"></p>
+
+            <div class="help-detail__services">
+              <h3>Виды услуг:</h3>
+              <ul class="help-detail__services-list"></ul>
+            </div>
+          </div>
+
+          <button
+            class="help-detail__arrow"
+            type="button"
+            aria-label="Следующий раздел"
+          ></button>
+        </div>
+
+        <div class="help-detail__media">
+          <img class="help-detail__img" src="" alt="" />
+        </div>
+      </div>
+
+      <div class="help-price-popup" aria-hidden="true">
+        <div class="help-price-popup__container">
+          <div
+            class="help-price-popup__dialog"
+            role="dialog"
+            aria-modal="true"
+          >
+            <button
+              type="button"
+              class="help-price-popup__close"
+              aria-label="Закрыть"
+            >
+              ×
+            </button>
+
+            <div class="help-price-popup__title">
+              ПРАЙС-ЛИСТ
+            </div>
+
+            <form class="help-price-form">
+              <div class="help-price-form__row">
+                <div class="help-price-form__label">E-mail</div>
+                <div class="help-price-form__field">
+                  <input type="email" name="email" />
+                </div>
+              </div>
+
+              <div class="help-price-form__row">
+                <div class="help-price-form__label">Телефон*</div>
+                <div class="help-price-form__field">
+                  <input type="text" name="phone" />
+                </div>
+              </div>
+
+              <button type="submit" class="help-price-form__submit">
+                Скачать прайс
+              </button>
+            </form>
           </div>
         </div>
       </div>
+
+      <div class="help-request-popup" aria-hidden="true">
+        <div class="help-request-popup__container">
+          <div
+            class="help-request-popup__dialog"
+            role="dialog"
+            aria-modal="true"
+          >
+            <button
+              type="button"
+              class="help-request-popup__close"
+              aria-label="Закрыть"
+            >
+              ×
+            </button>
+
+            <div class="help-request-popup__title">
+              ЗАЯВКА НА УСЛУГУ
+            </div>
+
+            <form class="help-request-form">
+              <input
+                type="hidden"
+                name="service"
+                class="help-request-form__service"
+              />
+
+              <div class="help-request-form__row">
+                <div class="help-request-form__label">Услуга</div>
+                <div class="help-request-form__field">
+                  <input
+                    type="text"
+                    name="service_visible"
+                    class="help-request-form__service-visible"
+                    readonly
+                  />
+                </div>
+              </div>
+
+              <div class="help-request-form__row">
+                <div class="help-request-form__label">E-mail</div>
+                <div class="help-request-form__field">
+                  <input type="email" name="email" />
+                </div>
+              </div>
+
+              <div class="help-request-form__row">
+                <div class="help-request-form__label">Телефон*</div>
+                <div class="help-request-form__field">
+                  <input type="text" name="phone" />
+                </div>
+              </div>
+
+              <div class="help-request-form__row">
+                <div class="help-request-form__label">Имя</div>
+                <div class="help-request-form__field">
+                  <input type="text" name="name" />
+                </div>
+              </div>
+
+              <div class="help-request-form__row help-request-form__row--textarea">
+                <div class="help-request-form__label">Запрос</div>
+                <div class="help-request-form__field">
+                  <textarea name="message"></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="help-request-form__submit">
+                Отправить заявку
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="help-arrow"
+        type="button"
+        aria-label="Листать ниже"
+      ></button>
     </section>
 
-<script type="module" src="./scripts/script.js"></script>
+    <script type="module" src="./scripts/script.js"></script>
   </body>
 </html>

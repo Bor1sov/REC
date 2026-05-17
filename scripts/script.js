@@ -15,6 +15,10 @@ import {
     initProjectsParallax,
     updateProjectsScene
 } from "./modules/projects-parallax.js";
+import {
+    initHelpParallax,
+    updateHelpScene
+} from "./modules/help-parallax.js";
 import { initScroll } from "./modules/scroll.js";
 import { initContentLinksImages } from "./modules/links.js";
 import { initPageTransitions, initMenuReturnToIndex } from "./modules/transitions.js";
@@ -26,7 +30,13 @@ const isPageReload = navigationEntry && navigationEntry.type === "reload";
 state.shouldSkipIntro =
     sessionStorage.getItem("recStudioSkipIntro") === "true" && !isPageReload;
 
-state.pageProgressMax = document.body.classList.contains("projects-page") ? 4 : 1;
+if (document.body.classList.contains("projects-page")) {
+    state.pageProgressMax = 4;
+} else if (document.body.classList.contains("help-page")) {
+    state.pageProgressMax = 2;
+} else {
+    state.pageProgressMax = 1;
+}
 
 if (isPageReload) {
     sessionStorage.removeItem("recStudioSkipIntro");
@@ -77,6 +87,7 @@ initPageScrollbar();
 initAboutTextScrollbar();
 initAboutParallax();
 initProjectsParallax();
+initHelpParallax();
 setInitialImagePosition();
 initDebugControls();
 initScroll();
@@ -91,6 +102,8 @@ function animate() {
 
     if (document.body.classList.contains("projects-page")) {
         updateProjectsScene(state.progress);
+    } else if (document.body.classList.contains("help-page")) {
+        updateHelpScene(state.progress);
     } else {
         updateScene(state.progress);
     }
@@ -103,6 +116,8 @@ animate();
 window.addEventListener("resize", () => {
     if (document.body.classList.contains("projects-page")) {
         updateProjectsScene(state.progress);
+    } else if (document.body.classList.contains("help-page")) {
+        updateHelpScene(state.progress);
     } else {
         setInitialImagePosition();
         updateScene(state.progress);
