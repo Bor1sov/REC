@@ -20,31 +20,10 @@ body {
 .hidden {
     pointer-events: none;
 }
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
 
-    background-image: url("../../assets/mainbackground.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    opacity: 1;
-    mix-blend-mode: multiply;
-    filter: brightness(9) saturate(6) contrast(1.1);
-    z-index: 100;
-    pointer-events: none;
-}
-
-body.home-page::before {
-    content: none;
-}
-
-body.projects-page::before {
-    content: none;
-}
-body.contacts-page::before,
-body.contacts-page::after {
-    content: none;
+/* Глобальная текстура поверх всех страниц отключена */
+body::before,
+body::after {
+    content: none !important;
+    display: none !important;
 }

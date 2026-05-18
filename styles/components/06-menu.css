@@ -15,9 +15,9 @@
 }
 
 .menu__logo {
-    width: 40px;
-    height: 40px;
-    border: 12px solid rgb(255, 255, 255);
+    width: 36px;
+    height: 36px;
+    border: 11px solid rgb(255, 255, 255);
     box-shadow: 0 0 0 rgb(255, 255, 255);
     border-radius: 50%;
     margin: 20px auto 0;
@@ -28,19 +28,19 @@
 }
 
 .menu__logo.red-logo {
-    border: 12px solid rgb(248, 27, 27);
+    border: 11px solid rgb(248, 27, 27);
     animation: red-light 10s infinite;
 }
 
 .menu__logo-cont {
-    width: 40px;
-    height: 40px;
-    border: 12px solid rgb(255, 0, 0);
+    width: 36px;
+    height: 36px;
+    border: 11px solid rgb(255, 0, 0);
     box-shadow: 0 0 0 rgb(255, 0, 0);
     border-radius: 50%;
     margin: 20px auto 10px auto;
     opacity: 0.8;
-    animation: logoPulse 2.4s ease-in-out infinite;
+    animation: logoPulseRed 3.1s ease-in-out infinite;
     cursor: pointer;
     display: block;
     position: relative;
@@ -90,6 +90,7 @@
 .burger:hover span {
     background: #ccc;
 }
+
 @keyframes logoPulseRed {
     0% {
         transform: scale(1);
@@ -97,11 +98,11 @@
     }
 
     50% {
-        transform: scale(1.16);
+        transform: scale(1.04);
         box-shadow:
-            0 0 18px rgba(255, 0, 0, 0.95),
-            0 0 38px rgba(255, 0, 0, 0.75),
-            0 0 70px rgba(255, 0, 0, 0.45);
+            0 0 14px rgba(255, 0, 0, 0.9),
+            0 0 28px rgba(255, 0, 0, 0.65),
+            0 0 50px rgba(255, 0, 0, 0.35);
     }
 
     100% {
@@ -113,42 +114,15 @@
 @keyframes logoPulseWhite {
     0% {
         transform: scale(1);
-        box-shadow: 0 0 0 rgba(255, 255, 255, 0.45);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.4);
     }
 
     50% {
-        transform: scale(1.16);
+        transform: scale(1.04);
         box-shadow:
-            0 0 18px rgba(255, 255, 255, 0.95),
-            0 0 38px rgba(255, 255, 255, 0.75),
-            0 0 70px rgba(255, 255, 255, 0.45);
-    }
-
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(255, 255, 255, 0.45);
-    }
-}
-
-.menu__logo-cont.red-glow {
-    border-color: rgb(255, 0, 0);
-    animation: logoPulseRed 1.6s ease-in-out infinite;
-}
-
-.menu__logo-cont.white-glow {
-    border-color: rgb(255, 255, 255);
-    animation: logoPulseWhite 1.6s ease-in-out infinite;
-}
-
-@keyframes logoPulseWhite {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(255, 255, 255, 0.4);
-    }
-
-    50% {
-        transform: scale(1.08);
-        box-shadow: 0 0 24px rgba(255, 255, 255, 0.85);
+            0 0 14px rgba(255, 255, 255, 0.85),
+            0 0 28px rgba(255, 255, 255, 0.6),
+            0 0 50px rgba(255, 255, 255, 0.35);
     }
 
     100% {
@@ -159,13 +133,14 @@
 
 .menu__logo-cont.red-glow {
     border-color: rgb(255, 0, 0);
-    animation: logoPulseRed 2.4s ease-in-out infinite;
+    animation: logoPulseRed 3.1s ease-in-out infinite;
 }
 
 .menu__logo-cont.white-glow {
     border-color: rgb(255, 255, 255);
-    animation: logoPulseWhite 2.4s ease-in-out infinite;
+    animation: logoPulseWhite 3.1s ease-in-out infinite;
 }
+
 /* На index.html лого в меню скрыто, пока JS не разрешит его показать */
 .main-container:not(.menu-logo-ready) .menu__logo-cont {
     display: none !important;
