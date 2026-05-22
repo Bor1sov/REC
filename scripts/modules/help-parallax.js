@@ -33,7 +33,7 @@ const detailGroups = {
                 image: "./assets/Ки-арт.jpg"
             },
             {
-                title: "Подготовка заявки в: Минкульт, Фонд кино, ИРИ, ПФКИ",
+                title: "Подготовка <br>заявки в: Минкульт,<br> Фонд кино, ИРИ, ПФКИ",
                 description:
                     "Профессионально и быстро подготовим пакет документов для получения субсидий, которые выделяются теми или иными производственно-индустриальными фондами, финансовой поддержкой ведомств и организаций.\n\nДля подачи или участия важно пройти этап подготовки правильно и последовательно. Мы ежегодно готовим документы на получение субсидий и имеем большой опыт подачи.",
                 services: [
@@ -685,6 +685,8 @@ export function initHelpParallax() {
     initHelpPricePopup();
 
     if (bgImg) {
+        bgImg.style.transformOrigin = "center center";
+
         if (bgImg.complete) {
             updateHelpScene(state.progress);
         } else {
@@ -711,6 +713,7 @@ export function updateHelpScene(progressValue) {
     if (!document.body.classList.contains("help-page")) return;
 
     const p = clamp(progressValue, 0, HELP_MAX_PROGRESS);
+    const heroProgress = clamp(p, 0, 1);
 
     const {
         bgImg,
@@ -735,14 +738,15 @@ export function updateHelpScene(progressValue) {
     }
 
     if (bgImg) {
-        const bgMove = mapRange(p, 0, HELP_MAX_PROGRESS, 0, 120);
-        const bgZoom = mapRange(p, 0, HELP_MAX_PROGRESS, 1, 1.18);
+        const bgZoom = 1 + heroProgress * 0.4;
+        const bgMove = heroProgress * 80;
 
+        bgImg.style.transformOrigin = "center center";
         bgImg.style.transform = `translateY(${bgMove}px) scale(${bgZoom})`;
     }
 
     if (paralaxText) {
-        const textMove = mapRange(p, 0, 1, 0, 100);
+        const textMove = heroProgress * 115;
         paralaxText.style.transform = `translateY(${100 - textMove}%)`;
     }
 

@@ -5,7 +5,9 @@ const newsState = {
     progress: 0,
     targetProgress: 0,
     maxProgress: 1,
-    isReady: false
+    isReady: false,
+    listScrollbar: null,
+    listScrollbarFill: null
 };
 
 function clamp(value, min, max) {
@@ -18,6 +20,7 @@ function getNewsElements() {
         arrow: document.querySelector(".news-arrow"),
         articles: document.querySelectorAll(".news-article"),
         listSection: document.querySelector(".news-list-section"),
+        newsList: document.querySelector(".news-list"),
         listItems: document.querySelectorAll(".news-list__item"),
         relatedItems: document.querySelectorAll(".news-related__item"),
         backButtons: document.querySelectorAll(".news-back-to-list"),
@@ -53,6 +56,30 @@ function updateNewsScene(progressValue) {
     if (!document.body.classList.contains("news-page")) return;
 
     const { stage, arrow } = getNewsElements();
+
+    const isListMode = !document.body.classList.contains("news-article-open");
+
+    if (isListMode) {
+        newsState.progress = 0;
+        newsState.targetProgress = 0;
+        newsState.maxProgress = 1;
+
+        state.pageProgressMax = 1;
+        state.progress = 0;
+        state.targetProgress = 0;
+
+        if (stage) {
+            stage.style.transform = "translateY(0)";
+        }
+
+        if (arrow) {
+            arrow.style.opacity = "0";
+            arrow.style.pointerEvents = "none";
+        }
+
+        updatePageScrollbar(0);
+        return;
+    }
 
     newsState.maxProgress = getMaxProgress();
 
@@ -90,6 +117,16 @@ function resetNewsProgress() {
 function animateNews() {
     if (!document.body.classList.contains("news-page")) return;
 
+    if (!document.body.classList.contains("news-article-open")) {
+        newsState.progress = 0;
+        newsState.targetProgress = 0;
+
+        updateNewsScene(0);
+
+        requestAnimationFrame(animateNews);
+        return;
+    }
+
     newsState.progress +=
         (newsState.targetProgress - newsState.progress) * 0.08;
 
@@ -102,8 +139,62 @@ function animateNews() {
     requestAnimationFrame(animateNews);
 }
 
+function updateNewsListScrollbar() {
+    const { newsList } = getNewsElements();
+
+    if (!newsList || !newsState.listScrollbar || !newsState.listScrollbarFill) return;
+
+    const maxScroll = newsList.scrollHeight - newsList.clientHeight;
+
+    if (maxScroll <= 0) {
+        newsState.listScrollbar.style.opacity = "0";
+        newsState.listScrollbarFill.style.height = "0%";
+        return;
+    }
+
+    newsState.listScrollbar.style.opacity = "1";
+
+    const progress = newsList.scrollTop / maxScroll;
+    const fill = Math.max(0, Math.min(100, progress * 100));
+
+    newsState.listScrollbarFill.style.height = `${fill}%`;
+}
+
+function initNewsListScrollbar() {
+    const { listSection, newsList } = getNewsElements();
+
+    if (!listSection || !newsList) return;
+    if (newsList.dataset.customScrollbarReady === "true") return;
+
+    const content = listSection.querySelector(".news-list-section__content");
+
+    if (!content) return;
+
+    newsState.listScrollbar = document.createElement("div");
+    newsState.listScrollbar.className = "news-list-scrollbar";
+
+    newsState.listScrollbarFill = document.createElement("div");
+    newsState.listScrollbarFill.className = "news-list-scrollbar__fill";
+
+    const arrow = document.createElement("div");
+    arrow.className = "news-list-scrollbar__arrow";
+
+    newsState.listScrollbar.appendChild(newsState.listScrollbarFill);
+    newsState.listScrollbar.appendChild(arrow);
+
+    content.appendChild(newsState.listScrollbar);
+
+    newsList.addEventListener("scroll", updateNewsListScrollbar);
+
+    window.addEventListener("resize", updateNewsListScrollbar);
+
+    newsList.dataset.customScrollbarReady = "true";
+
+    requestAnimationFrame(updateNewsListScrollbar);
+}
+
 function showNewsListOnly() {
-    const { articles, listItems } = getNewsElements();
+    const { articles, listItems, newsList, stage } = getNewsElements();
 
     document.body.classList.remove("news-article-open");
 
@@ -115,8 +206,18 @@ function showNewsListOnly() {
         item.classList.remove("is-active");
     });
 
+    if (newsList) {
+        newsList.scrollTop = 0;
+    }
+
+    if (stage) {
+        stage.style.transform = "translateY(0)";
+    }
+
     lockNativeScroll();
     resetNewsProgress();
+
+    requestAnimationFrame(updateNewsListScrollbar);
 }
 
 function setActiveArticle(articleKey) {
@@ -206,8 +307,9 @@ function initShowMore() {
             ? "Свернуть"
             : "Показать еще";
 
-        lockNativeScroll();
         resetNewsProgress();
+
+        requestAnimationFrame(updateNewsListScrollbar);
     });
 
     showMoreButton.dataset.showMoreReady = "true";
@@ -222,6 +324,24 @@ function initNewsWheel() {
             if (!document.body.classList.contains("news-page")) return;
 
             event.preventDefault();
+
+            const { newsList } = getNewsElements();
+
+            if (!document.body.classList.contains("news-article-open")) {
+                newsState.progress = 0;
+                newsState.targetProgress = 0;
+
+                state.progress = 0;
+                state.targetProgress = 0;
+
+                if (!newsList) return;
+
+                newsList.scrollTop += event.deltaY;
+                updateNewsListScrollbar();
+                updateNewsScene(0);
+
+                return;
+            }
 
             const direction = event.deltaY > 0 ? 1 : -1;
             const speed = 0.16;
@@ -246,6 +366,8 @@ function initNewsArrow() {
     if (!arrow || arrow.dataset.newsArrowReady === "true") return;
 
     arrow.addEventListener("click", () => {
+        if (!document.body.classList.contains("news-article-open")) return;
+
         newsState.targetProgress = clamp(
             newsState.targetProgress + 0.8,
             0,
@@ -264,6 +386,17 @@ function initNewsResize() {
 
         lockNativeScroll();
 
+        if (!document.body.classList.contains("news-article-open")) {
+            newsState.progress = 0;
+            newsState.targetProgress = 0;
+            newsState.maxProgress = 1;
+
+            updateNewsScene(0);
+            updateNewsListScrollbar();
+
+            return;
+        }
+
         newsState.maxProgress = getMaxProgress();
 
         newsState.progress = clamp(
@@ -279,6 +412,7 @@ function initNewsResize() {
         );
 
         updateNewsScene(newsState.progress);
+        updateNewsListScrollbar();
     });
 
     document.body.dataset.newsResizeReady = "true";
@@ -296,6 +430,7 @@ function initNewsPage() {
     initRelatedNews();
     initBackButtons();
     initShowMore();
+    initNewsListScrollbar();
     initNewsWheel();
     initNewsArrow();
     initNewsResize();
@@ -305,6 +440,7 @@ function initNewsPage() {
     requestAnimationFrame(() => {
         newsState.maxProgress = getMaxProgress();
         updateNewsScene(0);
+        updateNewsListScrollbar();
         animateNews();
     });
 }
