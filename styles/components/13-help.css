@@ -151,7 +151,7 @@
 .help-services {
     display: flex;
     align-items: flex-start;
-    gap: 90px;
+    gap: 180px;
 
     width: max-content;
     min-width: max-content;
@@ -393,7 +393,7 @@
     z-index: 500;
 
     display: grid;
-    grid-template-columns: 31% 38% 31%;
+    grid-template-columns: 37.5% 27.5% 37.5%;
 
     background-image: url("../../assets/mainbackground.jpg");
     background-size: cover;
@@ -606,6 +606,19 @@
     background-position: center;
 }
 
+.help-detail__info::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 55%;
+
+    height: 1px;
+
+    background: rgba(255, 255, 255, 0.14);
+    pointer-events: none;
+}
+
 .help-detail__text {
     flex: 1 1 auto;
 
@@ -637,8 +650,12 @@
 }
 
 .help-detail__services {
-    margin-top: auto;
-    padding-top: 8px;
+    position: relative;
+
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 34px 0 24px;
 }
 
 .help-detail__services h3 {
@@ -1250,9 +1267,18 @@ body.help-request-open .help-arrow {
         width: max-content;
         min-width: max-content;
     }
-
+.help-detail__info::before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 61%;
+    height: 1px;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.14);
+}
     .help-detail {
-        grid-template-columns: 34% 34% 32%;
+            grid-template-columns: 37.5% 27.5% 37.5%;
     }
 
     .help-detail__nav-item {

@@ -111,14 +111,14 @@ body.news-page {
 }
 
 .news-article__lead {
-    width: min(900px, 100%);
+    width:100%;
     margin: 0 0 74px;
 
     color: #fff;
-    font-size: clamp(28px, 2.3vw, 48px);
-    font-weight: 900;
-
-    letter-spacing: -0.035em;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.059em;
     text-transform: uppercase;
 }
 
@@ -243,7 +243,7 @@ body.news-page {
 
 .news-share {
     width: min(520px, 100%);
-    margin: 50px auto 0;
+    margin: 50px 37% 0;
 
     display: flex;
     flex-direction: column;
@@ -308,12 +308,44 @@ body.news-page {
 .news-authors-layout__images {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 70px;
+    /* justify-content: space-between; */
+    /* gap: 10px; */
 
     min-height: 100%;
 }
+.news-sales-layout__images__item-1{
+    margin-top:-18%;
+}
+.news-sales-layout__images__item-2{
+    margin-top:-14%;
+}
+.news-sales-layout__images__item-3{
+    margin-top:-12%;
+}
+.news-sales-layout__images__item-4{
+    margin-top:-5%;
+}
+.news-sales-layout__images__item-5{
+    margin-top:16%;
+}
+.news-sales-layout__images__item-6{
+    margin-top:73%;
+}
+.news-sales-layout__images__item-7{
+    margin-top:15%;
+}
+.news-sales-layout__images__item-8{
+    margin-top:60%;
+}
+.news-sales-layout__images__item-9{
+    margin-top:15%;
+    width: 50%;
 
+}
+.news-sales-layout__images__item-10{
+    margin-top:15%;
+
+}
 .news-sales-layout__images img,
 .news-authors-layout__images img {
     aspect-ratio: 16 / 9;
@@ -580,7 +612,7 @@ body.news-page {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: start;
     font-family: 'Holgada';
 }
 
@@ -588,8 +620,8 @@ body.news-page {
     margin-bottom: 14px;
 
     color: rgba(255, 255, 255, 0.72);
-    font-size: clamp(16px, 1.15vw, 22px);
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 200;
 }
 
 .news-list__item strong {
@@ -608,45 +640,36 @@ body.news-page {
     color: #ff0000;
 }
 
-.news-list-section:not(.is-expanded) .news-list__item--extra {
-    display: none;
+.news-list__item--extra {
+    display: grid;
 }
 
 .news-list-section__bottom {
     flex: 0 0 auto;
 
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 64px;
+    display: flex;
     align-items: center;
+    justify-content: flex-start;
 
     margin-top: 34px;
 }
-
+.news-article__category{
+     color: rgba(255, 255, 255, 0.74);
+    font-size: clamp(12px, 0.85vw, 15px);
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-bottom: 5%;   
+}
+.news-article__category a{
+    color: rgba(255, 255, 255, 0.74);
+    font-size: clamp(12px, 0.85vw, 15px);
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+}
 .news-show-more {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    min-height: 64px;
-
-    border: 0;
-    background:
-        linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
-        url("../../assets/adobe_126953722.jpg");
-    background-size: cover;
-    background-position: center;
-
-    color: #111;
-    font-family: "Holgada", sans-serif;
-    font-size: clamp(18px, 1.15vw, 24px);
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        background 0.25s ease,
-        color 0.25s ease;
+    display: none !important;
 }
 
 .news-show-more:hover {
@@ -674,13 +697,18 @@ body.news-page {
     width: 20px;
     height: 20px;
 
-    border-radius: 4px;
-    background: #fff;
+    flex: 0 0 20px;
 
-    color: #111;
-    font-size: 10px;
-    font-weight: 900;
-    text-transform: uppercase;
+    background-image: url("../../assets/Фигура 3.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    font-size: 0;
+    line-height: 0;
+
+    color: transparent;
+    border-radius: 0;
 }
 
 /* =========================================================
@@ -774,7 +802,33 @@ body.news-page {
 
     transition: opacity 0.2s ease;
 }
+.news-scroll-to-top {
+    display: block;
 
+    width: 22px;
+    height: 22px;
+
+    margin: 48px auto 0;
+
+    border: 0;
+    border-left: 2px solid rgba(255, 255, 255, 0.75);
+    border-top: 2px solid rgba(255, 255, 255, 0.75);
+    background: transparent;
+
+    transform: rotate(45deg);
+    cursor: pointer;
+
+    transition:
+        border-color 0.25s ease,
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.news-scroll-to-top:hover {
+    border-left-color: #fff;
+    border-top-color: #fff;
+    transform: translateY(-4px) rotate(45deg);
+}
 /* =========================================================
    RESPONSIVE
    ========================================================= */

@@ -81,7 +81,24 @@ if (dom.main) {
     }
 }
 
+function initLanguageToggle() {
+    const langButtons = document.querySelectorAll(".settings__lang-btn");
+
+    langButtons.forEach((button) => {
+        if (button.dataset.langReady === "true") return;
+
+        button.addEventListener("click", () => {
+            const currentLang = button.textContent.trim().toUpperCase();
+
+            button.textContent = currentLang === "RU" ? "EN" : "RU";
+        });
+
+        button.dataset.langReady = "true";
+    });
+}
+
 initSound();
+initLanguageToggle();
 initMenuLogoVisibility();
 initPageScrollbar();
 initAboutTextScrollbar();

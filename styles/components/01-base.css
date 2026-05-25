@@ -27,3 +27,45 @@ body::after {
     content: none !important;
     display: none !important;
 }
+/* =========================================================
+   GLOBAL ICON HOVER
+   ========================================================= */
+
+.socials a,
+.socials a img,
+.social-link,
+.social-link img,
+.contacts-socials a,
+.contacts-socials a img,
+.news-share__icons a,
+.news-share__icons img,
+.news-list-section__vk span,
+.footer-socials a,
+.footer-socials a img,
+.header-socials a,
+.header-socials a img,
+[class*="social"] a,
+[class*="social"] img {
+    transition:
+        filter 0.25s ease,
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.socials a:hover img,
+.social-link:hover img,
+.contacts-socials a:hover img,
+.news-share__icons a:hover img,
+.footer-socials a:hover img,
+.header-socials a:hover img,
+[class*="social"] a:hover img {
+    filter: grayscale(1) brightness(0.55);
+    opacity: 0.75;
+}
+
+.news-list-section__vk span:hover,
+.news-list-section__vk:hover span {
+    filter: grayscale(1) brightness(0.55);
+    opacity: 0.75;
+    cursor: pointer;
+}

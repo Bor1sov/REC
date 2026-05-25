@@ -20,9 +20,9 @@
 .settings {
     position: fixed;
     display: flex;
-    gap: 12px;
-    top: 20px;
-    right: 20px;
+    gap: 5px;
+    top: 3px;
+    right: 1.5px;
     z-index: 9999;
     opacity: 1 !important;
     pointer-events: auto !important;
@@ -39,7 +39,7 @@
     border: none;
     cursor: pointer;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     opacity: 0.7;
     transition: opacity 0.2s;
@@ -59,19 +59,36 @@
     padding: 0;
 }
 
-.settings__valume-btn__img {
-    width: 22px;
-    height: 22px;
-    filter: brightness(0) invert(1);
-    opacity: 0.7;
-    transition: all 0.2s ease;
-}
+
 
 .settings__valume-btn__img:hover {
     opacity: 1;
-    transform: scale(1.05);
+    /* transform: scale(1.05); */
 }
 
 .settings__valume-btn__img:active {
-    transform: scale(0.95);
+    /* transform: scale(0.95); */
+}
+.settings__valume-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    max-width: 44px;
+    max-height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    flex: 0 0 44px;
+}
+
+.settings__valume-btn__img {
+    width: 80%;
+    height: 50%;
+
+    display: block;
+    object-fit: contain;
 }

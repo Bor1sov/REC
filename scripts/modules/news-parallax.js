@@ -24,6 +24,7 @@ function getNewsElements() {
         listItems: document.querySelectorAll(".news-list__item"),
         relatedItems: document.querySelectorAll(".news-related__item"),
         backButtons: document.querySelectorAll(".news-back-to-list"),
+        scrollToTopButtons: document.querySelectorAll(".news-scroll-to-top"),
         showMoreButton: document.querySelector(".news-show-more")
     };
 }
@@ -90,10 +91,28 @@ function updateNewsScene(progressValue) {
     }
 
     if (arrow) {
+        const activeArticle = document.querySelector(".news-article.is-active");
+        const shareBlock = activeArticle
+            ? activeArticle.querySelector(".news-share")
+            : null;
+
+        let isShareReached = false;
+
+        if (activeArticle && shareBlock) {
+            const shareTop = activeArticle.offsetTop + shareBlock.offsetTop;
+
+            const shareTriggerProgress = Math.max(
+                0,
+                (shareTop - window.innerHeight * 0.78) / window.innerHeight
+            );
+
+            isShareReached = p >= shareTriggerProgress;
+        }
+
         const isEnd = p >= newsState.maxProgress - 0.04;
 
-        arrow.style.opacity = isEnd ? "0" : "1";
-        arrow.style.pointerEvents = isEnd ? "none" : "auto";
+        arrow.style.opacity = isEnd || isShareReached ? "0" : "1";
+        arrow.style.pointerEvents = isEnd || isShareReached ? "none" : "auto";
     }
 
     state.pageProgressMax = newsState.maxProgress;
@@ -185,7 +204,6 @@ function initNewsListScrollbar() {
     content.appendChild(newsState.listScrollbar);
 
     newsList.addEventListener("scroll", updateNewsListScrollbar);
-
     window.addEventListener("resize", updateNewsListScrollbar);
 
     newsList.dataset.customScrollbarReady = "true";
@@ -294,6 +312,25 @@ function initBackButtons() {
     });
 }
 
+function initScrollToTopButtons() {
+    const { scrollToTopButtons } = getNewsElements();
+
+    scrollToTopButtons.forEach((button) => {
+        if (button.dataset.scrollTopReady === "true") return;
+
+        button.addEventListener("click", () => {
+            if (!document.body.classList.contains("news-article-open")) return;
+
+            newsState.targetProgress = 0;
+            newsState.progress = 0;
+
+            updateNewsScene(0);
+        });
+
+        button.dataset.scrollTopReady = "true";
+    });
+}
+
 function initShowMore() {
     const { listSection, showMoreButton } = getNewsElements();
 
@@ -337,6 +374,7 @@ function initNewsWheel() {
                 if (!newsList) return;
 
                 newsList.scrollTop += event.deltaY;
+
                 updateNewsListScrollbar();
                 updateNewsScene(0);
 
@@ -429,7 +467,7 @@ function initNewsPage() {
     initNewsList();
     initRelatedNews();
     initBackButtons();
-    initShowMore();
+    initScrollToTopButtons();
     initNewsListScrollbar();
     initNewsWheel();
     initNewsArrow();
