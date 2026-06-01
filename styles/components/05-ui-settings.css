@@ -66,9 +66,7 @@
     /* transform: scale(1.05); */
 }
 
-.settings__valume-btn__img:active {
-    /* transform: scale(0.95); */
-}
+
 .settings__valume-btn {
     width: 44px;
     height: 44px;

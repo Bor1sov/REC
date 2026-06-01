@@ -606,18 +606,7 @@
     background-position: center;
 }
 
-.help-detail__info::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 55%;
 
-    height: 1px;
-
-    background: rgba(255, 255, 255, 0.14);
-    pointer-events: none;
-}
 
 .help-detail__text {
     flex: 1 1 auto;
@@ -651,7 +640,7 @@
 
 .help-detail__services {
     position: relative;
-
+    border-top: 1px solid grey ;
     margin-top: 0;
     margin-left: 0;
     margin-right: 0;
