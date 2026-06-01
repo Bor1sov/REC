@@ -75,32 +75,7 @@ export function moveLogoToMenuTop() {
         state.isLogoMovingToMenu = false;
         state.isLogoInMenu = true;
 
-        const newMenuLogo = createMenuLogo();
-
-        if (newMenuLogo) {
-            newMenuLogo.style.display = "block";
-            newMenuLogo.style.opacity = "0.8";
-            newMenuLogo.style.visibility = "visible";
-            newMenuLogo.style.pointerEvents = "auto";
-        }
-
-        dom.logo.style.display = "none";
-
-        const logoText = document.querySelector(".logo-text");
-
-        if (logoText) {
-            logoText.style.transition = "opacity 0.5s ease";
-            logoText.style.opacity = "0";
-        }
-
-        dom.logoWrapper.style.pointerEvents = "none";
-
-        dom.main.classList.add("menu-logo-ready");
-
-        revealUI();
-        initMenuLogoVisibility();
-
-        state.targetProgress = 0.3;
+        window.location.href = "./about.html";
     }, 850);
 }
 

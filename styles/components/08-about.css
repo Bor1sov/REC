@@ -2,6 +2,8 @@
     position: absolute;
     inset: 0;
     overflow: hidden;
+    opacity: var(--about-image-opacity, 1);
+    will-change: opacity;
 }
 
 .about__img {
@@ -97,7 +99,8 @@
     background-image: url("../../assets/О-нас-Моб.png");
     background-repeat: no-repeat;
     background-size: 100vw auto;
-    background-position: center var(--about-bg-y, 160%);
+    background-position: center center;
+    background-attachment: fixed;
 
     color: transparent;
     -webkit-text-fill-color: transparent;
@@ -105,7 +108,7 @@
     background-clip: text;
 
     transform: translateY(-50px);
-    will-change: background-position;
+    will-change: background-position, background-size, transform, opacity, font-size;
 }
 
 .mask {
@@ -143,6 +146,7 @@
     margin-top: 0;
     overflow: visible;
 }
+
 .about-info::before {
     content: "";
     position: absolute;
@@ -203,4 +207,101 @@
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     font-size: clamp(14px, 4vw, 20px);
     font-family: "Holgada", sans-serif;
+}
+
+/* =========================================================
+   ABOUT TITLE INTRO STAGE
+   Буквы приближаются через font-size.
+   Изображение внутри букв не масштабируется.
+   ========================================================= */
+
+.about-page.about-title-stage .content,
+.about-page.about-title-stage .content--page,
+.about-page.about-title-stage .about,
+.about-page.about-title-stage .about--base {
+    overflow: visible;
+}
+
+.about-page.about-title-stage .about {
+    opacity: var(--about-image-opacity, 0);
+}
+
+.about-page.about-title-stage .paralax-text {
+    top: 0;
+    bottom: auto;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    justify-content: center;
+
+    transform: translateY(0) !important;
+
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+
+    overflow: visible;
+    clip-path: none;
+    contain: none;
+}
+
+.about-page.about-title-stage .paralax-text::before {
+    content: none;
+}
+
+.about-page.about-title-stage .about__title {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+
+    width: max-content;
+    min-width: max-content;
+    max-width: none;
+
+    margin: 0;
+    padding: 0;
+
+    display: block;
+
+    font-size: var(--about-title-intro-size, 18vw);
+    line-height: 0.78;
+    letter-spacing: -0.055em;
+
+    white-space: nowrap;
+    overflow: visible;
+
+    background-image: url("../../assets/О-нас-Моб.png");
+    background-size: 100vw auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    transform: translate3d(-50%, -50%, 0);
+
+    opacity: var(--about-title-intro-opacity, 1);
+
+    will-change: font-size, opacity;
+    backface-visibility: hidden;
+}
+
+.about-page.about-title-stage .about-info {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(60px);
+}
+
+@media (max-width: 768px) {
+    .about-page.about-title-stage .about__title {
+        font-size: var(--about-title-intro-size, 22vw);
+    }
+}
+
+@media (max-width: 480px) {
+    .about-page.about-title-stage .about__title {
+        font-size: var(--about-title-intro-size, 24vw);
+    }
 }
