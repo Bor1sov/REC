@@ -4,6 +4,10 @@ const ABOUT_HELP_REVEAL_START = 4.42;
 const ABOUT_HELP_START = 4.65;
 const ABOUT_HELP_MAX = 2;
 
+let isReady = false;
+let isLoading = false;
+let currentDetailGroupKey = "support";
+
 const detailGroups = {
     support: {
         title: "Сопровождение проектов",
@@ -186,10 +190,6 @@ const detailGroups = {
     }
 };
 
-let isReady = false;
-let isLoading = false;
-let currentDetailGroupKey = "support";
-
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
@@ -291,15 +291,9 @@ function getStageBottomShift(stage) {
     if (!cardsSection) return 0;
 
     const sectionTopInsideStage = getOffsetTopInside(stage, cardsSection);
-    const sectionBottomInsideStage =
-        sectionTopInsideStage + cardsSection.offsetHeight;
+    const sectionBottomInsideStage = sectionTopInsideStage + cardsSection.offsetHeight;
 
-    const endOffsetFix = 10;
-
-    return Math.max(
-        0,
-        sectionBottomInsideStage - window.innerHeight - endOffsetFix
-    );
+    return Math.max(0, sectionBottomInsideStage - window.innerHeight - 10);
 }
 
 function syncAboutHelpTitleBackground(bgImg, title) {
@@ -337,11 +331,7 @@ function syncAboutHelpTitleBackground(bgImg, title) {
 }
 
 function renderDetailNav(activeIndex = 0) {
-    const {
-        detailBreadcrumbCurrent,
-        detailNavList
-    } = getElements();
-
+    const { detailBreadcrumbCurrent, detailNavList } = getElements();
     const group = getCurrentGroup();
 
     if (detailBreadcrumbCurrent) {
@@ -375,13 +365,7 @@ function renderDetailNav(activeIndex = 0) {
 }
 
 function renderDetail(index) {
-    const {
-        detailDescription,
-        detailServicesList,
-        detailImg,
-        detailNavList
-    } = getElements();
-
+    const { detailDescription, detailServicesList, detailImg, detailNavList } = getElements();
     const group = getCurrentGroup();
     const item = group.items[index];
 
@@ -445,11 +429,7 @@ function getCurrentDetailServiceTitle() {
 }
 
 function openRequest(serviceTitle = "") {
-    const {
-        requestPopup,
-        requestServiceInput,
-        requestServiceVisibleInput
-    } = getElements();
+    const { requestPopup, requestServiceInput, requestServiceVisibleInput } = getElements();
 
     if (!requestPopup) return;
 
@@ -469,10 +449,7 @@ function openRequest(serviceTitle = "") {
 }
 
 function closeRequest(resetForm = false) {
-    const {
-        requestPopup,
-        requestForm
-    } = getElements();
+    const { requestPopup, requestForm } = getElements();
 
     if (!requestPopup) return;
 
@@ -496,10 +473,7 @@ function openPricePopup() {
 }
 
 function closePricePopup(resetForm = false) {
-    const {
-        pricePopup,
-        priceForm
-    } = getElements();
+    const { pricePopup, priceForm } = getElements();
 
     if (!pricePopup) return;
 
@@ -570,7 +544,6 @@ function initInteractions() {
         button.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
-
             openPricePopup();
         });
 
@@ -596,9 +569,7 @@ function initInteractions() {
 
     if (pricePopup && pricePopup.dataset.aboutHelpPricePopupReady !== "true") {
         pricePopup.addEventListener("click", (e) => {
-            if (e.target === pricePopup) {
-                closePricePopup();
-            }
+            if (e.target === pricePopup) closePricePopup();
         });
 
         pricePopup.addEventListener("wheel", (e) => {
@@ -608,10 +579,7 @@ function initInteractions() {
         pricePopup.dataset.aboutHelpPricePopupReady = "true";
     }
 
-    if (
-        pricePopupDialog &&
-        pricePopupDialog.dataset.aboutHelpPriceDialogReady !== "true"
-    ) {
+    if (pricePopupDialog && pricePopupDialog.dataset.aboutHelpPriceDialogReady !== "true") {
         pricePopupDialog.addEventListener("click", (e) => {
             e.stopPropagation();
         });
@@ -625,7 +593,6 @@ function initInteractions() {
         button.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
-
             openRequest(getCurrentDetailServiceTitle());
         });
 
@@ -651,9 +618,7 @@ function initInteractions() {
 
     if (requestPopup && requestPopup.dataset.aboutHelpPopupReady !== "true") {
         requestPopup.addEventListener("click", (e) => {
-            if (e.target === requestPopup) {
-                closeRequest();
-            }
+            if (e.target === requestPopup) closeRequest();
         });
 
         requestPopup.addEventListener("wheel", (e) => {
@@ -663,10 +628,7 @@ function initInteractions() {
         requestPopup.dataset.aboutHelpPopupReady = "true";
     }
 
-    if (
-        requestPopupDialog &&
-        requestPopupDialog.dataset.aboutHelpDialogReady !== "true"
-    ) {
+    if (requestPopupDialog && requestPopupDialog.dataset.aboutHelpDialogReady !== "true") {
         requestPopupDialog.addEventListener("click", (e) => {
             e.stopPropagation();
         });
@@ -766,14 +728,7 @@ export function initAboutHelpSection() {
 export function updateAboutHelpSection(globalProgress) {
     if (!document.body.classList.contains("about-page")) return;
 
-    const {
-        section,
-        bgImg,
-        stage,
-        paralaxText,
-        title,
-        arrow
-    } = getElements();
+    const { section, bgImg, stage, paralaxText, title, arrow } = getElements();
 
     if (!section) return;
 

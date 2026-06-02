@@ -27,6 +27,10 @@ import {
     initAboutHelpSection,
     updateAboutHelpSection
 } from "./modules/about-help-section.js";
+import {
+    initAboutNewsSection,
+    updateAboutNewsSection
+} from "./modules/about-news-section.js";
 import { initScroll } from "./modules/scroll.js";
 import { initContentLinksImages } from "./modules/links.js";
 import { initPageTransitions, initMenuReturnToIndex } from "./modules/transitions.js";
@@ -43,7 +47,7 @@ if (document.body.classList.contains("projects-page")) {
 } else if (document.body.classList.contains("help-page")) {
     state.pageProgressMax = 2;
 } else if (document.body.classList.contains("about-page")) {
-    state.pageProgressMax = 7;
+    state.pageProgressMax = 10.2;
 } else {
     state.pageProgressMax = 1;
 }
@@ -115,6 +119,7 @@ initAboutTextScrollbar();
 initAboutParallax();
 initAboutProjectsSection();
 initAboutHelpSection();
+initAboutNewsSection();
 initProjectsParallax();
 initHelpParallax();
 setInitialImagePosition();
@@ -137,6 +142,7 @@ function animate() {
         updateScene(state.progress);
         updateAboutProjectsSection(state.progress);
         updateAboutHelpSection(state.progress);
+        updateAboutNewsSection(state.progress);
     }
 
     requestAnimationFrame(animate);
@@ -154,6 +160,7 @@ window.addEventListener("resize", () => {
         updateScene(state.progress);
         updateAboutProjectsSection(state.progress);
         updateAboutHelpSection(state.progress);
+        updateAboutNewsSection(state.progress);
     }
 
     updatePageScrollbar(state.progress);
