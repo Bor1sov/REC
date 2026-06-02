@@ -1,0 +1,1547 @@
+.about-help-section {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 5%;
+
+    z-index: 140;
+    overflow: hidden;
+
+    background: #111;
+
+    transform: translateY(100vh);
+    will-change: transform;
+}
+
+.about-help-section__loader {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "Holgada", sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.about-help-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.about-help-bg__img {
+    width: 100%;
+    height: 115%;
+    object-fit: cover;
+    transform-origin: center center;
+    will-change: transform;
+}
+
+.about-help-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    will-change: transform;
+}
+
+.about-help-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: transparent;
+    padding: 0;
+}
+
+.about-help-hero::before {
+    content: none;
+}
+
+.about-help-paralax-text,
+.about-help-parallax-text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: auto;
+
+    width: 100%;
+    height: 100%;
+    min-height: 120vh;
+
+    z-index: 5;
+
+    padding-left: 18%;
+    padding-top: 6%;
+
+    transform: translateY(100%);
+    will-change: transform;
+
+    pointer-events: none;
+}
+
+.about-help-paralax-text::before,
+.about-help-parallax-text::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image: url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 1;
+
+    z-index: 0;
+    pointer-events: none;
+}
+
+.about-help__title {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+    max-width: none;
+    margin: 0;
+
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(110px, 14vw, 270px);
+    font-weight: 900;
+    line-height: 0.82;
+    letter-spacing: 0;
+    text-transform: uppercase;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    background-image: url("../../assets/help.png");
+    background-size: 100vw auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    opacity: 1;
+    will-change: background-position, background-size;
+}
+
+.about-help__subtitle {
+    position: relative;
+    z-index: 5;
+
+    margin-top: 24px;
+
+    color: #fff;
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(28px, 3vw, 56px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+
+    opacity: 1;
+}
+
+.about-help-services-viewport {
+    position: relative;
+    z-index: 5;
+
+    width: 100vw;
+    margin-left: -18%;
+    margin-top: 25vh;
+
+    overflow: hidden;
+
+    pointer-events: none;
+    cursor: default;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.about-help-services-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.about-help-services {
+    display: flex;
+    align-items: flex-start;
+    gap: 180px;
+
+    width: max-content;
+    min-width: max-content;
+
+    padding-right: 90px;
+
+    animation: aboutHelpServicesMarquee 32s linear infinite;
+    will-change: transform;
+}
+
+@keyframes aboutHelpServicesMarquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.about-help-service {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 18px;
+
+    width: max-content;
+    min-width: max-content;
+    flex: 0 0 auto;
+
+    color: #fff;
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(24px, 2.5vw, 48px);
+    font-weight: 900;
+    line-height: 0.92;
+    text-transform: uppercase;
+}
+
+.about-help-service span {
+    width: 12px;
+    height: 12px;
+    margin-top: 12px;
+    flex: 0 0 12px;
+
+    border-radius: 50%;
+    background: red;
+    box-shadow: 0 0 16px rgba(255, 0, 0, 0.9);
+}
+
+.about-help-service p {
+    width: max-content;
+    max-width: none;
+    white-space: nowrap;
+    margin: 0;
+}
+
+/* =========================================================
+   TWO MAIN SERVICE CARDS
+   ========================================================= */
+
+.about-help-cards-section {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+
+    margin-top: 0;
+    padding-left: 5%;
+
+    background: #111;
+    overflow: hidden;
+}
+
+.about-help-large-card {
+    position: relative;
+
+    height: 100vh;
+    min-height: 100vh;
+
+    overflow: hidden;
+    cursor: pointer;
+
+    background: #000;
+}
+
+.about-help-large-card img {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.6s ease,
+        filter 0.6s ease;
+}
+
+.about-help-large-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.08) 0%,
+            rgba(0, 0, 0, 0.2) 42%,
+            rgba(0, 0, 0, 0.34) 100%
+        );
+
+    opacity: 1;
+
+    transition:
+        background 0.45s ease,
+        opacity 0.45s ease;
+}
+
+.about-help-large-card::after {
+    content: "Все услуги";
+    position: absolute;
+    left: 50%;
+    top: calc(50% + 92px);
+
+    z-index: 4;
+
+    width: 260px;
+    min-height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    background: rgba(40, 40, 40, 0.16);
+
+    color: rgba(255, 255, 255, 0.72);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(16px, 1.15vw, 22px);
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+
+    opacity: 0;
+    transform: translate(-50%, 18px);
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease,
+        color 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+
+    pointer-events: none;
+}
+
+.about-help-large-card:hover img {
+    transform: scale(1.05);
+    filter: brightness(0.58) saturate(0.88) blur(6px);
+}
+
+.about-help-large-card:hover::before {
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.34) 0%,
+            rgba(0, 0, 0, 0.5) 45%,
+            rgba(0, 0, 0, 0.62) 100%
+        );
+}
+
+.about-help-large-card:hover::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.about-help-large-card__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 7%;
+
+    pointer-events: none;
+}
+
+.about-help-large-card__overlay h2 {
+    margin: 0;
+
+    color: #fff;
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(38px, 4vw, 86px);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    text-align: center;
+    text-transform: uppercase;
+
+    transition:
+        transform 0.35s ease,
+        text-shadow 0.35s ease;
+}
+
+.about-help-large-card:hover .about-help-large-card__overlay h2 {
+    transform: translateY(-34px);
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.18);
+}
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.about-help-arrow {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+
+    z-index: 180;
+
+    width: 18px;
+    height: 18px;
+
+    border: 0;
+    border-right: 2px solid rgba(255, 255, 255, 0.35);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+    background: transparent;
+
+    transform: translateX(-50%) rotate(45deg);
+    cursor: pointer;
+
+    transition: opacity 0.2s ease;
+}
+
+/* =========================================================
+   HELP DETAIL WINDOW
+   ========================================================= */
+
+.about-help-detail {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 5%;
+
+    z-index: 500;
+
+    display: grid;
+    grid-template-columns: 37.5% 27.5% 37.5%;
+
+    background-image: url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(24px);
+
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease,
+        transform 0.35s ease;
+}
+
+.about-help-detail.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.about-help-detail__close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+
+    width: 36px;
+    height: 36px;
+
+    z-index: 20;
+
+    border: 0;
+    background: transparent;
+
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 34px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.about-help-detail__close:hover {
+    color: #fff;
+}
+
+.about-help-detail__nav {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    height: 100%;
+
+    padding: 4.2% 0 0 5.8%;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+
+    color: #fff;
+    font-family: "Holgada", sans-serif;
+
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18)),
+        url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.about-help-detail__breadcrumbs {
+    margin-bottom: 34px;
+    padding-right: 8%;
+
+    color: rgba(255, 255, 255, 0.42);
+    font-size: clamp(11px, 0.85vw, 15px);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.about-help-detail__breadcrumbs span {
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.about-help-detail__nav-list {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.about-help-detail__nav-item {
+    display: block;
+
+    width: 100%;
+    padding: 0 8% 0 0;
+    margin: 0 0 35px;
+
+    border: 0;
+    background: transparent;
+
+    color: rgba(255, 255, 255, 0.92);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(24px, 2.25vw, 46px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    text-align: left;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.about-help-detail__nav-item:hover {
+    color: #fff;
+    transform: translateX(4px);
+}
+
+.about-help-detail__nav-item.is-active {
+    color: #ff0000;
+}
+
+.about-help-detail__downloads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    width: calc(100% + 5.8%);
+    margin-top: auto;
+    margin-left: -5.8%;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.about-help-detail__download-link,
+.about-help-detail__download-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 64px;
+    padding: 0 16px;
+
+    color: rgba(255, 255, 255, 0.72);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(11px, 0.85vw, 15px);
+    font-weight: 400;
+    line-height: 1.1;
+    text-align: center;
+    text-decoration: none;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease;
+}
+
+.about-help-detail__download-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.about-help-detail__download-price {
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
+        url("../../assets/adobe_126953722.jpg");
+    background-size: cover;
+    background-position: center;
+
+    color: #111;
+    font-weight: 700;
+}
+
+.about-help-detail__download-price:hover {
+    background:
+        linear-gradient(rgba(143, 143, 143, 0.72), rgba(143, 143, 143, 0.72)),
+        url("../../assets/adobe_126953722.jpg");
+    background-size: cover;
+    background-position: center;
+
+    color: #111;
+}
+
+.about-help-detail__info {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    height: 100%;
+
+    padding: 4.2% 7% 0 7%;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+
+    color: #fff;
+    font-family: "Holgada", sans-serif;
+
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.16)),
+        url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.about-help-detail__text {
+    flex: 1 1 auto;
+
+    min-height: 0;
+    padding-right: 6px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.about-help-detail__text::-webkit-scrollbar {
+    display: none;
+}
+
+.about-help-detail__description {
+    margin: 0 0 46px;
+
+    white-space: pre-line;
+
+    color: rgba(255, 255, 255, 0.78);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(15px, 1.08vw, 21px);
+    font-weight: 400;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+}
+
+.about-help-detail__services {
+    position: relative;
+    border-top: 1px solid grey;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 34px 0 24px;
+}
+
+.about-help-detail__services h3 {
+    margin: 0 0 18px;
+
+    color: rgba(255, 255, 255, 0.92);
+    font-size: clamp(14px, 0.95vw, 18px);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.about-help-detail__services-list {
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.about-help-detail__services-list li {
+    position: relative;
+
+    margin-bottom: 12px;
+    padding-left: 18px;
+
+    color: rgba(255, 255, 255, 0.88);
+    font-size: clamp(13px, 0.95vw, 18px);
+    font-weight: 500;
+    line-height: 1.14;
+}
+
+.about-help-detail__services-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+    background: #ff0000;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.9);
+}
+
+.about-help-detail__arrow {
+    position: relative;
+
+    width: 26px;
+    height: 26px;
+
+    margin: 28px auto 24px;
+
+    border: 0;
+    border-right: 2px solid rgba(255, 255, 255, 0.36);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.36);
+    background: transparent;
+
+    transform: rotate(45deg);
+    cursor: pointer;
+
+    transition:
+        border-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.about-help-detail__arrow:hover {
+    border-right-color: #fff;
+    border-bottom-color: #fff;
+    transform: translateY(4px) rotate(45deg);
+}
+
+.about-help-detail__media {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+    background: #000;
+}
+
+.about-help-detail__img {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    object-fit: cover;
+
+    filter: brightness(0.86) saturate(0.95);
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.5s ease;
+}
+
+.about-help-detail__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0.18) 0%,
+            rgba(0, 0, 0, 0.04) 36%,
+            rgba(0, 0, 0, 0.1) 100%
+        );
+
+    pointer-events: none;
+}
+
+body.about-help-detail-open .about-help-arrow {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+/* =========================================================
+   PRICE POPUP
+   ========================================================= */
+
+.about-help-price-popup {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 5%;
+
+    z-index: 640;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 32px;
+
+    background: rgba(0, 0, 0, 0.54);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+.about-help-price-popup.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.about-help-price-popup__container {
+    position: relative;
+    z-index: 5;
+
+    width: min(520px, 72vw);
+    min-height: 168px;
+
+    padding: 10px;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.72), rgba(245, 245, 245, 0.72)),
+        url("../../assets/adobe_126953722.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: 1px solid rgba(0, 0, 0, 0.65);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+}
+
+.about-help-price-popup__dialog {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.58), rgba(245, 245, 245, 0.58)),
+        url("../../assets/adobe_126953722.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: 1px solid rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+}
+
+.about-help-price-popup__close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+
+    z-index: 10;
+
+    width: 26px;
+    height: 26px;
+
+    border: 0;
+    background: transparent;
+
+    color: #111;
+    font-size: 26px;
+    line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.about-help-price-popup__title {
+    padding: 20px 44px 14px 18px;
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(26px, 2vw, 42px);
+    font-weight: 900;
+    line-height: 0.9;
+    text-transform: uppercase;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+.about-help-price-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.about-help-price-form__row {
+    display: grid;
+    grid-template-columns: 28% 72%;
+
+    min-height: 34px;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+.about-help-price-form__label {
+    display: flex;
+    align-items: center;
+
+    padding: 0 14px;
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+
+    border-right: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+.about-help-price-form__field {
+    display: flex;
+    align-items: center;
+
+    padding: 0 14px;
+}
+
+.about-help-price-form__field input {
+    width: 100%;
+
+    border: 0;
+    outline: none;
+    background: transparent;
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 14px;
+}
+
+.about-help-price-form__submit {
+    width: 100%;
+    min-height: 54px;
+
+    border: 0;
+    background: transparent;
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.about-help-price-form__submit:hover {
+    background: rgba(143, 143, 143, 0.72);
+    color: #111;
+}
+
+body.about-help-price-open .about-help-arrow {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+/* =========================================================
+   REQUEST POPUP
+   ========================================================= */
+
+.about-help-request-popup {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 5%;
+
+    z-index: 650;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 32px;
+
+    background: rgba(0, 0, 0, 0.42);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+.about-help-request-popup.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.about-help-request-popup__container {
+    position: relative;
+    z-index: 5;
+    pointer-events: auto;
+
+    width: min(580px, calc(80vw - 180px));
+    max-width: 800px;
+    height: 72%;
+
+    padding: 1%;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.72), rgba(245, 245, 245, 0.72)),
+        url("../../assets/adobe_126953722.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: 1px solid #000;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+}
+
+.about-help-request-popup__dialog {
+    position: relative;
+    z-index: 6;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.64), rgba(245, 245, 245, 0.64)),
+        url("../../assets/adobe_126953722.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: 1px solid #4d4b4b;
+    overflow: hidden;
+}
+
+.about-help-request-popup__title {
+    height: 12.74%;
+    padding: 3.6% 4.6% 2.6%;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(28px, 2.2vw, 48px);
+    font-weight: 900;
+    line-height: 0.92;
+    text-transform: uppercase;
+}
+
+.about-help-request-popup__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    z-index: 20;
+
+    width: 7%;
+    height: 7%;
+
+    border: 0;
+    background: transparent;
+
+    color: #111;
+    font-size: 28px;
+    line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.about-help-request-form {
+    display: flex;
+    flex-direction: column;
+    height: 87.26%;
+}
+
+.about-help-request-form__row {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    min-height: auto;
+    height: 14%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.about-help-request-form__row--textarea {
+    height: 30%;
+    min-height: auto;
+}
+
+.about-help-request-form__label {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    padding: 8% 9% 7% 12.5%;
+
+    border-right: 1px solid rgba(0, 0, 0, 0.14);
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.about-help-request-form__field {
+    display: flex;
+    align-items: center;
+    padding: 0 4.5%;
+}
+
+.about-help-request-form__field input,
+.about-help-request-form__field textarea {
+    width: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 15px;
+    line-height: 1.3;
+}
+
+.about-help-request-form__field textarea {
+    min-height: auto;
+    height: 100%;
+    resize: none;
+    padding-top: 4%;
+    padding-bottom: 4%;
+}
+
+.about-help-request-form__field input[readonly] {
+    opacity: 0.65;
+}
+
+.about-help-request-form__submit {
+    width: 100%;
+    height: 16%;
+    min-height: auto;
+
+    border: 0;
+    background: transparent;
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.35s ease,
+        color 0.35s ease;
+}
+
+.about-help-request-form__submit:hover {
+    background: rgba(143, 143, 143, 0.72);
+    color: #111;
+    -webkit-text-fill-color: #111;
+    filter: none;
+}
+
+body.about-help-request-open .about-help-arrow {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+/* =========================================================
+   TEXTURE
+   ========================================================= */
+
+.about-page {
+    --about-help-white-texture: url("../../assets/adobe_126953722.jpg");
+}
+
+.about-page .about-help__subtitle,
+.about-page .about-help-service,
+.about-page .about-help-request-popup__title,
+.about-page .about-help-request-form__label,
+.about-page .about-help-request-form__field input,
+.about-page .about-help-request-form__field textarea,
+.about-page .about-help-request-popup__close {
+    background-image: var(--about-help-white-texture);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: transparent !important;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.about-page .about-help-service span {
+    background-image: none;
+    background: red;
+}
+
+.about-page .about-help-request-popup__title,
+.about-page .about-help-request-form__label,
+.about-page .about-help-request-form__field input,
+.about-page .about-help-request-form__field textarea,
+.about-page .about-help-request-popup__close {
+    filter: brightness(0.2) contrast(1.2);
+}
+
+.about-page .about-help-request-form__submit {
+    background-image: none !important;
+    background: transparent !important;
+
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+
+    filter: none !important;
+}
+
+.about-page .about-help-request-form__submit:hover {
+    background-image: none !important;
+    background: rgba(143, 143, 143, 0.72) !important;
+
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+
+    filter: none !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1200px) {
+    .about-help-paralax-text,
+    .about-help-parallax-text {
+        padding-left: 14%;
+    }
+
+    .about-help__title {
+        width: 100%;
+        max-width: none;
+        font-size: clamp(86px, 13vw, 190px);
+        letter-spacing: 0;
+    }
+
+    .about-help-services-viewport {
+        width: 100vw;
+        margin-left: -14%;
+    }
+
+    .about-help-services {
+        gap: 70px;
+        padding-right: 70px;
+    }
+
+    .about-help-service {
+        width: max-content;
+        min-width: max-content;
+    }
+
+    .about-help-detail__info::before {
+        content: "";
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 61%;
+        height: 1px;
+        pointer-events: none;
+        background: rgba(255, 255, 255, 0.14);
+    }
+
+    .about-help-detail {
+        grid-template-columns: 37.5% 27.5% 37.5%;
+    }
+
+    .about-help-detail__nav-item {
+        font-size: clamp(21px, 2.4vw, 38px);
+    }
+
+    .about-help-detail__description {
+        font-size: clamp(14px, 1.2vw, 19px);
+    }
+}
+
+@media (max-width: 768px) {
+    .about-help-section {
+        left: 60px;
+    }
+
+    .about-help-paralax-text,
+    .about-help-parallax-text {
+        padding-left: 90px;
+        padding-right: 24px;
+        padding-top: 12%;
+    }
+
+    .about-help__title {
+        width: 100%;
+        max-width: none;
+        font-size: clamp(58px, 16vw, 110px);
+        letter-spacing: 0;
+        line-height: 0.88;
+    }
+
+    .about-help__subtitle {
+        font-size: 30px;
+    }
+
+    .about-help-services-viewport {
+        width: calc(100vw - 60px);
+        margin-left: -66px;
+        margin-top: 9vh;
+    }
+
+    .about-help-services {
+        gap: 48px;
+        padding-right: 48px;
+    }
+
+    .about-help-service {
+        width: max-content;
+        min-width: max-content;
+        font-size: 28px;
+    }
+
+    .about-help-cards-section {
+        grid-template-columns: 1fr;
+        padding-left: 60px;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .about-help-large-card {
+        height: 50vh;
+        min-height: 50vh;
+    }
+
+    .about-help-large-card::after {
+        width: 200px;
+        min-height: 56px;
+        top: calc(50% + 76px);
+    }
+
+    .about-help-large-card:hover .about-help-large-card__overlay h2 {
+        transform: translateY(-28px);
+    }
+
+    .about-help-detail {
+        left: 60px;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow-y: auto;
+    }
+
+    .about-help-detail__nav {
+        min-height: auto;
+        height: auto;
+
+        padding: 70px 24px 0;
+
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .about-help-detail__breadcrumbs {
+        margin-bottom: 22px;
+    }
+
+    .about-help-detail__nav-item {
+        margin-bottom: 16px;
+        padding-right: 0;
+
+        font-size: 28px;
+    }
+
+    .about-help-detail__downloads {
+        margin-left: -24px;
+        width: calc(100% + 48px);
+    }
+
+    .about-help-detail__info {
+        min-height: 52vh;
+        height: auto;
+
+        padding: 28px 24px 0;
+
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .about-help-detail__description {
+        font-size: 17px;
+    }
+
+    .about-help-detail__media {
+        min-height: 50vh;
+        height: 50vh;
+    }
+
+    .about-help-price-popup {
+        left: 60px;
+        padding: 20px;
+    }
+
+    .about-help-price-popup__container {
+        width: 100%;
+        max-width: 520px;
+    }
+
+    .about-help-request-popup {
+        left: 60px;
+        padding: 20px;
+    }
+
+    .about-help-request-popup__container {
+        width: 100%;
+        height: 72%;
+        padding: 2%;
+    }
+
+    .about-help-request-form__row {
+        grid-template-columns: 1fr;
+    }
+
+    .about-help-request-form__label {
+        border-right: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+    }
+}
+
+@media (max-width: 480px) {
+    .about-help-section {
+        left: 50px;
+    }
+
+    .about-help-paralax-text,
+    .about-help-parallax-text {
+        padding-left: 74px;
+        padding-right: 16px;
+    }
+
+    .about-help-services-viewport {
+        width: calc(100vw - 50px);
+        margin-left: -56px;
+    }
+
+    .about-help-service {
+        width: max-content;
+        min-width: max-content;
+    }
+
+    .about-help-cards-section {
+        padding-left: 50px;
+    }
+
+    .about-help-detail {
+        left: 50px;
+    }
+
+    .about-help-detail__nav {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .about-help-detail__nav-item {
+        font-size: 24px;
+    }
+
+    .about-help-detail__downloads {
+        margin-left: -18px;
+        width: calc(100% + 36px);
+    }
+
+    .about-help-detail__download-link,
+    .about-help-detail__download-price {
+        min-height: 56px;
+        padding: 0 8px;
+        font-size: 11px;
+    }
+
+    .about-help-detail__info {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .about-help-price-popup {
+        left: 50px;
+        padding: 12px;
+    }
+
+    .about-help-price-popup__container {
+        width: 100%;
+        padding: 8px;
+    }
+
+    .about-help-price-form__row {
+        grid-template-columns: 34% 66%;
+    }
+
+    .about-help-request-popup {
+        left: 50px;
+        padding: 12px;
+    }
+
+    .about-help-request-popup__container {
+        width: 100%;
+        height: 72%;
+        padding: 2%;
+    }
+
+    .about-help-request-popup__title {
+        padding-right: 40px;
+        font-size: 28px;
+    }
+}

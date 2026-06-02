@@ -23,6 +23,10 @@ import {
     initAboutProjectsSection,
     updateAboutProjectsSection
 } from "./modules/about-projects-section.js";
+import {
+    initAboutHelpSection,
+    updateAboutHelpSection
+} from "./modules/about-help-section.js";
 import { initScroll } from "./modules/scroll.js";
 import { initContentLinksImages } from "./modules/links.js";
 import { initPageTransitions, initMenuReturnToIndex } from "./modules/transitions.js";
@@ -39,7 +43,7 @@ if (document.body.classList.contains("projects-page")) {
 } else if (document.body.classList.contains("help-page")) {
     state.pageProgressMax = 2;
 } else if (document.body.classList.contains("about-page")) {
-    state.pageProgressMax = 5;
+    state.pageProgressMax = 7;
 } else {
     state.pageProgressMax = 1;
 }
@@ -110,6 +114,7 @@ initPageScrollbar();
 initAboutTextScrollbar();
 initAboutParallax();
 initAboutProjectsSection();
+initAboutHelpSection();
 initProjectsParallax();
 initHelpParallax();
 setInitialImagePosition();
@@ -131,6 +136,7 @@ function animate() {
     } else {
         updateScene(state.progress);
         updateAboutProjectsSection(state.progress);
+        updateAboutHelpSection(state.progress);
     }
 
     requestAnimationFrame(animate);
@@ -147,6 +153,7 @@ window.addEventListener("resize", () => {
         setInitialImagePosition();
         updateScene(state.progress);
         updateAboutProjectsSection(state.progress);
+        updateAboutHelpSection(state.progress);
     }
 
     updatePageScrollbar(state.progress);
