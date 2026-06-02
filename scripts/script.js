@@ -31,6 +31,10 @@ import {
     initAboutNewsSection,
     updateAboutNewsSection
 } from "./modules/about-news-section.js";
+import {
+    initAboutContactsSection,
+    updateAboutContactsSection
+} from "./modules/about-contacts-section.js";
 import { initScroll } from "./modules/scroll.js";
 import { initContentLinksImages } from "./modules/links.js";
 import { initPageTransitions, initMenuReturnToIndex } from "./modules/transitions.js";
@@ -44,12 +48,16 @@ state.shouldSkipIntro =
 
 if (document.body.classList.contains("projects-page")) {
     state.pageProgressMax = 4;
+    state.pageSectionsCount = 1;
 } else if (document.body.classList.contains("help-page")) {
     state.pageProgressMax = 2;
+    state.pageSectionsCount = 1;
 } else if (document.body.classList.contains("about-page")) {
-    state.pageProgressMax = 10.2;
+    state.pageProgressMax = 11.4;
+    state.pageSectionsCount = 8;
 } else {
     state.pageProgressMax = 1;
+    state.pageSectionsCount = 1;
 }
 
 if (isPageReload) {
@@ -120,6 +128,7 @@ initAboutParallax();
 initAboutProjectsSection();
 initAboutHelpSection();
 initAboutNewsSection();
+initAboutContactsSection();
 initProjectsParallax();
 initHelpParallax();
 setInitialImagePosition();
@@ -143,6 +152,7 @@ function animate() {
         updateAboutProjectsSection(state.progress);
         updateAboutHelpSection(state.progress);
         updateAboutNewsSection(state.progress);
+        updateAboutContactsSection(state.progress);
     }
 
     requestAnimationFrame(animate);
@@ -161,6 +171,7 @@ window.addEventListener("resize", () => {
         updateAboutProjectsSection(state.progress);
         updateAboutHelpSection(state.progress);
         updateAboutNewsSection(state.progress);
+        updateAboutContactsSection(state.progress);
     }
 
     updatePageScrollbar(state.progress);

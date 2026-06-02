@@ -1,130 +1,64 @@
-.about-text-scrollbar {
+.page-scrollbar {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
 
     width: 3px;
-    height: 60%;
-
-    background: rgba(255, 255, 255, 0.35);
-    z-index: 50;
-    pointer-events: none;
-}
-
-.about-text-scrollbar__fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 0%;
-
-    background: #fff;
-    transition: height 0.08s linear;
-}
-
-.about-text-scrollbar__arrow {
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-
-    width: 12px;
-    height: 12px;
-
-    transform: translateX(50%) rotate(45deg);
-
-    border-right: 2px solid #fff;
-    border-bottom: 2px solid #fff;
-
-    opacity: 0.9;
-}
-
-.page-scrollbar {
-    position: fixed;
-    top: 0;
-    left: 5%;
-
-    width: 2px;
     height: 100vh;
 
-    z-index: 300;
+    z-index: 20;
+
     pointer-events: none;
-
-    transition: width 0.2s ease;
-
-    -webkit-mask-image:
-        linear-gradient(
-            to bottom,
-            #000 0%,
-            #000 24%,
-            transparent 24%,
-            transparent 25%,
-
-            #000 25%,
-            #000 49%,
-            transparent 49%,
-            transparent 50%,
-
-            #000 50%,
-            #000 74%,
-            transparent 74%,
-            transparent 75%,
-
-            #000 75%,
-            #000 100%
-        );
-
-    mask-image:
-        linear-gradient(
-            to bottom,
-            #000 0%,
-            #000 24%,
-            transparent 24%,
-            transparent 25%,
-
-            #000 25%,
-            #000 49%,
-            transparent 49%,
-            transparent 50%,
-
-            #000 50%,
-            #000 74%,
-            transparent 74%,
-            transparent 75%,
-
-            #000 75%,
-            #000 100%
-        );
 }
 
-.page-scrollbar::before {
-    content: "";
+.page-scrollbar__track {
     position: absolute;
     inset: 0;
-    z-index: 2;
-    background: rgba(160, 160, 160, 0.45);
+
+    width: 3px;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.22);
 }
 
-.page-scrollbar__thumb {
+.page-scrollbar__fill {
     position: absolute;
     top: 0;
     left: 0;
 
-    width: 2px;
+    width: 3px;
     height: 0%;
 
-    z-index: 1;
     background: #fff;
 
-    transition:
-        width 0.2s ease,
-        height 0.12s linear;
+    transition: height 0.12s linear;
 }
 
-.page-scrollbar.is-scrolling {
-    width: 3px;
+.page-scrollbar__segments {
+    position: absolute;
+    inset: 0;
+
+    z-index: 3;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
 }
 
-.page-scrollbar.is-scrolling .page-scrollbar__thumb {
-    width: 3px;
+.page-scrollbar__segment {
+    position: absolute;
+    left: 50%;
+
+    width: 7px;
+    height: 1px;
+
+    background: currentColor;
+
+    transform: translate(-50%, -50%);
+    opacity: 0.95;
+}
+
+.page-scrollbar__segment.is-passed {
+    opacity: 0.95;
 }
