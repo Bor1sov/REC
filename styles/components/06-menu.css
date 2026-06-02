@@ -56,6 +56,10 @@
     align-items: center;
     gap: 5px;
     cursor: pointer;
+
+    transition:
+        opacity 0.25s ease,
+        filter 0.25s ease;
 }
 
 .menu-text {
@@ -63,12 +67,26 @@
     transform: rotate(180deg);
     font-size: 29px;
     letter-spacing: 2px;
-    color: #fff;
+    color: rgba(255, 255, 255, 0.72);
     font-weight: 900;
-    opacity: 0.3;
+    opacity: 0.35;
     visibility: visible;
     pointer-events: auto;
-    transition: opacity 0.3s ease;
+    text-decoration: none;
+    transition:
+        color 0.25s ease,
+        opacity 0.25s ease,
+        text-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+.menu-block:hover .menu-text {
+    color: #ff0000;
+    opacity: 1;
+    text-shadow:
+        0 0 8px rgba(255, 0, 0, 0.7),
+        0 0 18px rgba(255, 0, 0, 0.45);
+    filter: brightness(1.15);
 }
 
 .burger {
@@ -83,12 +101,20 @@
 .burger span {
     width: 25px;
     height: 4.5px;
-    background: #fff;
-    transition: 0.2s;
+    background: rgba(255, 255, 255, 0.72);
+
+    transition:
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        opacity 0.25s ease;
 }
 
-.burger:hover span {
-    background: #ccc;
+.burger:hover span,
+.menu-block:hover .burger span {
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.35),
+        0 0 16px rgba(255, 255, 255, 0.18);
 }
 
 @keyframes logoPulseRed {

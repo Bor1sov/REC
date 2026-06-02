@@ -1,0 +1,1115 @@
+.about-projects-section {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 5%;
+
+    z-index: 120;
+    overflow: hidden;
+
+    background: #111;
+
+    transform: translateY(100vh);
+    will-change: transform;
+}
+
+.about-projects-section__loader {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "Holgada", sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.about-projects-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.about-projects-bg__img {
+    width: 100%;
+    height: 115%;
+    object-fit: cover;
+    transform-origin: center center;
+    will-change: transform;
+}
+
+.about-projects-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    will-change: transform;
+}
+
+.about-projects-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: transparent;
+    padding: 0;
+}
+
+.about-projects-paralax-text {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    min-height: 100vh;
+
+    z-index: 5;
+
+    padding-left: 18%;
+    padding-top: 7%;
+
+    transform: translateY(100%);
+    will-change: transform;
+
+    pointer-events: none;
+}
+
+.about-projects-paralax-text::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image: url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 1;
+
+    z-index: 0;
+    pointer-events: none;
+}
+
+.about-projects__title {
+    position: relative;
+    z-index: 5;
+
+    width: 64%;
+    margin: 0;
+
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(70px, 8.8vw, 170px);
+    font-weight: 900;
+    line-height: 0.78;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    background-image: url("../../assets/Наши проекты Моб.jpg");
+    background-size: 100vw auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    opacity: 1;
+    will-change: background-position, background-size;
+}
+
+.about-projects__subtitle {
+    position: relative;
+    z-index: 5;
+
+    margin-top: 24px;
+
+    color: #fff;
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(28px, 3vw, 56px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+
+    opacity: 1;
+}
+
+.about-projects-services-viewport {
+    position: relative;
+    z-index: 5;
+
+    width: 100vw;
+    margin-left: -18%;
+    margin-top: 12vh;
+
+    overflow: hidden;
+
+    pointer-events: none;
+    cursor: default;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.about-projects-services-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.about-projects-services {
+    display: flex;
+    align-items: flex-start;
+    gap: 180px;
+
+    width: max-content;
+    min-width: max-content;
+
+    padding-right: 12vw;
+
+    animation: aboutProjectsServicesMarquee 32s linear infinite;
+    will-change: transform;
+}
+
+@keyframes aboutProjectsServicesMarquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.about-projects-service {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+
+    color: #fff;
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(24px, 2.5vw, 48px);
+    font-weight: 900;
+    line-height: 0.92;
+    text-transform: uppercase;
+}
+
+.about-projects-service span {
+    width: 12px;
+    height: 12px;
+    margin-top: 12px;
+    flex: 0 0 12px;
+
+    border-radius: 50%;
+    background: red;
+    box-shadow: 0 0 16px rgba(255, 0, 0, 0.9);
+}
+
+.about-projects-service p {
+    margin: 0;
+}
+
+.about-projects-preview {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-top: 5.5%;
+    padding-bottom: 7vh;
+
+    background-attachment: fixed;
+    background-image: url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    will-change: transform;
+}
+
+.about-projects-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+
+    width: min(100%, 1480px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-projects-card {
+    position: relative;
+
+    aspect-ratio: 0.78 / 1;
+
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+}
+
+.about-projects-card img {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.6s ease,
+        filter 0.6s ease;
+}
+
+.about-projects-card:hover img {
+    transform: scale(1.05);
+    filter: brightness(0.38) saturate(0.75) blur(6px);
+}
+
+.about-projects-card__hover {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 8.5% 7% 9%;
+
+    color: #fff;
+    font-family: "Holgada", sans-serif;
+
+    opacity: 0;
+    pointer-events: none;
+
+    background: rgba(0, 0, 0, 0.58);
+
+    transition: opacity 0.35s ease;
+}
+
+.about-projects-card:hover .about-projects-card__hover {
+    opacity: 1;
+}
+
+.about-projects-card__hover-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.about-projects-card__hover-bottom {
+    max-width: 94%;
+    max-height: 62%;
+}
+
+.about-projects-card__hover-title {
+    margin: 0 0 10px;
+
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(24px, 2.2vw, 42px);
+    font-weight: 900;
+    line-height: 0.86;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+}
+
+.about-projects-card__hover-title.is-long {
+    font-size: clamp(18px, 1.7vw, 34px);
+    line-height: 0.9;
+}
+
+.about-projects-card__hover-title.is-extra-long {
+    font-size: clamp(15px, 1.25vw, 26px);
+    line-height: 0.96;
+}
+
+.about-projects-card__hover-title.is-ultra-long {
+    font-size: clamp(12px, 0.95vw, 20px);
+    line-height: 1;
+}
+
+.about-projects-card__hover-genre {
+    margin: 0;
+
+    font-size: clamp(15px, 1.15vw, 22px);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+}
+
+.about-projects-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: min(100%, 1480px);
+    margin: 8vh auto 0;
+}
+
+.about-projects-all,
+.about-projects-request-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 220px;
+    min-height: 56px;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(120, 120, 120, 0.16);
+
+    color: rgba(255, 255, 255, 0.72);
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.72);
+
+    font-family: "Holgada", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.about-projects-request-btn {
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
+        url("../../assets/adobe_126953722.jpg");
+    background-size: cover;
+    background-position: center;
+
+    color: #111;
+    -webkit-text-fill-color: #111;
+
+    font-weight: 800;
+}
+
+.about-projects-all:hover,
+.about-projects-request-btn:hover {
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.14);
+}
+
+.about-projects-all:hover {
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+    background: rgba(150, 150, 150, 0.28);
+}
+
+.about-projects-request-btn:hover {
+    background:
+        linear-gradient(rgba(210, 210, 210, 0.82), rgba(210, 210, 210, 0.82)),
+        url("../../assets/adobe_126953722.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+/* Detail */
+
+.about-projects-detail {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 5%;
+
+    z-index: 500;
+
+    display: grid;
+    grid-template-columns: 46% 54%;
+
+    background-image: url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(24px);
+
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease,
+        transform 0.35s ease;
+}
+
+.about-projects-detail.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.about-projects-detail__media {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.about-projects-detail__img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.about-projects-detail__content {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    height: 100%;
+
+    padding: 3.6% 0 0 4.2%;
+
+    color: #fff;
+    background-image: url("../../assets/mainbackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.about-projects-detail__close {
+    display: none;
+}
+
+.about-projects-detail__top {
+    position: relative;
+
+    padding-right: 12%;
+    padding-bottom: 26px;
+}
+
+.about-projects-detail__top::after {
+    content: "";
+    position: absolute;
+    left: -4.2%;
+    right: 0;
+    bottom: 0;
+
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.about-projects-detail__title {
+    margin: 0 0 12px 0;
+
+    color: #f00;
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(44px, 4.3vw, 86px);
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+}
+
+.about-projects-detail__genre,
+.about-projects-detail__note {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.6);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(17px, 1.3vw, 24px);
+    font-weight: 500;
+    line-height: 1.05;
+}
+
+.about-projects-detail__text-wrap {
+    position: relative;
+
+    height: 52vh;
+    margin-top: 24px;
+    padding-right: 12%;
+}
+
+.about-projects-detail__text {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 28px;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.about-projects-detail__text::-webkit-scrollbar {
+    display: none;
+}
+
+.about-projects-detail__scrollbar {
+    position: absolute;
+    right: 9%;
+    top: 0;
+
+    width: 3px;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.about-projects-detail__scrollbar-fill {
+    width: 100%;
+    height: 0%;
+
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.about-projects-detail__description {
+    margin: 0;
+
+    white-space: pre-line;
+
+    color: rgba(255, 255, 255, 0.72);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(17px, 1.25vw, 24px);
+    font-weight: 400;
+    line-height: 1.35;
+}
+
+.about-projects-detail__meta {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    margin-top: auto;
+
+    padding: 20px 12% 20px 0;
+
+    color: rgba(255, 255, 255, 0.72);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(15px, 1.05vw, 20px);
+}
+
+.about-projects-detail__meta::before,
+.about-projects-detail__meta::after {
+    content: "";
+    position: absolute;
+    left: -4.2%;
+    right: 0;
+
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.about-projects-detail__meta::before {
+    top: 0;
+}
+
+.about-projects-detail__meta::after {
+    bottom: 0;
+}
+
+.about-projects-detail__divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.28);
+}
+
+.about-projects-detail__status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 22px;
+
+    padding: 12px 12% 12px 0;
+
+    color: rgba(255, 255, 255, 0.28);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(12px, 0.85vw, 16px);
+}
+
+.about-projects-detail__bottom {
+    margin-top: 0;
+    margin-left: -4.2%;
+    width: calc(100% + 4.2%);
+
+    display: grid;
+    grid-template-columns: 1.4fr 0.7fr 0.7fr 0.7fr 1.8fr;
+
+    min-height: 70px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.about-projects-detail__bottom button {
+    border: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(120, 120, 120, 0.18);
+
+    color: rgba(255, 255, 255, 0.72);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(14px, 1vw, 18px);
+
+    cursor: pointer;
+}
+
+.about-projects-detail__bottom button:hover {
+    background: rgba(150, 150, 150, 0.3);
+    color: #fff;
+}
+
+.about-projects-detail__teaser {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.about-projects-detail__nav {
+    position: relative;
+    font-size: 0;
+}
+
+.about-projects-detail__nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+
+    width: 26px;
+    height: 26px;
+
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.about-projects-detail__bottom .about-projects-detail__nav:nth-of-type(2)::before {
+    background-image: url("../../assets/влево.png");
+}
+
+.about-projects-detail__bottom .about-projects-detail__nav:nth-of-type(3)::before {
+    content: "↩";
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 28px;
+    line-height: 26px;
+    text-align: center;
+    background-image: none;
+}
+
+.about-projects-detail__bottom .about-projects-detail__nav:nth-of-type(4)::before {
+    background-image: url("../../assets/влево.png");
+    transform: scaleX(-1);
+}
+
+.about-projects-detail__request {
+    font-weight: 700;
+}
+
+/* Request popup */
+
+.about-projects-request-popup {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 5%;
+
+    z-index: 650;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 32px;
+
+    background: rgba(0, 0, 0, 0.42);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+.about-projects-request-popup.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.about-projects-request-popup__container {
+    position: relative;
+    z-index: 5;
+    pointer-events: auto;
+
+    width: min(580px, calc(80vw - 180px));
+    max-width: 800px;
+    height: 72%;
+
+    padding: 1%;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.72), rgba(245, 245, 245, 0.72)),
+        url("../../assets/adobe_126953722.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: 1px solid #000;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+}
+
+.about-projects-request-popup__dialog {
+    position: relative;
+    z-index: 6;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.64), rgba(245, 245, 245, 0.64)),
+        url("../../assets/adobe_126953722.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: 1px solid #4d4b4b;
+    overflow: hidden;
+}
+
+.about-projects-request-popup__title {
+    height: 12.74%;
+    padding: 3.6% 4.6% 2.6%;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(28px, 2.2vw, 48px);
+    font-weight: 900;
+    line-height: 0.92;
+    text-transform: uppercase;
+}
+
+.about-projects-request-popup__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    z-index: 20;
+
+    width: 7%;
+    height: 7%;
+
+    border: 0;
+    background: transparent;
+
+    color: #111;
+    font-size: 28px;
+    line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.about-projects-request-form {
+    display: flex;
+    flex-direction: column;
+    height: 87.26%;
+}
+
+.about-projects-request-form__row {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    height: 10.78%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.about-projects-request-form__row--options {
+    height: 32.34%;
+}
+
+.about-projects-request-form__row--textarea {
+    height: 23.46%;
+}
+
+.about-projects-request-form__label {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    padding: 8% 9% 7% 12.5%;
+
+    border-right: 1px solid rgba(0, 0, 0, 0.14);
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.about-projects-request-form__field {
+    display: flex;
+    align-items: center;
+    padding: 0 4.5%;
+}
+
+.about-projects-request-form__field input,
+.about-projects-request-form__field textarea {
+    width: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 15px;
+    line-height: 1.3;
+}
+
+.about-projects-request-form__field textarea {
+    height: 100%;
+    resize: none;
+    padding-top: 4%;
+    padding-bottom: 4%;
+}
+
+.about-projects-request-form__field--checks {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+
+    padding: 0;
+    height: 100%;
+}
+
+.about-projects-request-form__check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    height: 33.333%;
+
+    padding: 0 4.5%;
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    cursor: pointer;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.about-projects-request-form__check:last-child {
+    border-bottom: 0;
+}
+
+.about-projects-request-form__submit {
+    width: 100%;
+    height: 15.74%;
+
+    border: 0;
+    background: transparent;
+
+    color: #111;
+    font-family: "Holgada", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.about-projects-request-form__submit:hover {
+    background: rgba(143, 143, 143, 0.72);
+}
+
+body.about-projects-detail-open .about-projects-actions,
+body.about-projects-request-open .about-projects-actions {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media (max-width: 1200px) {
+    .about-projects-paralax-text {
+        padding-left: 14%;
+    }
+
+    .about-projects__title {
+        width: 78%;
+    }
+
+    .about-projects-services {
+        gap: 48px;
+    }
+
+    .about-projects-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .about-projects-section {
+        left: 60px;
+    }
+
+    .about-projects-paralax-text {
+        padding-left: 90px;
+        padding-right: 24px;
+        padding-top: 12%;
+    }
+
+    .about-projects__title {
+        width: 100%;
+        font-size: clamp(52px, 13vw, 92px);
+    }
+
+    .about-projects__subtitle {
+        font-size: 30px;
+    }
+
+    .about-projects-services-viewport {
+        width: calc(100vw - 60px);
+        margin-left: -66px;
+        margin-top: 9vh;
+    }
+
+    .about-projects-services {
+        gap: 36px;
+        padding-right: 20vw;
+    }
+
+    .about-projects-service {
+        min-width: 70vw;
+        font-size: 28px;
+    }
+
+    .about-projects-preview {
+        padding-left: 32px;
+        padding-right: 32px;
+        padding-top: 80px;
+    }
+
+    .about-projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .about-projects-actions {
+        margin-top: 42px;
+    }
+
+    .about-projects-all,
+    .about-projects-request-btn {
+        width: 180px;
+    }
+
+    .about-projects-detail {
+        left: 60px;
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+
+    .about-projects-detail__media {
+        height: 52vh;
+    }
+
+    .about-projects-detail__content {
+        min-height: 70vh;
+        padding: 32px 24px 0 24px;
+    }
+
+    .about-projects-detail__bottom {
+        margin-left: 0;
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+
+    .about-projects-detail__bottom button {
+        min-height: 56px;
+    }
+
+    .about-projects-request-popup {
+        left: 60px;
+        padding: 20px;
+    }
+
+    .about-projects-request-popup__container {
+        width: 100%;
+        height: 72%;
+        padding: 2%;
+    }
+
+    .about-projects-request-form__row {
+        grid-template-columns: 1fr;
+    }
+
+    .about-projects-request-form__label {
+        border-right: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+    }
+}
+
+@media (max-width: 480px) {
+    .about-projects-section {
+        left: 50px;
+    }
+
+    .about-projects-paralax-text {
+        padding-left: 74px;
+        padding-right: 16px;
+    }
+
+    .about-projects-preview {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .about-projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-projects-actions {
+        flex-direction: column;
+    }
+
+    .about-projects-all,
+    .about-projects-request-btn {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .about-projects-detail {
+        left: 50px;
+    }
+
+    .about-projects-detail__title {
+        font-size: 42px;
+    }
+
+    .about-projects-request-popup {
+        left: 50px;
+        padding: 12px;
+    }
+}

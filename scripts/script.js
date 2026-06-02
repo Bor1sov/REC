@@ -19,6 +19,10 @@ import {
     initHelpParallax,
     updateHelpScene
 } from "./modules/help-parallax.js";
+import {
+    initAboutProjectsSection,
+    updateAboutProjectsSection
+} from "./modules/about-projects-section.js";
 import { initScroll } from "./modules/scroll.js";
 import { initContentLinksImages } from "./modules/links.js";
 import { initPageTransitions, initMenuReturnToIndex } from "./modules/transitions.js";
@@ -34,6 +38,8 @@ if (document.body.classList.contains("projects-page")) {
     state.pageProgressMax = 4;
 } else if (document.body.classList.contains("help-page")) {
     state.pageProgressMax = 2;
+} else if (document.body.classList.contains("about-page")) {
+    state.pageProgressMax = 5;
 } else {
     state.pageProgressMax = 1;
 }
@@ -103,6 +109,7 @@ initMenuLogoVisibility();
 initPageScrollbar();
 initAboutTextScrollbar();
 initAboutParallax();
+initAboutProjectsSection();
 initProjectsParallax();
 initHelpParallax();
 setInitialImagePosition();
@@ -123,6 +130,7 @@ function animate() {
         updateHelpScene(state.progress);
     } else {
         updateScene(state.progress);
+        updateAboutProjectsSection(state.progress);
     }
 
     requestAnimationFrame(animate);
@@ -138,6 +146,7 @@ window.addEventListener("resize", () => {
     } else {
         setInitialImagePosition();
         updateScene(state.progress);
+        updateAboutProjectsSection(state.progress);
     }
 
     updatePageScrollbar(state.progress);
