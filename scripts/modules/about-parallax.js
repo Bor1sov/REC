@@ -8,6 +8,10 @@ import {
 
 const ABOUT_TITLE_STAGE_END = 0.42;
 
+const ABOUT_INTRO_TITLE_MIN_SIZE = 0.12;
+const ABOUT_INTRO_TITLE_MAX_SIZE = 625;
+const ABOUT_INTRO_SWITCH_SIZE = 620;
+
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
@@ -64,6 +68,18 @@ function resetIntroTitleBackground(title) {
     title.style.backgroundRepeat = "";
 }
 
+function getIntroProgressByTitleSize(targetSize) {
+    const linearProgress =
+        (targetSize - ABOUT_INTRO_TITLE_MIN_SIZE) /
+        (ABOUT_INTRO_TITLE_MAX_SIZE - ABOUT_INTRO_TITLE_MIN_SIZE);
+
+    return clamp(linearProgress, 0, 1);
+}
+
+const ABOUT_INTRO_SWITCH_PROGRESS = getIntroProgressByTitleSize(
+    ABOUT_INTRO_SWITCH_SIZE
+);
+
 export function syncAboutImageAndTitle(progressValue) {
     const { baseImg, title } = getSceneElements();
 
@@ -85,14 +101,37 @@ function updateAboutTitleIntro(progressValue) {
 
     const introProgress = smoothstep(progressValue / ABOUT_TITLE_STAGE_END);
 
-    /*
-        Буквы приближаются через font-size.
-        Изображение внутри букв не трогаем вообще:
-        не пересчитываем background-position/background-size в JS.
-    */
-    const titleFontSize = mapRange(introProgress, 0, 1, 18, 105);
-    const titleOpacity = mapRange(introProgress, 0.72, 0.96, 1, 0);
-    const imageOpacity = mapRange(introProgress, 0.72, 1, 0, 1);
+    const titleFontSize = mapRange(
+        introProgress,
+        0,
+        1,
+        ABOUT_INTRO_TITLE_MIN_SIZE,
+        ABOUT_INTRO_TITLE_MAX_SIZE
+    );
+
+    const switchProgress = mapRange(
+        introProgress,
+        ABOUT_INTRO_SWITCH_PROGRESS,
+        1,
+        0,
+        1
+    );
+
+    const titleOpacity = mapRange(
+        switchProgress,
+        0,
+        1,
+        1,
+        0
+    );
+
+    const imageOpacity = mapRange(
+        switchProgress,
+        0,
+        1,
+        0,
+        1
+    );
 
     document.body.classList.add("about-title-stage");
 
@@ -114,7 +153,9 @@ function updateAboutTitleIntro(progressValue) {
     resetIntroTitleBackground(title);
 
     if (paralaxText) {
+        paralaxText.style.transformOrigin = "";
         paralaxText.style.transform = "translateY(0)";
+        paralaxText.style.willChange = "";
     }
 
     if (baseImg) {
@@ -136,7 +177,10 @@ function updateAboutMainScene(progressValue) {
 
     document.body.classList.remove("about-title-stage");
 
-    document.documentElement.style.setProperty("--about-title-intro-size", "18vw");
+    document.documentElement.style.setProperty(
+        "--about-title-intro-size",
+        `${ABOUT_INTRO_TITLE_MIN_SIZE}vw`
+    );
     document.documentElement.style.setProperty("--about-title-intro-opacity", 1);
     document.documentElement.style.setProperty("--about-image-opacity", 1);
 
@@ -144,29 +188,15 @@ function updateAboutMainScene(progressValue) {
 
     if (paralaxText) {
         const textMove = sceneProgress * 115;
+        paralaxText.style.transformOrigin = "";
         paralaxText.style.transform = `translateY(${100 - textMove}%)`;
+        paralaxText.style.willChange = "transform";
     }
 
     if (baseImg && title) {
         syncTitleBackgroundWithImage(baseImg, title);
     }
 
-    const aboutText = document.querySelector(".about-info-text");
-
-    if (aboutText) {
-        const textScrollStart = 0.48;
-        const textScrollEnd = 1;
-        const maxTextScroll = aboutText.scrollHeight - aboutText.clientHeight;
-
-        if (maxTextScroll > 0) {
-            const textProgress = smoothstep(
-                (sceneProgress - textScrollStart) /
-                    (textScrollEnd - textScrollStart)
-            );
-
-            aboutText.scrollTop = maxTextScroll * textProgress;
-        }
-    }
 }
 
 export function setInitialImagePosition() {
@@ -174,7 +204,10 @@ export function setInitialImagePosition() {
 
     document.body.classList.add("about-title-stage");
 
-    document.documentElement.style.setProperty("--about-title-intro-size", "18vw");
+    document.documentElement.style.setProperty(
+        "--about-title-intro-size",
+        `${ABOUT_INTRO_TITLE_MIN_SIZE}vw`
+    );
     document.documentElement.style.setProperty("--about-title-intro-opacity", 1);
     document.documentElement.style.setProperty("--about-image-opacity", 0);
 
@@ -186,7 +219,9 @@ export function setInitialImagePosition() {
     }
 
     if (paralaxText) {
+        paralaxText.style.transformOrigin = "";
         paralaxText.style.transform = "translateY(0)";
+        paralaxText.style.willChange = "";
     }
 
     updatePageScrollbar(state.progress);

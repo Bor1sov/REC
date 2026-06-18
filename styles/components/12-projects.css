@@ -120,9 +120,11 @@
 
     opacity: 1;
 }
-.projects-service{
+
+.projects-service {
     width: auto;
 }
+
 .projects-services-viewport {
     position: relative;
     z-index: 5;
@@ -172,7 +174,6 @@
     display: flex;
     align-items: flex-start;
     gap: 18px;
-
 
     color: #fff;
     font-family: "Holgada", sans-serif;
@@ -330,7 +331,6 @@
 .project-card__hover-bottom {
     max-width: 94%;
     max-height: 62%;
-    /* overflow: hidden; */
 }
 
 .project-card__hover-title {
@@ -487,29 +487,6 @@
     background-repeat: no-repeat;
 }
 
-.project-detail__close {
-    position: absolute;
-    top: 22px;
-    right: 28px;
-
-    width: 40px;
-    height: 40px;
-
-    border: 0;
-    background: transparent;
-
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 36px;
-    line-height: 1;
-
-    cursor: pointer;
-    z-index: 3;
-}
-
-.project-detail__close:hover {
-    color: #fff;
-}
-
 .project-detail__top {
     position: relative;
 
@@ -581,15 +558,56 @@
 }
 
 .project-detail__scrollbar {
-    display: none;
+    position: absolute;
+    top: 0;
+    right: 6%;
+
+    width: 3px;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.22);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.25s ease;
+}
+
+.project-detail__text-wrap.has-scroll .project-detail__scrollbar {
+    opacity: 1;
 }
 
 .project-detail__scrollbar::after {
-    content: none;
+    content: "";
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+
+    width: 12px;
+    height: 12px;
+
+    border-right: 2px solid rgba(255, 255, 255, 0.9);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.9);
+
+    transform: translateX(50%) rotate(45deg);
 }
 
 .project-detail__scrollbar-fill {
-    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: block;
+
+    width: 100%;
+    height: 0%;
+
+    background: #fff;
+
+    transform: translateY(0);
+    transition:
+        height 0.08s linear,
+        transform 0.08s linear;
 }
 
 .project-detail__description {
@@ -1288,7 +1306,6 @@ body.projects-request-open .projects-arrow {
     --projects-white-texture: url("../../assets/adobe_126953722.jpg");
 }
 
-/* Текстура для белых текстовых элементов страницы, кроме открытой карточки */
 .projects-page .projects__subtitle,
 .projects-page .projects-service,
 .projects-page .projects-section__head h2,
@@ -1309,13 +1326,11 @@ body.projects-request-open .projects-arrow {
     background-clip: text;
 }
 
-/* Красные точки в бегущей строке оставляем красными */
 .projects-page .projects-service span {
     background-image: none;
     background: red;
 }
 
-/* Кнопки "Оставить заявку" с текстурой */
 .projects-page .projects-section__head button {
     position: relative;
     overflow: hidden;
@@ -1349,7 +1364,6 @@ body.projects-request-open .projects-arrow {
     -webkit-text-fill-color: #111 !important;
 }
 
-/* Popup поля и подписи — тёмная текстура поверх светлой формы */
 .projects-page .projects-request-popup__title,
 .projects-page .projects-request-form__label,
 .projects-page .projects-request-form__field input,
@@ -1358,7 +1372,6 @@ body.projects-request-open .projects-arrow {
     filter: brightness(0.2) contrast(1.2);
 }
 
-/* Кнопка отправки без текстурного текста, чтобы не мерцала */
 .projects-page .projects-request-form__submit {
     background-image: none !important;
     background: transparent !important;
@@ -1381,7 +1394,6 @@ body.projects-request-open .projects-arrow {
     filter: none !important;
 }
 
-/* Белая стрелка скролла с текстурой */
 .projects-page .projects-arrow {
     border-right-color: transparent;
     border-bottom-color: transparent;
@@ -1407,7 +1419,6 @@ body.projects-request-open .projects-arrow {
         linear-gradient(#000 0 0) bottom / 100% 2px no-repeat;
 }
 
-/* Текст при наведении на карточки — без текстуры */
 .projects-page .project-card__hover,
 .projects-page .project-card__hover-top,
 .projects-page .project-card__hover-bottom,
@@ -1517,6 +1528,7 @@ body.projects-request-open .projects-arrow {
 .projects-page .projects-request-form__check input[type="checkbox"]:checked + span::after {
     opacity: 1;
 }
+
 .projects-page .project-detail__request {
     transition:
         background-color 0.35s ease,
@@ -1529,6 +1541,7 @@ body.projects-request-open .projects-arrow {
     color: #111 !important;
     -webkit-text-fill-color: #111 !important;
 }
+
 /* =========================================================
    REQUEST POPUP INPUTS / PLACEHOLDERS FIX
    ========================================================= */

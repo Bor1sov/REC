@@ -1,0 +1,177 @@
+@keyframes mainLogoPulseWhite {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.25);
+    }
+
+    50% {
+        transform: scale(1.07);
+        box-shadow: 0 0 26px rgba(255, 255, 255, 0.85);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.25);
+    }
+}
+
+@keyframes mainLogoPulseRed {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0.3);
+    }
+
+    50% {
+        transform: scale(1.07);
+        box-shadow: 0 0 28px rgba(255, 0, 0, 0.9);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 0, 0, 0.3);
+    }
+}
+
+.main-container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-image: url("../../assets/main-background.jpg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease;
+    overflow: hidden;
+}
+
+.main-container.show {
+    opacity: 1;
+}
+
+.logo-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    z-index: 999;
+    cursor: pointer;
+    transition: transform 0.8s cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+.main__container__logo {
+    width: 75px;
+    height: 75px;
+    border: 25px solid rgb(209, 33, 33);
+    border-radius: 50%;
+    opacity: 0.8;
+
+    animation: mainLogoPulseRed 2.2s ease-in-out infinite;
+
+    transition:
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        transform 0.12s ease;
+
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+    flex: 0 0 auto;
+}
+
+.main__container__logo.is-red {
+    border-color: rgb(237, 14, 14);
+    animation: mainLogoPulseRed 2.2s ease-in-out infinite;
+}
+
+.main__container__logo.is-pressed {
+    transform: scale(0.88);
+}
+
+.main__container__logo[style*="fixed"] {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+}
+
+.logo-text {
+    position: absolute;
+    left: 90px;
+    top: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    max-width: 0;
+    margin-left: 15%;
+    margin-top: 20%;
+
+    opacity: 0;
+    transform: translateY(-50%);
+
+    transition:
+        max-width 2.4s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 1.4s ease;
+}
+
+.logo-top {
+    display: flex;
+    line-height: 1;
+    gap: 0;
+    margin: 0 0 0 -12px;
+    padding: 0;
+    overflow: visible;
+}
+
+.rec {
+    font-family: "Holgada",sans-serif;
+    font-weight: 500;
+    font-size: 80px;
+    letter-spacing: -6px;
+    transform: scaleX(0.9);
+    color: #e6e6e6;
+    margin: 0;
+    padding: 0;
+}
+
+.studio {
+    font-family: "Holgada",sans-serif;
+    font-weight: 200;
+    font-size: 80px;
+    letter-spacing: -8px;
+    transform: scaleX(0.8);
+    color: #e6e6e6;
+    margin: 0 0 0 -35px;
+    padding: 0;
+}
+
+.logo-sub {
+    font-family: "Holgada",sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: 25%;
+    color: #fff;
+    margin-top: 6px;
+    transform: scaleX(1);
+}
+
+.logo-wrapper.logo-shifted {
+    transform: translate(calc(-50% - 220px), -50%);
+}
+
+.logo-wrapper.text-visible .logo-text {
+    max-width: 500px;
+    opacity: 1;
+}
+
+.logo-wrapper.corner-position {
+    position: fixed !important;
+    top: 20px !important;
+    left: 20px !important;
+    transform: translate(0, 0) scale(0.5) !important;
+    z-index: 10000 !important;
+}

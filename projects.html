@@ -23,7 +23,6 @@
       </div>
     </section>
 
-
     <section class="settings">
       <button class="settings__lang-btn">RU</button>
       <button class="settings__valume-btn">
@@ -34,6 +33,7 @@
         />
       </button>
     </section>
+
     <section class="content content--page projects-content">
       <div class="projects-bg">
         <img
@@ -375,10 +375,6 @@
         </div>
 
         <div class="project-detail__content">
-          <button class="project-detail__close" type="button" aria-label="Закрыть">
-            ×
-          </button>
-
           <div class="project-detail__top">
             <h2 class="project-detail__title"></h2>
 
@@ -416,7 +412,11 @@
           <div class="project-detail__bottom">
             <button type="button" class="project-detail__teaser">Тизер</button>
             <button type="button" class="project-detail__nav"></button>
-            <button type="button" class="project-detail__nav"></button>
+            <button
+              type="button"
+              class="project-detail__nav project-detail__nav--close"
+              aria-label="Закрыть карточку проекта"
+            ></button>
             <button type="button" class="project-detail__nav"></button>
             <button
               type="button"

@@ -1,0 +1,140 @@
+<?php
+/**
+ * Template Name: REC Contacts
+ *
+ * @package RecStudio
+ */
+
+get_header();
+?>
+<section class="menu">
+      <a class="menu__logo-cont" href="<?php echo esc_url( home_url( '/' ) ); ?>"></a>
+
+      <div class="menu-block" onclick="window.location.href='<?php echo esc_url( home_url( '/' ) ); ?>'">
+        <div class="menu-text">МЕНЮ</div>
+
+        <button class="burger" type="button" aria-label="Вернуться в меню">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </section>
+
+
+    <section class="settings">
+      <button class="settings__lang-btn">RU</button>
+      <button class="settings__valume-btn">
+        <img
+          src="<?php echo esc_url( rec_theme_asset( 'assets/sound-on.png' ) ); ?>"
+          class="settings__valume-btn__img"
+          alt="volume"
+        />
+      </button>
+    </section>
+    <section class="content contacts">
+      <div class="contacts__inner">
+        <div class="contacts__map">
+          <div style="position: relative; overflow: hidden">
+            <a
+              href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps"
+              style="color: #eee; font-size: 12px; position: absolute; top: 0"
+            >
+              Москва
+            </a>
+
+            <a
+              href="https://yandex.ru/maps/213/moscow/house/elektrolitny_proyezd_3s2/Z04YcAZnSkEPQFtvfXp2dH5nZA==/?indoorLevel=1&ll=37.617348%2C55.675240&utm_medium=mapframe&utm_source=maps&z=17.18"
+              style="color: #eee; font-size: 12px; position: absolute; top: 14px"
+            >
+              Электролитный проезд, 3с2 — Яндекс Карты
+            </a>
+
+            <iframe
+              src="https://yandex.ru/map-widget/v1/?indoorLevel=1&ll=37.617348%2C55.675240&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1NjY2NjA4NhJJ0KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAsINCt0LvQtdC60YLRgNC-0LvQuNGC0L3Ri9C5INC_0YDQvtC10LfQtCwgM9GBMiIKDSl4FkIVcrNeQg%2C%2C&z=17.18"
+              width="100%"
+              height="100%"
+              frameborder="0"
+              allowfullscreen="true"
+              style="position: relative"
+            ></iframe>
+          </div>
+        </div>
+
+        <div class="contacts__info">
+          <div class="contacts__phone">
+            <a
+              href="#"
+              class="contacts__social contacts__social--telegram"
+              aria-label="Telegram"
+            ></a>
+
+            <a
+              href="#"
+              class="contacts__social contacts__social--phone"
+              aria-label="Phone"
+            ></a>
+
+            <a
+              href="#"
+              class="contacts__social contacts__social--play"
+              aria-label="Max"
+            ></a>
+
+            <a class="contacts__phone-number" href="tel:+79253409929">
+              +7 925 340 99 29
+            </a>
+          </div>
+
+          <div class="contacts__subscribe">
+            <span>Подписывайтесь на наши соцсети</span>
+
+            <div class="contacts__socials">
+              <a
+                href="#"
+                class="contacts__social contacts__social--telegram"
+                aria-label="Telegram"
+              ></a>
+
+              <a
+                href="#"
+                class="contacts__social contacts__social--dzen"
+                aria-label="Dzen"
+              ></a>
+
+              <a
+                href="#"
+                class="contacts__social contacts__social--vk"
+                aria-label="VK"
+              ></a>
+
+              <a
+                href="#"
+                class="contacts__social contacts__social--ok"
+                aria-label="OK"
+              ></a>
+            </div>
+          </div>
+
+          <div class="contacts__place">
+            <div class="contacts__pin"></div>
+
+            <div class="contacts__place-content">
+              <h2 class="contacts__place-title">Кинобаза</h2>
+
+              <p class="contacts__address">
+                Москва, Электролитный пр-д, 3, стр. 2
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h1 class="contacts__title">Контакты</h1>
+
+        <div class="contacts__copyright">
+          Made in RECStudio © 2026
+        </div>
+      </div>
+    </section>
+<?php
+get_footer();

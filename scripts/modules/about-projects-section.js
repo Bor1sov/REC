@@ -284,19 +284,94 @@ function buildSection(cards, detailNode, requestNode) {
 function updateDetailTextScrollbar() {
     const { detailText, detailScrollbarFill } = getElements();
 
-    if (!detailText || !detailScrollbarFill) return;
+    const textWrap = document.querySelector(".about-projects-detail__text-wrap");
+    const scrollbar = document.querySelector(".about-projects-detail__scrollbar");
+
+    if (!detailText || !detailScrollbarFill || !textWrap || !scrollbar) return;
 
     const scrollableHeight = detailText.scrollHeight - detailText.clientHeight;
+    const hasScroll = scrollableHeight > 2;
 
-    if (scrollableHeight <= 0) {
+    textWrap.classList.toggle("has-scroll", hasScroll);
+
+    if (!hasScroll) {
         detailScrollbarFill.style.height = "0%";
+        detailScrollbarFill.style.transform = "translateY(0)";
         return;
     }
 
     const progress = detailText.scrollTop / scrollableHeight;
-    const fill = Math.max(0, Math.min(100, progress * 100));
+    const visibleRatio = detailText.clientHeight / detailText.scrollHeight;
 
-    detailScrollbarFill.style.height = `${fill}%`;
+    const fillHeight = Math.max(14, visibleRatio * 100);
+    const maxMove = 100 - fillHeight;
+
+    detailScrollbarFill.style.height = `${fillHeight}%`;
+    detailScrollbarFill.style.transform = `translateY(${progress * maxMove}%)`;
+}
+
+function fitDetailTextHeight() {
+    const detail = document.querySelector(".about-projects-detail");
+    const content = document.querySelector(".about-projects-detail__content");
+    const top = document.querySelector(".about-projects-detail__top");
+    const textWrap = document.querySelector(".about-projects-detail__text-wrap");
+    const meta = document.querySelector(".about-projects-detail__meta");
+    const status = document.querySelector(".about-projects-detail__status");
+    const bottom = document.querySelector(".about-projects-detail__bottom");
+
+    if (
+        !detail ||
+        !detail.classList.contains("is-open") ||
+        !content ||
+        !top ||
+        !textWrap ||
+        !meta ||
+        !status ||
+        !bottom
+    ) {
+        return;
+    }
+
+    textWrap.style.removeProperty("--about-projects-detail-text-height");
+
+    const textWrapStyles = window.getComputedStyle(textWrap);
+    const contentStyles = window.getComputedStyle(content);
+    const defaultHeight = textWrap.getBoundingClientRect().height;
+    const contentPaddingTop = Number.parseFloat(contentStyles.paddingTop) || 0;
+    const textWrapMarginTop = Number.parseFloat(textWrapStyles.marginTop) || 0;
+    const safetyGap = 18;
+
+    const usedHeight =
+        contentPaddingTop +
+        top.getBoundingClientRect().height +
+        textWrapMarginTop +
+        meta.getBoundingClientRect().height +
+        status.getBoundingClientRect().height +
+        bottom.getBoundingClientRect().height +
+        safetyGap;
+
+    const availableHeight = content.clientHeight - usedHeight;
+    const fittedHeight = Math.max(0, Math.min(defaultHeight, availableHeight));
+
+    textWrap.style.setProperty(
+        "--about-projects-detail-text-height",
+        `${fittedHeight}px`
+    );
+
+    const bottomOverflow =
+        bottom.getBoundingClientRect().bottom - detail.getBoundingClientRect().bottom;
+
+    if (bottomOverflow > 0) {
+        textWrap.style.setProperty(
+            "--about-projects-detail-text-height",
+            `${Math.max(0, fittedHeight - bottomOverflow - safetyGap)}px`
+        );
+    }
+}
+
+function updateDetailLayout() {
+    fitDetailTextHeight();
+    updateDetailTextScrollbar();
 }
 
 function getCurrentDetailProjectTitle() {
@@ -356,7 +431,11 @@ function openDetail(card) {
     detail.setAttribute("aria-hidden", "false");
     document.body.classList.add("about-projects-detail-open");
 
-    requestAnimationFrame(updateDetailTextScrollbar);
+    requestAnimationFrame(() => {
+        updateDetailLayout();
+
+        requestAnimationFrame(updateDetailLayout);
+    });
 }
 
 function closeDetail() {
@@ -366,6 +445,10 @@ function closeDetail() {
 
     detail.classList.remove("is-open");
     detail.setAttribute("aria-hidden", "true");
+    detail.style.removeProperty("--about-projects-detail-text-height");
+    document
+        .querySelector(".about-projects-detail__text-wrap")
+        ?.style.removeProperty("--about-projects-detail-text-height");
     document.body.classList.remove("about-projects-detail-open");
 }
 
@@ -453,6 +536,16 @@ function initInteractions() {
         });
 
         detail.dataset.overlayReady = "true";
+    }
+
+    if (detail && detail.dataset.fitResizeReady !== "true") {
+        window.addEventListener("resize", () => {
+            if (!detail.classList.contains("is-open")) return;
+
+            updateDetailLayout();
+        });
+
+        detail.dataset.fitResizeReady = "true";
     }
 
     if (detailText && detailText.dataset.scrollbarReady !== "true") {

@@ -1,0 +1,89 @@
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-thin.otf") format("opentype");
+    font-weight: 100;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-thin-italic.otf") format("opentype");
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-light.otf") format("opentype");
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-light-italic.otf") format("opentype");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-regular.otf") format("opentype");
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-regular-italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-medium.otf") format("opentype");
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-medium-italic.otf") format("opentype");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-bold.otf") format("opentype");
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-bold-italic.otf") format("opentype");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-black.otf") format("opentype");
+    font-weight: 900;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Holgada";
+    src: url("../../assets/fonts/holgada-black-italic.otf") format("opentype");
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}

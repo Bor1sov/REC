@@ -1,0 +1,22 @@
+/*
+Theme Name: REC Studio
+Author: REC Studio
+Description: Интерактивная тема WordPress для сайта REC Studio.
+Version: 1.0.0
+Requires at least: 6.4
+Requires PHP: 7.4
+Text Domain: rec-studio
+*/
+
+@import url("./styles/style.css");
+
+.rec-wp-content {
+    width: min(920px, calc(100% - 48px));
+    margin: 80px auto;
+    color: #fff;
+    font-family: "Holgada", sans-serif;
+}
+
+.rec-wp-content a {
+    color: inherit;
+}
