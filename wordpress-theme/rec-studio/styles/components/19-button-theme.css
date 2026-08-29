@@ -1,0 +1,218 @@
+/* =========================================================
+   UNIFIED BUTTON THEME
+   Two button types only: white filled and transparent framed.
+   ========================================================= */
+
+:root {
+    --rec-button-white: #fff;
+    --rec-button-black: #111;
+    --rec-button-border: rgba(255, 255, 255, 0.7);
+    --rec-button-border-hover: rgba(255, 255, 255, 0.98);
+    --rec-button-glow: 0 0 16px rgba(255, 255, 255, 0.42), 0 0 34px rgba(255, 255, 255, 0.2);
+    --rec-button-glow-strong: 0 0 20px rgba(255, 255, 255, 0.62), 0 0 48px rgba(255, 255, 255, 0.28);
+}
+
+/* Filled white buttons */
+.projects-section__head button,
+.projects-open-request,
+.projects-page .projects-section__head button,
+.project-detail__request,
+.projects-page .project-detail__request,
+.projects-request-form__submit,
+.projects-page .projects-request-form__submit,
+.help-price-form__submit,
+.help-request-form__submit,
+.help-page .help-request-form__submit,
+.about-projects-request-btn,
+.about-projects-detail__request,
+.about-projects-request-form__submit,
+.about-help-price-form__submit,
+.about-help-request-form__submit,
+.about-page .about-help-request-form__submit,
+.news-show-more {
+    border: 1px solid var(--rec-button-white) !important;
+    background: var(--rec-button-white) !important;
+    color: var(--rec-button-black) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition:
+        background-color 0.28s ease,
+        border-color 0.28s ease,
+        color 0.28s ease,
+        box-shadow 0.28s ease,
+        filter 0.28s ease,
+        transform 0.28s ease !important;
+}
+
+.projects-section__head button:hover,
+.projects-open-request:hover,
+.projects-page .projects-section__head button:hover,
+.project-detail__request:hover,
+.projects-page .project-detail__request:hover,
+.projects-request-form__submit:hover,
+.projects-page .projects-request-form__submit:hover,
+.help-price-form__submit:hover,
+.help-request-form__submit:hover,
+.help-page .help-request-form__submit:hover,
+.about-projects-request-btn:hover,
+.about-projects-detail__request:hover,
+.about-projects-request-form__submit:hover,
+.about-help-price-form__submit:hover,
+.about-help-request-form__submit:hover,
+.about-page .about-help-request-form__submit:hover,
+.news-show-more:hover {
+    border-color: var(--rec-button-white) !important;
+    background: var(--rec-button-white) !important;
+    color: var(--rec-button-black) !important;
+    box-shadow: var(--rec-button-glow-strong) !important;
+    filter: brightness(1.03) !important;
+}
+
+/* Transparent framed buttons */
+.about-projects-all,
+.about-help-card-button,
+.help-card-button,
+.about-news-all-link,
+.project-detail__bottom button,
+.about-projects-detail__bottom button,
+.help-detail__download-link,
+.help-detail__download-price,
+.about-help-detail__download-link,
+.about-help-detail__download-price,
+.news-footer-controls button,
+.news-back-to-list,
+.news-scroll-to-top,
+.news-tabs__item {
+    border: 1px solid var(--rec-button-border) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    color: var(--rec-button-white) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition:
+        background-color 0.28s ease,
+        border-color 0.28s ease,
+        color 0.28s ease,
+        box-shadow 0.28s ease,
+        filter 0.28s ease,
+        transform 0.28s ease !important;
+}
+
+.about-projects-all:hover,
+.about-help-card-button:hover,
+.about-help-card-button:focus-visible,
+.help-card-button:hover,
+.help-card-button:focus-visible,
+.about-news-all-link:hover,
+.about-news-all-link:focus-visible,
+.project-detail__bottom button:hover,
+.about-projects-detail__bottom button:hover,
+.help-detail__download-link:hover,
+.help-detail__download-price:hover,
+.about-help-detail__download-link:hover,
+.about-help-detail__download-price:hover,
+.news-footer-controls button:hover,
+.news-back-to-list:hover,
+.news-scroll-to-top:hover,
+.news-tabs__item:hover,
+.news-tabs__item.is-active {
+    border-color: var(--rec-button-border-hover) !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+    color: var(--rec-button-white) !important;
+    box-shadow: var(--rec-button-glow) !important;
+}
+
+.project-detail__bottom button:focus,
+.project-detail__bottom button:focus-visible,
+.about-projects-detail__bottom button:focus,
+.about-projects-detail__bottom button:focus-visible,
+.about-help-card-button:focus,
+.about-help-card-button:focus-visible,
+.help-card-button:focus,
+.help-card-button:focus-visible,
+.about-news-all-link:focus,
+.about-news-all-link:focus-visible,
+.news-footer-controls button:focus,
+.news-footer-controls button:focus-visible,
+.news-back-to-list:focus,
+.news-back-to-list:focus-visible,
+.news-scroll-to-top:focus,
+.news-scroll-to-top:focus-visible,
+.news-tabs__item:focus,
+.news-tabs__item:focus-visible {
+    outline: none !important;
+    border-color: var(--rec-button-border-hover) !important;
+    box-shadow: var(--rec-button-glow) !important;
+}
+/* Stronger crumpled-paper texture for subtitles and buttons */
+.projects-page .projects__subtitle,
+.about-page .about-projects__subtitle,
+.help-page .help__subtitle,
+.about-page .about-help__subtitle {
+    background-image:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(205, 205, 205, 0.82)),
+        url("../../assets/white-texture-creases.png"),
+        url("../../assets/white-texture.jpg") !important;
+    background-size: cover, 460px auto, cover !important;
+    background-position: center, center, center !important;
+    background-repeat: no-repeat, repeat, no-repeat !important;
+    background-blend-mode: multiply, multiply, normal !important;
+
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+}
+
+.projects-section__head button,
+.projects-open-request,
+.projects-page .projects-section__head button,
+.project-detail__request,
+.projects-page .project-detail__request,
+.projects-request-form__submit,
+.projects-page .projects-request-form__submit,
+.help-price-form__submit,
+.help-request-form__submit,
+.help-page .help-request-form__submit,
+.about-projects-request-btn,
+.about-projects-detail__request,
+.about-projects-request-form__submit,
+.about-help-price-form__submit,
+.about-help-request-form__submit,
+.about-page .about-help-request-form__submit,
+.news-show-more {
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.86), rgba(218, 218, 218, 0.84)),
+        url("../../assets/white-texture-creases.png"),
+        url("../../assets/white-texture.jpg") !important;
+    background-size: cover, 360px auto, cover !important;
+    background-position: center, center, center !important;
+    background-repeat: no-repeat, repeat, no-repeat !important;
+    background-blend-mode: normal, multiply, normal !important;
+}
+
+.projects-section__head button:hover,
+.projects-open-request:hover,
+.projects-page .projects-section__head button:hover,
+.project-detail__request:hover,
+.projects-page .project-detail__request:hover,
+.projects-request-form__submit:hover,
+.projects-page .projects-request-form__submit:hover,
+.help-price-form__submit:hover,
+.help-request-form__submit:hover,
+.help-page .help-request-form__submit:hover,
+.about-projects-request-btn:hover,
+.about-projects-detail__request:hover,
+.about-projects-request-form__submit:hover,
+.about-help-price-form__submit:hover,
+.about-help-request-form__submit:hover,
+.about-page .about-help-request-form__submit:hover,
+.news-show-more:hover {
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.9), rgba(208, 208, 208, 0.86)),
+        url("../../assets/white-texture-creases.png"),
+        url("../../assets/white-texture.jpg") !important;
+    background-size: cover, 340px auto, cover !important;
+    background-position: center, center, center !important;
+    background-repeat: no-repeat, repeat, no-repeat !important;
+    background-blend-mode: normal, multiply, normal !important;
+}

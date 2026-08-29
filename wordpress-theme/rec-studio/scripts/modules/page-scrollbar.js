@@ -9,48 +9,32 @@ function getSectionsCount() {
     return Math.max(1, Number(state.pageSectionsCount || 1));
 }
 
-function getNormalizedProgress(progressValue) {
-    const stops = state.pageProgressStops;
-
-    if (!Array.isArray(stops) || stops.length < 2) {
-        const maxProgress = Math.max(1, Number(state.pageProgressMax || 1));
-
-        return Math.max(0, Math.min(1, progressValue / maxProgress));
-    }
-
-    const firstStop = Number(stops[0]);
-    const lastStop = Number(stops[stops.length - 1]);
-    const progress = Math.max(firstStop, Math.min(lastStop, progressValue));
-    const instantSegments = Array.isArray(state.pageProgressInstantSegments)
-        ? state.pageProgressInstantSegments
+function getProgressRange() {
+    const stops = Array.isArray(state.pageProgressStops)
+        ? state.pageProgressStops.map(Number).filter(Number.isFinite)
         : [];
 
-    if (progress <= firstStop) return 0;
-    if (progress >= lastStop) return 1;
-
-    for (let index = stops.length - 2; index >= 0; index -= 1) {
-        if (
-            instantSegments.includes(index) &&
-            progress >= Number(stops[index])
-        ) {
-            return (index + 1) / (stops.length - 1);
-        }
+    if (stops.length >= 2) {
+        return {
+            first: 0,
+            last: Math.max(stops[stops.length - 1], 1),
+            stops
+        };
     }
 
-    for (let index = 0; index < stops.length - 1; index += 1) {
-        const start = Number(stops[index]);
-        const end = Number(stops[index + 1]);
+    return {
+        first: 0,
+        last: Math.max(1, Number(state.pageProgressMax || 1)),
+        stops: []
+    };
+}
 
-        if (progress > end) continue;
+function getNormalizedProgress(progressValue) {
+    const { first, last } = getProgressRange();
+    const distance = Math.max(last - first, 0.0001);
+    const progress = Math.max(first, Math.min(last, progressValue));
 
-        const localProgress = end > start
-            ? (progress - start) / (end - start)
-            : 0;
-
-        return (index + localProgress) / (stops.length - 1);
-    }
-
-    return 1;
+    return Math.max(0, Math.min(1, (progress - first) / distance));
 }
 
 function getScrollbarElements() {
@@ -112,19 +96,28 @@ function renderSegments() {
     if (!scrollbarSegments) return;
 
     const sectionsCount = getSectionsCount();
+    const { first, last, stops } = getProgressRange();
+    const distance = Math.max(last - first, 0.0001);
 
     scrollbarSegments.innerHTML = "";
 
     if (sectionsCount <= 1) return;
 
-    for (let i = 1; i < sectionsCount; i += 1) {
+    const segmentPositions = stops.length >= 2
+        ? stops.slice(1, -1).map((stop) => ((stop - first) / distance) * 100)
+        : Array.from(
+            { length: sectionsCount - 1 },
+            (_, index) => ((index + 1) / sectionsCount) * 100
+        );
+
+    segmentPositions.forEach((position) => {
         const segment = document.createElement("span");
 
         segment.className = "page-scrollbar__segment";
-        segment.style.top = `${(i / sectionsCount) * 100}%`;
+        segment.style.top = `${Math.max(0, Math.min(100, position))}%`;
 
         scrollbarSegments.appendChild(segment);
-    }
+    });
 }
 
 export function initPageScrollbar() {
@@ -145,18 +138,14 @@ export function updatePageScrollbar(progressValue = 0) {
 
     const progress = getNormalizedProgress(progressValue);
 
-    scrollbarFill.style.height = `${progress * 100}%`;
-
-    const sectionsCount = getSectionsCount();
-    const currentSegment = Math.min(
-        sectionsCount - 1,
-        Math.floor(progress * sectionsCount)
-    );
+    scrollbarFill.style.transform = `translateZ(0) scaleY(${Math.min(1, Math.max(0, progress))})`;
 
     scrollbarSegments
         ?.querySelectorAll(".page-scrollbar__segment")
-        .forEach((segment, index) => {
-            segment.classList.toggle("is-passed", index < currentSegment);
+        .forEach((segment) => {
+            const segmentProgress = (parseFloat(segment.style.top) || 0) / 100;
+
+            segment.classList.toggle("is-passed", progress >= segmentProgress);
         });
 }
 

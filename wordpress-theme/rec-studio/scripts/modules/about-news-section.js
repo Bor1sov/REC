@@ -17,6 +17,15 @@ function mapRange(value, inMin, inMax, outMin, outMax) {
     const progress = clamp((value - inMin) / (inMax - inMin), 0, 1);
     return outMin + (outMax - outMin) * progress;
 }
+function smoothstep(value) {
+    const x = clamp(value, 0, 1);
+    return x * x * (3 - 2 * x);
+}
+
+function mapRangeSmooth(value, inMin, inMax, outMin, outMax) {
+    const progress = smoothstep((value - inMin) / (inMax - inMin));
+    return outMin + (outMax - outMin) * progress;
+}
 
 function getElements() {
     return {
@@ -429,7 +438,7 @@ export function updateAboutNewsSection(globalProgress) {
 
     if (!section) return;
 
-    const revealY = mapRange(
+    const revealY = mapRangeSmooth(
         globalProgress,
         ABOUT_NEWS_REVEAL_START,
         ABOUT_NEWS_START,

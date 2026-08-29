@@ -8,7 +8,7 @@
 get_header();
 ?>
 <section class="menu">
-      <a class="menu__logo-cont" href="<?php echo esc_url( home_url( '/' ) ); ?>"></a>
+      <a class="menu__logo-cont" href="<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>"></a>
 
       <div class="menu-block" onclick="window.location.href='<?php echo esc_url( home_url( '/' ) ); ?>'">
         <div class="menu-text">МЕНЮ</div>
@@ -35,7 +35,7 @@ get_header();
     <section class="content content--page projects-content">
       <div class="projects-bg">
         <img
-          src="<?php echo esc_url( rec_theme_asset( 'assets/projects-mobile.jpg' ) ); ?>"
+          src="<?php echo esc_url( rec_theme_asset( 'assets/b.jpg' ) ); ?>"
           class="projects-bg__img"
           alt="Наши проекты"
           decoding="async"
@@ -57,32 +57,52 @@ get_header();
               <div class="projects-services">
                 <div class="projects-service">
                   <span></span>
-                  <p>Свои<br />сценарии</p>
+                  <p>свои<br />сценарии</p>
                 </div>
 
                 <div class="projects-service">
                   <span></span>
-                  <p>Осуществить<br />разработку<br />вашего проекта</p>
+                  <p>осуществить<br />разработку<br />вашего проекта</p>
                 </div>
 
                 <div class="projects-service">
                   <span></span>
-                  <p>Участвовать<br />в совместном<br />производстве</p>
+                  <p>участвовать<br />в совместном<br />производстве</p>
+                </div>
+
+                <div class="projects-service">
+                  <span></span>
+                  <p>кино, сериалы<br />и тв-проекты</p>
+                </div>
+
+                <div class="projects-service">
+                  <span></span>
+                  <p>док.фильмы</p>
                 </div>
 
                 <div class="projects-service" aria-hidden="true">
                   <span></span>
-                  <p>Свои<br />сценарии</p>
+                  <p>свои<br />сценарии</p>
                 </div>
 
                 <div class="projects-service" aria-hidden="true">
                   <span></span>
-                  <p>Осуществить<br />разработку<br />вашего проекта</p>
+                  <p>осуществить<br />разработку<br />вашего проекта</p>
                 </div>
 
                 <div class="projects-service" aria-hidden="true">
                   <span></span>
-                  <p>Участвовать<br />в совместном<br />производстве</p>
+                  <p>участвовать<br />в совместном<br />производстве</p>
+                </div>
+
+                <div class="projects-service" aria-hidden="true">
+                  <span></span>
+                  <p>кино, сериалы<br />и тв-проекты</p>
+                </div>
+
+                <div class="projects-service" aria-hidden="true">
+                  <span></span>
+                  <p>док.фильмы</p>
                 </div>
               </div>
             </div>
@@ -315,6 +335,145 @@ get_header();
             >
               <img src="<?php echo esc_url( rec_theme_asset( 'assets/atamanka.jpg' ) ); ?>" alt="Атаманка из Адамовки" />
             </article>
+
+            <article
+              class="project-card"
+              data-project-title="ПРИЕМНАЯ АДВОКАТА"
+              data-project-genre="Документальный сериал"
+              data-project-note="проект в разработке"
+              data-project-age="16+"
+              data-project-format="Сериал"
+              data-project-duration="8 серий"
+              data-project-description="Документальный сериал о людях, для которых профессия становится ежедневным выбором между законом, ответственностью и человеческими историями."
+            >
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/Док/Адвокат.jpg' ) ); ?>" alt="Приемная адвоката" />
+            </article>
+          </div>
+        </section>
+
+        <section class="projects-section projects-section--cinema">
+          <div class="projects-section__head">
+            <h2>Кино</h2>
+            <button type="button" class="projects-open-request">
+              Оставить заявку
+            </button>
+          </div>
+
+          <div class="projects-grid projects-grid--cinema">
+            <article
+              class="project-card"
+              data-project-title="КАК Я ВАС ВСЕХ"
+              data-project-genre="Художественный фильм"
+              data-project-note="проект в разработке"
+              data-project-age="16+"
+              data-project-format="Кино"
+              data-project-duration="Полный метр"
+              data-project-description="Кинопроект находится в разработке. Сценарий, визуальное решение и производственный пакет готовятся к следующему этапу."
+            >
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/Кино/Как я вас всех.jpg' ) ); ?>" alt="Как я вас всех" />
+            </article>
+
+            <article
+              class="project-card"
+              data-project-title="ТРОЕ В БЕНТЛИ"
+              data-project-genre="Художественный фильм"
+              data-project-note="проект в разработке"
+              data-project-age="16+"
+              data-project-format="Кино"
+              data-project-duration="Полный метр"
+              data-project-description="Кинопроект находится в разработке. Сценарий, визуальное решение и производственный пакет готовятся к следующему этапу."
+            >
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/Кино/Трое в бентли.jpg' ) ); ?>" alt="Трое в Бентли" />
+            </article>
+          </div>
+        </section>
+
+        <section class="projects-section projects-section--documentary">
+          <div class="projects-section__head">
+            <h2>док. фильмы</h2>
+            <button type="button" class="projects-open-request">
+              Оставить заявку
+            </button>
+          </div>
+
+          <div class="projects-grid projects-grid--documentary">
+            <article
+              class="project-card"
+              data-project-title="ВЕЛИКИЕ ЭМКИЗЫ"
+              data-project-genre="Документальный фильм"
+              data-project-note="проект в разработке"
+              data-project-age="12+"
+              data-project-format="Документальный фильм"
+              data-project-duration="Полный метр"
+              data-project-description="Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки."
+            >
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/Док/Великие эмкизы.jpg' ) ); ?>" alt="Великие эмкизы" />
+            </article>
+
+            <article
+              class="project-card"
+              data-project-title="ВЕТЕР И СКАТ"
+              data-project-genre="Документальный фильм"
+              data-project-note="проект в разработке"
+              data-project-age="12+"
+              data-project-format="Документальный фильм"
+              data-project-duration="Полный метр"
+              data-project-description="Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки."
+            >
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/Док/Ветер и скат.jpg' ) ); ?>" alt="Ветер и скат" />
+            </article>
+
+            <article
+              class="project-card"
+              data-project-title="ГРОМКОЕ ДЕЛО"
+              data-project-genre="Документальный фильм"
+              data-project-note="проект в разработке"
+              data-project-age="12+"
+              data-project-format="Документальный фильм"
+              data-project-duration="Полный метр"
+              data-project-description="Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки."
+            >
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/Док/Громкое дело.jpg' ) ); ?>" alt="Громкое дело" />
+            </article>
+
+            <article
+              class="project-card"
+              data-project-title="ДВИЖНИЕ ФОРМЫ"
+              data-project-genre="Документальный фильм"
+              data-project-note="проект в разработке"
+              data-project-age="12+"
+              data-project-format="Документальный фильм"
+              data-project-duration="Полный метр"
+              data-project-description="Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки."
+            >
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/Док/Движние формы.jpg' ) ); ?>" alt="Движние формы" />
+            </article>
+
+            <article
+              class="project-card"
+              data-project-title="ЖАЖДА ТВОРИТЬ"
+              data-project-genre="Документальный фильм"
+              data-project-note="проект в разработке"
+              data-project-age="12+"
+              data-project-format="Документальный фильм"
+              data-project-duration="Полный метр"
+              data-project-description="Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки."
+            >
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/Док/Жажда творить.jpg' ) ); ?>" alt="Жажда творить" />
+            </article>
+
+            <article
+              class="project-card"
+              data-project-title="РУБЕЖИ"
+              data-project-genre="Документальный фильм"
+              data-project-note="проект в разработке"
+              data-project-age="12+"
+              data-project-format="Документальный фильм"
+              data-project-duration="Полный метр"
+              data-project-description="Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки."
+            >
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/Док/Рубежи.jpg' ) ); ?>" alt="Рубежи" />
+            </article>
           </div>
         </section>
 
@@ -337,20 +496,7 @@ get_header();
               data-project-duration="56 выпусков"
               data-project-description="Познавательный проект для детей, где сложные вопросы объясняются легко, ярко и с юмором. Каждый выпуск помогает юным зрителям узнавать новое и смотреть на мир шире."
             >
-              <img src="<?php echo esc_url( rec_theme_asset( 'assets/uznavayka.jpg' ) ); ?>" alt="Узнавай-Ка" />
-            </article>
-
-            <article
-              class="project-card"
-              data-project-title="ЛЮБИМОЕ ДЕЛО"
-              data-project-genre="Реалити-шоу выходного дня"
-              data-project-note="проект в разработке"
-              data-project-age="12+"
-              data-project-format="ТВ-проект"
-              data-project-duration="52 мин."
-              data-project-description="Проект о людях, которые нашли своё призвание. Герои рассказывают о профессиях, увлечениях и деле, которое стало для них не просто работой, а частью жизни."
-            >
-              <img src="<?php echo esc_url( rec_theme_asset( 'assets/lyubimoe-delo.jpg' ) ); ?>" alt="Любимое дело" />
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/ТВ/Узнавайка.jpg' ) ); ?>" alt="Узнавай-Ка" />
             </article>
 
             <article
@@ -363,7 +509,7 @@ get_header();
               data-project-duration="56 выпусков"
               data-project-description="Тёплый и важный проект о семье, поддержке и ответственности. В центре внимания — истории, которые помогают увидеть ценность заботы, доверия и участия."
             >
-              <img src="<?php echo esc_url( rec_theme_asset( 'assets/semeyny-patrul.jpg' ) ); ?>" alt="Семейный патруль" />
+              <img src="<?php echo esc_url( rec_theme_asset( 'assets/ТВ/Семейный патруль.jpg' ) ); ?>" alt="Семейный патруль" />
             </article>
           </div>
         </section>
@@ -411,13 +557,13 @@ get_header();
 
           <div class="project-detail__bottom">
             <button type="button" class="project-detail__teaser">Тизер</button>
-            <button type="button" class="project-detail__nav"></button>
+            <button type="button" class="project-detail__nav project-detail__nav--prev" aria-label="Предыдущий проект"></button>
             <button
               type="button"
               class="project-detail__nav project-detail__nav--close"
               aria-label="Закрыть карточку проекта"
             ></button>
-            <button type="button" class="project-detail__nav"></button>
+            <button type="button" class="project-detail__nav project-detail__nav--next" aria-label="Следующий проект"></button>
             <button
               type="button"
               class="project-detail__request projects-open-request"

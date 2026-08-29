@@ -1,9 +1,15 @@
 .menu {
-    position: absolute;
+    --menu-edge-offset: 20%;
+
+    position: fixed;
     left: 0;
     top: 0;
+    bottom: 0;
     width: 5%;
     height: 100vh;
+    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
         url("../../assets/main-background.jpg");
@@ -12,6 +18,14 @@
     display: flex;
     flex-direction: column;
     z-index: 999999;
+
+    opacity: 1;
+    visibility: visible;
+    filter: none;
+    transition:
+        opacity 0.95s ease,
+        filter 0.95s ease,
+        visibility 0s linear 0s;
 }
 
 .menu__logo {
@@ -20,7 +34,7 @@
     border: 11px solid rgb(255, 255, 255);
     box-shadow: 0 0 0 rgb(255, 255, 255);
     border-radius: 50%;
-    margin: 20px auto 0;
+    margin: var(--menu-edge-offset) auto 0;
     opacity: 0.8;
     animation: light-menu 10s infinite;
     cursor: pointer;
@@ -38,7 +52,7 @@
     border: 11px solid rgb(255, 0, 0);
     box-shadow: 0 0 0 rgb(255, 0, 0);
     border-radius: 50%;
-    margin: 20px auto 10px auto;
+    margin: var(--menu-edge-offset) auto 10px auto;
     opacity: 0.8;
     animation: logoPulseRed 3.1s ease-in-out infinite;
     cursor: pointer;
@@ -50,7 +64,7 @@
 
 .menu-block {
     margin-top: auto;
-    margin-bottom: 0px;
+    margin-bottom: calc(var(--menu-edge-offset) - 8px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,13 +94,15 @@
         filter 0.25s ease;
 }
 
-.menu-block:hover .menu-text {
-    color: #ff0000;
+.menu-block:hover .menu-text,
+.menu-block:focus-within .menu-text {
+    color: #fff;
     opacity: 1;
     text-shadow:
-        0 0 8px rgba(255, 0, 0, 0.7),
-        0 0 18px rgba(255, 0, 0, 0.45);
-    filter: brightness(1.15);
+        0 0 10px rgba(255, 255, 255, 0.72),
+        0 0 24px rgba(255, 255, 255, 0.42),
+        0 0 42px rgba(255, 255, 255, 0.2);
+    filter: brightness(1.12);
 }
 
 .burger {
@@ -110,11 +126,14 @@
 }
 
 .burger:hover span,
-.menu-block:hover .burger span {
-    background: rgba(255, 255, 255, 0.96);
+.burger:focus-visible span,
+.menu-block:hover .burger span,
+.menu-block:focus-within .burger span {
+    background: #fff;
     box-shadow:
-        0 0 8px rgba(255, 255, 255, 0.35),
-        0 0 16px rgba(255, 255, 255, 0.18);
+        0 0 10px rgba(255, 255, 255, 0.58),
+        0 0 24px rgba(255, 255, 255, 0.34),
+        0 0 42px rgba(255, 255, 255, 0.16);
 }
 
 @keyframes logoPulseRed {
@@ -167,7 +186,38 @@
     animation: logoPulseWhite 3.1s ease-in-out infinite;
 }
 
-/* На index.html лого в меню скрыто, пока JS не разрешит его показать */
+.menu__logo-cont:hover,
+.menu__logo-cont:focus-visible {
+    opacity: 1;
+    outline: none;
+    animation-play-state: paused;
+    filter: brightness(1.12);
+    transform: scale(1.04);
+}
+
+.menu__logo-cont.red-glow:hover,
+.menu__logo-cont.red-glow:focus-visible,
+.menu__logo-cont:not(.white-glow):hover,
+.menu__logo-cont:not(.white-glow):focus-visible {
+    box-shadow:
+        0 0 14px rgba(255, 0, 0, 0.95),
+        0 0 28px rgba(255, 0, 0, 0.7),
+        0 0 50px rgba(255, 0, 0, 0.38) !important;
+}
+
+.menu__logo-cont.white-glow:hover,
+.menu__logo-cont.white-glow:focus-visible {
+    box-shadow:
+        0 0 14px rgba(255, 255, 255, 0.9),
+        0 0 28px rgba(255, 255, 255, 0.64),
+        0 0 50px rgba(255, 255, 255, 0.36) !important;
+}
+
+.menu__logo-cont:active {
+    transform: scale(0.96);
+}
+
+/* Hide menu logo until JS allows it to appear. */
 .main-container:not(.menu-logo-ready) .menu__logo-cont {
     display: none !important;
     opacity: 0 !important;
@@ -175,10 +225,47 @@
     pointer-events: none !important;
 }
 
-/* После реального переноса лого в меню */
+/* Show menu logo after it has moved into the menu. */
 .main-container.menu-logo-ready .menu__logo-cont {
     display: block;
     opacity: 0.8;
     visibility: visible;
     pointer-events: auto;
+}
+/* Keep the left menu hidden until the intro logo has finished moving. */
+.main-container:not(.ui-visible) .menu,
+.main-container.ui-hidden .menu {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    filter: blur(3px);
+}
+
+.main-container.ui-visible .menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    filter: blur(0);
+    transition:
+        opacity 0.95s ease 0.08s,
+        filter 0.95s ease 0.08s,
+        visibility 0s linear 0.08s;
+}
+/* On the main/about intro, reveal the left menu only after the O NAS title has fully arrived. */
+body.about-page:not(.about-title-intro-complete) .main-container .menu {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    filter: blur(3px);
+}
+
+body.about-page.about-title-intro-complete .main-container.ui-visible .menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    filter: blur(0);
+    transition:
+        opacity 0.95s ease 0.08s,
+        filter 0.95s ease 0.08s,
+        visibility 0s linear 0.08s;
 }

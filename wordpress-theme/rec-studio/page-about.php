@@ -1,19 +1,32 @@
 <?php
 /**
- * Template Name: REC About
+ * Template Name: REC Main
  *
  * @package RecStudio
  */
 
 get_header();
 ?>
-<section class="menu">
-      <a class="menu__logo-cont" href="<?php echo esc_url( home_url( '/' ) ); ?>"></a>
+<main class="main-container hidden">
+      <div class="logo-wrapper">
+        <div class="main__container__logo"></div>
 
-      <div class="menu-block" onclick="window.location.href='<?php echo esc_url( home_url( '/' ) ); ?>'">
+        <div class="logo-text">
+          <div class="logo-top">
+            <span class="rec">REC</span><span class="studio">STUDIO</span>
+          </div>
+
+          <div class="logo-sub">PRODUCTION COMPANY</div>
+        </div>
+      </div>
+
+<section class="menu">
+      <a class="menu__logo-cont" href="<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>"></a>
+
+      <div class="menu-block" onclick="window.location.href='<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>'">
         <div class="menu-text">МЕНЮ</div>
 
-        <button class="burger" type="button" aria-label="Вернуться в меню">
+        <button class="burger" type="button" aria-label="Открыть меню">
           <span></span>
           <span></span>
           <span></span>
@@ -69,5 +82,6 @@ get_header();
         <div class="about-contacts-section__loader">Загрузка контактов</div>
       </section>
     </section>
+</main>
 <?php
 get_footer();

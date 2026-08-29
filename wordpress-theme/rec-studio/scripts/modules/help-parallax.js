@@ -2,7 +2,8 @@ import { state } from "./state.js";
 import { updatePageScrollbar } from "./page-scrollbar.js";
 import { getAssetUrl, getPageUrl } from "./runtime.js";
 
-const HELP_MAX_PROGRESS = 2;
+const HELP_MAX_PROGRESS = 2.25;
+const HELP_CARDS_IDLE_START = 1.18;
 
 const detailGroups = {
     support: {
@@ -16,7 +17,7 @@ const detailGroups = {
                     "Презентация проекта",
                     "Библия персонажей"
                 ],
-                image: "./assets/presentation-development.jpg"
+                image: "./assets/Услуги Текстура/Разраб Презентации.jpg"
             },
             {
                 title: "Ки-арт / дизайн",
@@ -31,7 +32,7 @@ const detailGroups = {
                     "Дизайн для социальных сетей",
                     "Разработка сайта"
                 ],
-                image: "./assets/key-art.jpg"
+                image: "./assets/Услуги Текстура/Ки-арт.jpg"
             },
             {
                 title: "Подготовка <br>заявки в: Минкульт,<br> Фонд кино, ИРИ, ПФКИ",
@@ -42,7 +43,7 @@ const detailGroups = {
                     "Проверка уже подготовленного пакета документов",
                     "Консультации"
                 ],
-                image: "./assets/application-preparation.jpg"
+                image: "./assets/Услуги Текстура/Подготовка заявки.jpg"
             },
             {
                 title: "Прокатное удостоверение",
@@ -56,7 +57,7 @@ const detailGroups = {
                     "Запись жесткого диска с DCP и WAV",
                     "Запись кассет HDcam и DVD"
                 ],
-                image: "./assets/distribution-certificate.jpg"
+                image: "./assets/Услуги Текстура/ПрокатУд.jpg"
             },
             {
                 title: "Постпродакшн",
@@ -67,7 +68,7 @@ const detailGroups = {
                     "Монтаж трейлера",
                     "Фильм о фильме"
                 ],
-                image: "./assets/postproduction.jpg"
+                image: "./assets/Услуги Текстура/Постпродакшн.jpg"
             }
         ]
     },
@@ -85,7 +86,7 @@ const detailGroups = {
                     "Креативная концепция",
                     "Сценарии"
                 ],
-                image: "./assets/creative.jpg"
+                image: "./assets/Услуги Текстура/Креатив.jpg"
             },
             {
                 title: "Дизайн",
@@ -103,7 +104,7 @@ const detailGroups = {
                     "Проектирование и производство выставочных и торговых стендов",
                     "POS-материалы"
                 ],
-                image: "./assets/design.jpg"
+                image: "./assets/Услуги Текстура/Дизайн.jpg"
             },
             {
                 title: "Планирование",
@@ -114,7 +115,7 @@ const detailGroups = {
                     "Стратегии",
                     "Бренд-консалтинг"
                 ],
-                image: "./assets/planning.jpg"
+                image: "./assets/Услуги Текстура/Планирование.jpg"
             },
             {
                 title: "Видеосъёмка",
@@ -133,7 +134,7 @@ const detailGroups = {
                     "Репортажная съёмка",
                     "Аэросъёмка"
                 ],
-                image: "./assets/video-production.png"
+                image: "./assets/Услуги Текстура/Видеосъемка.jpg"
             },
             {
                 title: "Фотосъёмка",
@@ -146,7 +147,7 @@ const detailGroups = {
                     "Дополнительный сервис",
                     "Мероприятия"
                 ],
-                image: "./assets/photography.jpg"
+                image: "./assets/Услуги Текстура/Фотосъемка.jpg"
             },
             {
                 title: "Организация мероприятий",
@@ -157,7 +158,7 @@ const detailGroups = {
                     "Спортивные мероприятия",
                     "Проведение презентаций, конференций и других мероприятий"
                 ],
-                image: "./assets/event-management.jpg"
+                image: "./assets/Услуги Текстура/Организация мероприятий.jpg"
             },
             {
                 title: "Интернет-маркетинг",
@@ -169,7 +170,7 @@ const detailGroups = {
                     "Разработка сайтов",
                     "Баинг"
                 ],
-                image: "./assets/internet-marketing.jpg"
+                image: "./assets/Услуги Текстура/Интернет-маркетинг.jpg"
             },
             {
                 title: "СММ",
@@ -180,7 +181,7 @@ const detailGroups = {
                     "Таргетированная реклама",
                     "Работа с блогерами"
                 ],
-                image: "./assets/smm.jpg"
+                image: "./assets/Услуги Текстура/СММ.jpg"
             }
         ]
     }
@@ -297,12 +298,9 @@ function getStageBottomShift(stage) {
     const sectionTopInsideStage = getOffsetTopInside(stage, cardsSection);
     const sectionBottomInsideStage =
         sectionTopInsideStage + cardsSection.offsetHeight;
-
-    const endOffsetFix = 10;
-
     return Math.max(
         0,
-        sectionBottomInsideStage - window.innerHeight - endOffsetFix
+        sectionBottomInsideStage - window.innerHeight
     );
 }
 
@@ -533,6 +531,19 @@ function closeHelpPricePopup(resetForm = false) {
     }
 }
 
+function ensureHelpCardDetailButtons(root = document) {
+    root.querySelectorAll(".help-large-card").forEach((card) => {
+        if (card.querySelector(".help-card-button")) return;
+
+        const button = document.createElement("button");
+
+        button.className = "help-card-button";
+        button.type = "button";
+        button.textContent = "\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435";
+
+        card.appendChild(button);
+    });
+}
 function initHelpDetailCards() {
     const {
         detail,
@@ -541,16 +552,19 @@ function initHelpDetailCards() {
         detailBreadcrumbHome,
         detailBreadcrumbCurrent
     } = getHelpElements();
-    const cards = document.querySelectorAll(".help-large-card");
+    ensureHelpCardDetailButtons();
 
-    cards.forEach((card) => {
-        if (card.dataset.detailReady === "true") return;
+    document.querySelectorAll(".help-card-button").forEach((button) => {
+        if (button.dataset.helpDetailReady === "true") return;
 
-        card.addEventListener("click", () => {
-            openHelpDetail(card);
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            openHelpDetail(button.closest(".help-large-card"));
         });
 
-        card.dataset.detailReady = "true";
+        button.dataset.helpDetailReady = "true";
     });
 
     if (detailArrow && detailArrow.dataset.arrowReady !== "true") {
@@ -821,7 +835,7 @@ export function updateHelpScene(progressValue) {
 
         const stageY = mapRange(
             p,
-            1,
+            HELP_CARDS_IDLE_START,
             HELP_MAX_PROGRESS,
             0,
             -maxStageShift

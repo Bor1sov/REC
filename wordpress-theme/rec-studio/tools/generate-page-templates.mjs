@@ -73,6 +73,7 @@ const assetPathMap = {
     "ЗВУК.png": "sound-on.png",
     "Золото Белогорского монастыря.jpg": "zoloto-belogorskogo-monastyrya.jpg",
     "Изоляция.jpg": "izolyatsiya.jpg",
+    "Громкое дело.jpg": "gromkoe-delo.jpg",
     "Любимое дело.jpg": "lyubimoe-delo.jpg",
     "Любит не любит.jpg": "lyubit-ne-lyubit.jpg",
     "Наши мамаши.jpg": "nashi-mamashi.jpg",

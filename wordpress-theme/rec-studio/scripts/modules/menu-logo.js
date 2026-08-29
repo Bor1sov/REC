@@ -1,6 +1,7 @@
 import { state } from "./state.js";
 import { dom } from "./dom.js";
-import { playSound } from "./sound.js";
+import { playSound } from "./sound.js?v=20260619-6";
+import { getPageUrl } from "./runtime.js";
 
 const menuLogoGuardStyle = document.createElement("style");
 
@@ -52,31 +53,53 @@ export function setMenuLogoColor(menuLogo, color) {
     }
 }
 
-export function initMenuLogoColorToggle(menuLogo) {
+export function initMenuLogoMenuLink(menuLogo) {
     if (!menuLogo) return;
-    if (menuLogo.dataset.colorToggleReady === "true") return;
+    if (menuLogo.dataset.menuLinkReady === "true") return;
 
     if (!menuLogo.dataset.logoColor) {
         setMenuLogoColor(menuLogo, "red");
     }
 
+    const menuUrl = getPageUrl("menu");
+
+    if (menuLogo.tagName === "A") {
+        menuLogo.setAttribute("href", menuUrl);
+    } else {
+        menuLogo.setAttribute("role", "link");
+        menuLogo.tabIndex = 0;
+    }
+
+    menuLogo.setAttribute("aria-label", "Open menu index");
+
+    const goToMenu = () => {
+        sessionStorage.setItem("recStudioSkipIntro", "true");
+        window.location.href = menuUrl;
+    };
+
     menuLogo.addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
         playSound();
-
-        const currentColor = menuLogo.dataset.logoColor;
-        const nextColor = currentColor === "white" ? "red" : "white";
-
-        setMenuLogoColor(menuLogo, nextColor);
 
         menuLogo.style.transform = "scale(0.9)";
 
         setTimeout(() => {
             menuLogo.style.transform = "scale(1)";
-        }, 150);
+            goToMenu();
+        }, 120);
     });
 
-    menuLogo.dataset.colorToggleReady = "true";
+    menuLogo.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        playSound();
+        goToMenu();
+    });
+
+    menuLogo.dataset.menuLinkReady = "true";
 }
 
 export function addGlowAnimation(element) {
@@ -138,12 +161,13 @@ export function createMenuLogo() {
 
     if (menuLogo) {
         setMenuLogoColor(menuLogo, menuLogo.dataset.logoColor || "red");
-        initMenuLogoColorToggle(menuLogo);
+        initMenuLogoMenuLink(menuLogo);
         return menuLogo;
     }
 
-    menuLogo = document.createElement("div");
+    menuLogo = document.createElement("a");
     menuLogo.className = "menu__logo-cont red-glow";
+    menuLogo.href = getPageUrl("menu");
     menuLogo.style.width = "40px";
     menuLogo.style.height = "40px";
     menuLogo.style.border = "12px solid rgb(255, 0, 0)";
@@ -157,7 +181,7 @@ export function createMenuLogo() {
 
     addGlowAnimation(menuLogo);
     setMenuLogoColor(menuLogo, "red");
-    initMenuLogoColorToggle(menuLogo);
+    initMenuLogoMenuLink(menuLogo);
 
     const menuBlock = dom.menuSection.querySelector(".menu-block");
 
@@ -188,7 +212,7 @@ export function initMenuLogoVisibility() {
             menuLogo.style.visibility = "visible";
             menuLogo.style.pointerEvents = "auto";
 
-            initMenuLogoColorToggle(menuLogo);
+            initMenuLogoMenuLink(menuLogo);
         } else {
             if (menuLogo) {
                 menuLogo.remove();
@@ -206,6 +230,6 @@ export function initMenuLogoVisibility() {
         menuLogo.style.visibility = "visible";
         menuLogo.style.pointerEvents = "auto";
 
-        initMenuLogoColorToggle(menuLogo);
+        initMenuLogoMenuLink(menuLogo);
     }
 }

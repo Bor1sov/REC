@@ -1,7 +1,9 @@
 import { state } from "./state.js";
 import { updatePageScrollbar } from "./page-scrollbar.js";
 
-const PROJECTS_MAX_PROGRESS = 3;
+const PROJECTS_MAX_PROGRESS = 5;
+
+let currentProjectCard = null;
 
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -32,7 +34,9 @@ function getProjectsElements() {
         detailAge: document.querySelector(".project-detail__age"),
         detailFormat: document.querySelector(".project-detail__format"),
         detailDuration: document.querySelector(".project-detail__duration"),
+        detailPrevNav: document.querySelector(".project-detail__nav--prev"),
         detailCloseNav: document.querySelector(".project-detail__nav--close"),
+        detailNextNav: document.querySelector(".project-detail__nav--next"),
 
         requestPopup: document.querySelector(".projects-request-popup"),
         requestPopupDialog: document.querySelector(".projects-request-popup__dialog"),
@@ -57,18 +61,18 @@ function getOffsetTopInside(parent, child) {
 function getTvCardsBottomShift(stage) {
     if (!stage) return 0;
 
+    const tvSection = document.querySelector(".projects-section--tv");
     const tvGrid = document.querySelector(".projects-section--tv .projects-grid");
+    const target = tvSection || tvGrid;
 
-    if (!tvGrid) return 0;
+    if (!target) return 0;
 
-    const tvGridTopInsideStage = getOffsetTopInside(stage, tvGrid);
-    const tvGridBottomInsideStage = tvGridTopInsideStage + tvGrid.offsetHeight;
-
-    const endOffsetFix = 10;
+    const targetTopInsideStage = getOffsetTopInside(stage, target);
+    const targetBottomInsideStage = targetTopInsideStage + target.offsetHeight;
 
     return Math.max(
         0,
-        tvGridBottomInsideStage - window.innerHeight - endOffsetFix
+        targetBottomInsideStage - window.innerHeight
     );
 }
 
@@ -205,6 +209,22 @@ function initProjectsServicesHorizontalScroll() {
     servicesViewport.dataset.horizontalScrollReady = "true";
 }
 
+function getProjectCards() {
+    return Array.from(document.querySelectorAll(".project-card"));
+}
+
+function openAdjacentProject(direction) {
+    if (!currentProjectCard) return;
+
+    const cards = getProjectCards();
+    const currentIndex = cards.indexOf(currentProjectCard);
+
+    if (currentIndex < 0 || !cards.length) return;
+
+    const nextIndex = (currentIndex + direction + cards.length) % cards.length;
+    openProjectDetail(cards[nextIndex]);
+}
+
 function getCurrentDetailProjectTitle() {
     const { detail, detailTitle } = getProjectsElements();
 
@@ -230,6 +250,8 @@ function openProjectDetail(card) {
     } = getProjectsElements();
 
     if (!detail || !card) return;
+
+    currentProjectCard = card;
 
     const img = card.querySelector("img");
 
@@ -281,6 +303,7 @@ function closeProjectDetail() {
     detail.classList.remove("is-open");
     detail.setAttribute("aria-hidden", "true");
     document.body.classList.remove("projects-detail-open");
+    currentProjectCard = null;
 }
 
 function openProjectRequest(projectTitle = "") {
@@ -320,18 +343,50 @@ function closeProjectRequest(resetForm = false) {
 }
 
 function initProjectDetailCards() {
-    const { detail, detailCloseNav } = getProjectsElements();
-    const cards = document.querySelectorAll(".project-card");
+    const { detail, detailPrevNav, detailCloseNav, detailNextNav } = getProjectsElements();
 
-    cards.forEach((card) => {
-        if (card.dataset.detailReady === "true") return;
+    if (document.body.dataset.projectCardDelegationReady !== "true") {
+        document.addEventListener(
+            "click",
+            (e) => {
+                if (!document.body.classList.contains("projects-page")) return;
+                if (document.body.classList.contains("projects-request-open")) return;
 
-        card.addEventListener("click", () => {
-            openProjectDetail(card);
+                const card = e.target.closest(".project-card");
+
+                if (!card) return;
+                if (card.closest(".project-detail, .projects-request-popup")) return;
+
+                e.preventDefault();
+                openProjectDetail(card);
+            },
+            true
+        );
+
+        document.body.dataset.projectCardDelegationReady = "true";
+    }
+
+    if (detailPrevNav && detailPrevNav.dataset.prevReady !== "true") {
+        detailPrevNav.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            openAdjacentProject(-1);
         });
 
-        card.dataset.detailReady = "true";
-    });
+        detailPrevNav.dataset.prevReady = "true";
+    }
+
+    if (detailNextNav && detailNextNav.dataset.nextReady !== "true") {
+        detailNextNav.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            openAdjacentProject(1);
+        });
+
+        detailNextNav.dataset.nextReady = "true";
+    }
 
     if (detailCloseNav && detailCloseNav.dataset.closeReady !== "true") {
         detailCloseNav.addEventListener("click", (e) => {
@@ -473,6 +528,8 @@ export function initProjectsParallax() {
 
     if (arrow) {
         arrow.addEventListener("click", () => {
+            if (document.body.classList.contains("projects-detail-open")) return;
+
             state.targetProgress = clamp(
                 Math.ceil(state.targetProgress + 0.1),
                 0,
@@ -528,7 +585,12 @@ export function updateProjectsScene(progressValue) {
     }
 
     if (arrow) {
-        arrow.style.opacity = p >= PROJECTS_MAX_PROGRESS - 0.05 ? "0" : "1";
+        const shouldHideArrow =
+            p >= PROJECTS_MAX_PROGRESS - 0.05 ||
+            document.body.classList.contains("projects-detail-open");
+
+        arrow.style.opacity = shouldHideArrow ? "0" : "1";
+        arrow.style.pointerEvents = shouldHideArrow ? "none" : "auto";
     }
 
     updatePageScrollbar(p);

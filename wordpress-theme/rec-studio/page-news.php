@@ -8,9 +8,9 @@
 get_header();
 ?>
 <section class="menu">
-      <a class="menu__logo-cont" href="<?php echo esc_url( home_url( '/' ) ); ?>"></a>
+      <a class="menu__logo-cont" href="<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>"></a>
 
-      <div class="menu-block" onclick="window.location.href='<?php echo esc_url( home_url( '/' ) ); ?>'">
+      <div class="menu-block" onclick="window.location.href='<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>'">
         <div class="menu-text">МЕНЮ</div>
 
         <button class="burger" type="button" aria-label="Вернуться в меню">
@@ -248,7 +248,7 @@ get_header();
             <span>Поделитесь, если вам понравилась наша новость</span>
 
             <div class="news-share__icons">
-              <a href="#" aria-label="ВКонтакте">
+              <a href="https://vk.com/viktor_anisimov2000" target="_blank" rel="noopener" aria-label="ВКонтакте">
                 <img src="<?php echo esc_url( rec_theme_asset( 'assets/social-vk.png' ) ); ?>" alt="ВКонтакте" />
               </a>
 
@@ -601,7 +601,7 @@ get_header();
             <span>Поделитесь, если вам понравилась наша новость</span>
 
             <div class="news-share__icons">
-              <a href="#" aria-label="ВКонтакте">
+              <a href="https://vk.com/viktor_anisimov2000" target="_blank" rel="noopener" aria-label="ВКонтакте">
                 <img src="<?php echo esc_url( rec_theme_asset( 'assets/social-vk.png' ) ); ?>" alt="ВКонтакте" />
               </a>
 
@@ -747,7 +747,7 @@ get_header();
             <span>Поделитесь, если вам понравилась наша новость</span>
 
             <div class="news-share__icons">
-              <a href="#" aria-label="ВКонтакте">
+              <a href="https://vk.com/viktor_anisimov2000" target="_blank" rel="noopener" aria-label="ВКонтакте">
                 <img src="<?php echo esc_url( rec_theme_asset( 'assets/social-vk.png' ) ); ?>" alt="ВКонтакте" />
               </a>
 
@@ -809,11 +809,11 @@ get_header();
 
           <div class="news-list-section__content">
             <div class="news-tabs">
-              <button type="button" class="news-tabs__item">▲ Старые</button>
-              <button type="button" class="news-tabs__item">Продюсерам</button>
-              <button type="button" class="news-tabs__item is-active">Маркетологам</button>
-              <button type="button" class="news-tabs__item">Авторам</button>
-              <button type="button" class="news-tabs__item">Все</button>
+              <button type="button" class="news-tabs__item" data-news-filter="old">▲ Старые</button>
+              <button type="button" class="news-tabs__item" data-news-filter="producers">Продюсерам</button>
+              <button type="button" class="news-tabs__item is-active" data-news-filter="marketers">Маркетологам</button>
+              <button type="button" class="news-tabs__item" data-news-filter="authors">Авторам</button>
+              <button type="button" class="news-tabs__item" data-news-filter="all">Все</button>
             </div>
 
             <div class="news-list">
@@ -821,6 +821,7 @@ get_header();
                 type="button"
                 class="news-list__item"
                 data-news-target="sales"
+                data-news-tags="marketers"
               >
                 <img src="<?php echo esc_url( rec_theme_asset( 'assets/marketing.jpg' ) ); ?>" alt="" />
 
@@ -834,6 +835,7 @@ get_header();
                 type="button"
                 class="news-list__item"
                 data-news-target="authors"
+                data-news-tags="authors"
               >
                 <img src="<?php echo esc_url( rec_theme_asset( 'assets/01.jpg' ) ); ?>" alt="" />
 
@@ -847,6 +849,7 @@ get_header();
                 type="button"
                 class="news-list__item"
                 data-news-target="screenwriter"
+                data-news-tags="authors"
               >
                 <img src="<?php echo esc_url( rec_theme_asset( 'assets/scenarists.jpg' ) ); ?>" alt="" />
 
@@ -860,6 +863,7 @@ get_header();
                 type="button"
                 class="news-list__item news-list__item--extra"
                 data-news-target="sales"
+                data-news-tags="marketers old"
               >
                 <img src="<?php echo esc_url( rec_theme_asset( 'assets/marketing.jpg' ) ); ?>" alt="" />
 
@@ -873,6 +877,7 @@ get_header();
                 type="button"
                 class="news-list__item news-list__item--extra"
                 data-news-target="authors"
+                data-news-tags="authors old"
               >
                 <img src="<?php echo esc_url( rec_theme_asset( 'assets/01.jpg' ) ); ?>" alt="" />
 
@@ -886,6 +891,7 @@ get_header();
                 type="button"
                 class="news-list__item news-list__item--extra"
                 data-news-target="screenwriter"
+                data-news-tags="authors old"
               >
                 <img src="<?php echo esc_url( rec_theme_asset( 'assets/scenarists.jpg' ) ); ?>" alt="" />
 
@@ -899,10 +905,10 @@ get_header();
             <div class="news-list-section__bottom">
 
 
-<div class="news-list-section__vk">
+<a href="https://vk.com/viktor_anisimov2000" class="news-list-section__vk" target="_blank" rel="noopener">
   <span></span>
   Больше новостей у нас в группе ВК
-</div>
+</a>
             </div>
           </div>
         </section>

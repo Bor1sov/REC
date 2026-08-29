@@ -1,14 +1,17 @@
 .page-scrollbar {
-    position: absolute;
+    position: fixed;
     top: 0;
-    right: 0;
+    left: calc(5vw - 3px);
+    bottom: 0;
 
     width: 3px;
     height: 100vh;
+    height: 100dvh;
 
     z-index: 20;
 
     pointer-events: none;
+    contain: strict;
 }
 
 .page-scrollbar__track {
@@ -27,40 +30,18 @@
     left: 0;
 
     width: 3px;
-    height: 0%;
+    height: 100%;
 
     background: #fff;
 
-    transition: height 0.12s linear;
+    transform: translateZ(0) scaleY(0);
+    transform-origin: top center;
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 .page-scrollbar__segments {
-    position: absolute;
-    inset: 0;
-
-    z-index: 3;
-
-    width: 100%;
-    height: 100%;
-
-    pointer-events: none;
-}
-
-.page-scrollbar__segment {
-    position: absolute;
-    left: 50%;
-
-    width: 7px;
-    height: 1px;
-
-    background: currentColor;
-
-    transform: translate(-50%, -50%);
-    opacity: 0.95;
-}
-
-.page-scrollbar__segment.is-passed {
-    opacity: 0.95;
+    display: none;
 }
 
 .about-text-scrollbar {
@@ -78,6 +59,11 @@
 
 .about-info.has-scroll .about-text-scrollbar {
     opacity: 1;
+}
+.about-info .about-text-scrollbar,
+.about-info.has-scroll .about-text-scrollbar {
+    display: none;
+    opacity: 0;
 }
 
 .about-text-scrollbar::after {

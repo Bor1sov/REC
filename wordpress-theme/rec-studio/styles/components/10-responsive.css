@@ -6,7 +6,7 @@
 
     .content__links__item {
         font-size: 90px;
-        line-height: 120px;
+        line-height: 1.06;
     }
 }
 
@@ -34,7 +34,6 @@
 
     .about-info-text {
         width: calc(100vw - 120px);
-        height: 300px;
         margin-left: 80px;
         margin-right: 20px;
         padding-right: 35px;
@@ -47,11 +46,12 @@
     .content__links {
         margin-left: 80px;
         width: calc(100% - 100px);
+        gap: clamp(2px, 0.6vh, 6px);
     }
 
     .content__links__item {
         font-size: 54px;
-        line-height: 80px;
+        line-height: 1.06;
     }
 }
 
@@ -62,13 +62,12 @@
 
     .about-info-text {
         width: calc(100vw - 90px);
-        height: 260px;
         margin-left: 70px;
         margin-right: 10px;
     }
 
     .content__links__item {
         font-size: 38px;
-        line-height: 60px;
+        line-height: 1.06;
     }
 }

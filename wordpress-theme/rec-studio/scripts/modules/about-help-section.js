@@ -7,6 +7,10 @@ import {
     ABOUT_HELP_START
 } from "./about-timeline.js";
 
+const ABOUT_HELP_CARDS_IDLE_START = 1.18;
+const ABOUT_HELP_CARDS_OVERLAP_START = 1.26;
+const ABOUT_HELP_CARDS_OVERLAP_END = 1.78;
+
 let isReady = false;
 let isLoading = false;
 let currentDetailGroupKey = "support";
@@ -24,7 +28,7 @@ const detailGroups = {
                     "Презентация проекта",
                     "Библия персонажей"
                 ],
-                image: "./assets/presentation-development.jpg"
+                image: "./assets/Услуги Текстура/Разраб Презентации.jpg"
             },
             {
                 title: "Ки-арт / дизайн",
@@ -39,7 +43,7 @@ const detailGroups = {
                     "Дизайн для социальных сетей",
                     "Разработка сайта"
                 ],
-                image: "./assets/key-art.jpg"
+                image: "./assets/Услуги Текстура/Ки-арт.jpg"
             },
             {
                 title: "Подготовка <br>заявки в: Минкульт,<br> Фонд кино, ИРИ, ПФКИ",
@@ -50,7 +54,7 @@ const detailGroups = {
                     "Проверка уже подготовленного пакета документов",
                     "Консультации"
                 ],
-                image: "./assets/application-preparation.jpg"
+                image: "./assets/Услуги Текстура/Подготовка заявки.jpg"
             },
             {
                 title: "Прокатное удостоверение",
@@ -64,7 +68,7 @@ const detailGroups = {
                     "Запись жесткого диска с DCP и WAV",
                     "Запись кассет HDcam и DVD"
                 ],
-                image: "./assets/distribution-certificate.jpg"
+                image: "./assets/Услуги Текстура/ПрокатУд.jpg"
             },
             {
                 title: "Постпродакшн",
@@ -75,7 +79,7 @@ const detailGroups = {
                     "Монтаж трейлера",
                     "Фильм о фильме"
                 ],
-                image: "./assets/postproduction.jpg"
+                image: "./assets/Услуги Текстура/Постпродакшн.jpg"
             }
         ]
     },
@@ -93,7 +97,7 @@ const detailGroups = {
                     "Креативная концепция",
                     "Сценарии"
                 ],
-                image: "./assets/creative.jpg"
+                image: "./assets/Услуги Текстура/Креатив.jpg"
             },
             {
                 title: "Дизайн",
@@ -111,7 +115,7 @@ const detailGroups = {
                     "Проектирование и производство выставочных и торговых стендов",
                     "POS-материалы"
                 ],
-                image: "./assets/design.jpg"
+                image: "./assets/Услуги Текстура/Дизайн.jpg"
             },
             {
                 title: "Планирование",
@@ -122,7 +126,7 @@ const detailGroups = {
                     "Стратегии",
                     "Бренд-консалтинг"
                 ],
-                image: "./assets/planning.jpg"
+                image: "./assets/Услуги Текстура/Планирование.jpg"
             },
             {
                 title: "Видеосъёмка",
@@ -141,7 +145,7 @@ const detailGroups = {
                     "Репортажная съёмка",
                     "Аэросъёмка"
                 ],
-                image: "./assets/video-production.png"
+                image: "./assets/Услуги Текстура/Видеосъемка.jpg"
             },
             {
                 title: "Фотосъёмка",
@@ -154,7 +158,7 @@ const detailGroups = {
                     "Дополнительный сервис",
                     "Мероприятия"
                 ],
-                image: "./assets/photography.jpg"
+                image: "./assets/Услуги Текстура/Фотосъемка.jpg"
             },
             {
                 title: "Организация мероприятий",
@@ -165,7 +169,7 @@ const detailGroups = {
                     "Спортивные мероприятия",
                     "Проведение презентаций, конференций и других мероприятий"
                 ],
-                image: "./assets/event-management.jpg"
+                image: "./assets/Услуги Текстура/Организация мероприятий.jpg"
             },
             {
                 title: "Интернет-маркетинг",
@@ -177,7 +181,7 @@ const detailGroups = {
                     "Разработка сайтов",
                     "Баинг"
                 ],
-                image: "./assets/internet-marketing.jpg"
+                image: "./assets/Услуги Текстура/Интернет-маркетинг.jpg"
             },
             {
                 title: "СММ",
@@ -188,7 +192,7 @@ const detailGroups = {
                     "Таргетированная реклама",
                     "Работа с блогерами"
                 ],
-                image: "./assets/smm.jpg"
+                image: "./assets/Услуги Текстура/СММ.jpg"
             }
         ]
     }
@@ -200,6 +204,15 @@ function clamp(value, min, max) {
 
 function mapRange(value, inMin, inMax, outMin, outMax) {
     const progress = clamp((value - inMin) / (inMax - inMin), 0, 1);
+    return outMin + (outMax - outMin) * progress;
+}
+function smoothstep(value) {
+    const x = clamp(value, 0, 1);
+    return x * x * (3 - 2 * x);
+}
+
+function mapRangeSmooth(value, inMin, inMax, outMin, outMax) {
+    const progress = smoothstep((value - inMin) / (inMax - inMin));
     return outMin + (outMax - outMin) * progress;
 }
 
@@ -243,6 +256,7 @@ function getElements() {
         section: document.querySelector(".about-help-section"),
         bgImg: document.querySelector(".about-help-bg__img"),
         stage: document.querySelector(".about-help-stage"),
+        cardsSection: document.querySelector(".about-help-cards-section"),
         paralaxText: document.querySelector(".about-help-paralax-text, .about-help-parallax-text"),
         title: document.querySelector(".about-help__title"),
         arrow: document.querySelector(".about-help-arrow"),
@@ -338,7 +352,15 @@ function getStageBottomShift(stage) {
     if (!cardsSection) return 0;
 
     const sectionTopInsideStage = getOffsetTopInside(stage, cardsSection);
-    const sectionBottomInsideStage = sectionTopInsideStage + cardsSection.offsetHeight;
+    const rawShift = window.getComputedStyle(cardsSection)
+        .getPropertyValue("--about-help-cards-parallax-shift")
+        .trim();
+    const parallaxShift = rawShift.endsWith("vh")
+        ? (parseFloat(rawShift) / 100) * window.innerHeight
+        : parseFloat(rawShift) || 0;
+    const sectionBottomInsideStage = sectionTopInsideStage +
+        cardsSection.offsetHeight -
+        parallaxShift;
 
     return Math.max(0, sectionBottomInsideStage - window.innerHeight - 10);
 }
@@ -468,6 +490,20 @@ function openDetail(card) {
     document.body.classList.add("about-help-detail-open");
 }
 
+function ensureCardDetailButtons(root = document) {
+    root.querySelectorAll(".about-help-large-card").forEach((card) => {
+        if (card.querySelector(".about-help-card-button")) return;
+
+        const button = document.createElement("button");
+
+        button.className = "about-help-card-button";
+        button.type = "button";
+        button.textContent = "\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435";
+
+        card.appendChild(button);
+    });
+}
+
 function closeDetail() {
     const { detail } = getElements();
 
@@ -562,14 +598,19 @@ function initInteractions() {
         priceButtons
     } = getElements();
 
-    document.querySelectorAll(".about-help-large-card").forEach((card) => {
-        if (card.dataset.aboutHelpDetailReady === "true") return;
+    ensureCardDetailButtons();
 
-        card.addEventListener("click", () => {
-            openDetail(card);
+    document.querySelectorAll(".about-help-card-button").forEach((button) => {
+        if (button.dataset.aboutHelpDetailReady === "true") return;
+
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            openDetail(button.closest(".about-help-large-card"));
         });
 
-        card.dataset.aboutHelpDetailReady = "true";
+        button.dataset.aboutHelpDetailReady = "true";
     });
 
     if (detailArrow && detailArrow.dataset.aboutHelpArrowReady !== "true") {
@@ -787,7 +828,25 @@ async function loadHelpContent() {
             section.appendChild(clone);
         });
 
+
+        const cardImages = {
+            support: "assets/Услуги Текстура/сопровождение проектов.jpg",
+            advertising: "assets/Услуги Текстура/рекламный департамент.jpg"
+        };
+
+        section.querySelectorAll(".about-help-large-card").forEach((card) => {
+            const image = card.querySelector("img");
+            const imagePath = cardImages[card.dataset.helpKind];
+
+            if (!image || !imagePath) return;
+
+            image.removeAttribute("srcset");
+            image.loading = "eager";
+            image.decoding = "async";
+            image.src = getAssetUrl(imagePath);
+        });
         normalizeMojibake(section);
+        ensureCardDetailButtons(section);
         initInteractions();
 
         isReady = true;
@@ -816,11 +875,11 @@ export function initAboutHelpSection() {
 export function updateAboutHelpSection(globalProgress) {
     if (!document.body.classList.contains("about-page")) return;
 
-    const { section, bgImg, stage, paralaxText, title, arrow } = getElements();
+    const { section, bgImg, stage, cardsSection, paralaxText, title, arrow } = getElements();
 
     if (!section) return;
 
-    const revealY = mapRange(
+    const revealY = mapRangeSmooth(
         globalProgress,
         ABOUT_HELP_REVEAL_START,
         ABOUT_HELP_START,
@@ -846,7 +905,7 @@ export function updateAboutHelpSection(globalProgress) {
     if (stage) {
         const maxStageShift = getStageBottomShift(stage);
 
-        const stageY = mapRange(
+        const stageY = mapRangeSmooth(
             localProgress,
             1,
             ABOUT_HELP_MAX,
@@ -856,6 +915,7 @@ export function updateAboutHelpSection(globalProgress) {
 
         stage.style.transform = `translateY(${stageY}px)`;
     }
+
 
     if (bgImg) {
         const bgZoom = 1 + heroProgress * 0.4;
@@ -868,6 +928,23 @@ export function updateAboutHelpSection(globalProgress) {
     if (paralaxText) {
         const textMove = heroProgress * 115;
         paralaxText.style.transform = `translateY(${100 - textMove}%)`;
+    }
+
+    if (cardsSection) {
+        const cardsOverlapProgress = smoothstep(
+            mapRange(
+                localProgress,
+                ABOUT_HELP_CARDS_OVERLAP_START,
+                ABOUT_HELP_CARDS_OVERLAP_END,
+                0,
+                1
+            )
+        );
+
+        cardsSection.style.setProperty(
+            "--about-help-cards-overlap-progress",
+            cardsOverlapProgress
+        );
     }
 
     if (bgImg && title) {

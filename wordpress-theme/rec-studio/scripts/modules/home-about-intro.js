@@ -3,7 +3,7 @@ import { getPageUrl } from "./runtime.js";
 const ENTRY_DURATION = 4500;
 const ENTRY_SCALE = 1.6;
 const MAX_SCALE = 8.4;
-const SCROLL_SPEED = 0.00135;
+const SCROLL_SPEED = 0.0011;
 
 let target = null;
 let entryFrame = null;
@@ -59,7 +59,7 @@ function completeIntro() {
 
     isComplete = true;
     sessionStorage.setItem("recStudioAboutTitleIntroComplete", "true");
-    window.location.href = getPageUrl("about");
+    window.location.href = getPageUrl("home");
 }
 
 function updateScrollIntro(deltaY) {

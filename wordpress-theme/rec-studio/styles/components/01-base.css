@@ -23,7 +23,8 @@ body {
 
 /* Глобальная текстура поверх всех страниц отключена */
 body::before,
-body::after {
+body::after,
+html::after {
     content: none !important;
     display: none !important;
 }

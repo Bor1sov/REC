@@ -1,7 +1,7 @@
 import { getPageUrl } from "./runtime.js";
 
 const MENU_ITEMS = [
-    { title: "О НАС", href: getPageUrl("about") },
+    { title: "ГЛАВНАЯ", href: getPageUrl("home") },
     { title: "НАШИ ПРОЕКТЫ", href: getPageUrl("projects") },
     { title: "УСЛУГИ", href: getPageUrl("help") },
     { title: "НОВОСТИ", href: getPageUrl("news") },

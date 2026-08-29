@@ -1,6 +1,7 @@
 import { state } from "./state.js";
 import { dom } from "./dom.js";
 import { initMenuLogoVisibility } from "./menu-logo.js";
+import { getPageUrl } from "./runtime.js";
 
 const TEXT_REVEAL_DELAY = 1100;
 const TEXT_REVEAL_DURATION = 850;
@@ -83,6 +84,13 @@ export function moveLogoToMenuTop() {
             dom.logoWrapper.style.display = "none";
         }
 
+        document.dispatchEvent(new CustomEvent("recStudioLogoIntroComplete"));
+
+        const shouldStayOnCurrentPage = dom.contentPage && !dom.hasContentLinks;
+
+        if (!shouldStayOnCurrentPage) {
+            window.location.href = getPageUrl("home");
+        }
     }, LOGO_TO_MENU_DURATION + 50);
 }
 
@@ -225,6 +233,15 @@ export function resetScene() {
     state.targetProgress = 0;
     state.isUIVisible = false;
     state.clickCount = 0;
+    state.aboutTitleEntryProgress = 0;
+    state.aboutTitleEntryDone = false;
+    state.aboutTitleScrollIntroStarted = false;
+    state.aboutTitleScrollIntroStartTime = 0;
+    state.aboutTitleScrollIntroComplete = false;
+    state.aboutDescriptionAutoScrollStarted = false;
+    state.aboutDescriptionAutoScrollComplete = false;
+    state.aboutDescriptionAutoScrollStartTime = 0;
+    state.aboutDescriptionAutoScrollStartProgress = 0;
 
     resetLogoPosition();
 

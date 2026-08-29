@@ -8,9 +8,9 @@
 get_header();
 ?>
 <section class="menu">
-      <a class="menu__logo-cont" href="<?php echo esc_url( home_url( '/' ) ); ?>"></a>
+      <a class="menu__logo-cont" href="<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>"></a>
 
-      <div class="menu-block" onclick="window.location.href='<?php echo esc_url( home_url( '/' ) ); ?>'">
+      <div class="menu-block" onclick="window.location.href='<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>'">
         <div class="menu-text">МЕНЮ</div>
 
         <button class="burger" type="button" aria-label="Вернуться в меню">
@@ -35,7 +35,7 @@ get_header();
     <section class="content content--page help-content">
       <div class="help-bg">
         <img
-          src="<?php echo esc_url( rec_theme_asset( 'assets/help.jpg' ) ); ?>"
+          src="<?php echo esc_url( rec_theme_asset( 'assets/a.jpg' ) ); ?>"
           class="help-bg__img"
           alt="Услуги REC Studio"
           decoding="async"
@@ -56,33 +56,54 @@ get_header();
               <div class="help-services">
                 <div class="help-service">
                   <span></span>
-                  <p>Проекты<br />под ключ</p>
+                  <p>продакшн<br />полного цикла</p>
                 </div>
 
                 <div class="help-service">
                   <span></span>
-                  <p>Заявки<br />на субсидии</p>
+                  <p>производство:<br />фильмов, ТВ-передач,<br />коммерческого видео</p>
                 </div>
 
                 <div class="help-service">
                   <span></span>
-                  <p>Разработка<br />презентаций</p>
+                  <p>проекты<br />«под ключ»</p>
+                </div>
+
+                <div class="help-service">
+                  <span></span>
+                  <p>заявки<br />на субсидии</p>
+                </div>
+
+                <div class="help-service">
+                  <span></span>
+                  <p>разработка<br />презентаций</p>
                 </div>
 
                 <div class="help-service" aria-hidden="true">
                   <span></span>
-                  <p>Проекты<br />под ключ</p>
+                  <p>продакшн<br />полного цикла</p>
                 </div>
 
                 <div class="help-service" aria-hidden="true">
                   <span></span>
-                  <p>Заявки<br />на субсидии</p>
+                  <p>производство:<br />фильмов, ТВ-передач,<br />коммерческого видео</p>
                 </div>
 
                 <div class="help-service" aria-hidden="true">
                   <span></span>
-                  <p>Разработка<br />презентаций</p>
+                  <p>проекты<br />«под ключ»</p>
                 </div>
+
+                <div class="help-service" aria-hidden="true">
+                  <span></span>
+                  <p>заявки<br />на субсидии</p>
+                </div>
+
+                <div class="help-service" aria-hidden="true">
+                  <span></span>
+                  <p>разработка<br />презентаций</p>
+                </div>
+
               </div>
             </div>
           </div>
@@ -95,7 +116,7 @@ get_header();
             data-help-title="СОПРОВОЖДЕНИЕ ПРОЕКТОВ"
           >
             <img
-              src="<?php echo esc_url( rec_theme_asset( 'assets/project-support.jpg' ) ); ?>"
+              src="<?php echo esc_url( rec_theme_asset( 'assets/Услуги Текстура/сопровождение проектов.jpg' ) ); ?>"
               alt="Сопровождение проектов"
             />
 
@@ -110,7 +131,7 @@ get_header();
             data-help-title="РЕКЛАМНЫЙ ДЕПАРТАМЕНТ"
           >
             <img
-              src="<?php echo esc_url( rec_theme_asset( 'assets/advertising-department.jpg' ) ); ?>"
+              src="<?php echo esc_url( rec_theme_asset( 'assets/Услуги Текстура/рекламный департамент.jpg' ) ); ?>"
               alt="Рекламный департамент"
             />
 

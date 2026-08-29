@@ -119,6 +119,15 @@
     overflow: hidden;
 }
 
+/* All news button glow guard without layout overflow */
+.about-news-section .news-list-section__content {
+    margin-left: -26px;
+    margin-bottom: -26px;
+    padding-left: 26px;
+    padding-bottom: 26px;
+    overflow: hidden;
+}
+
 .about-news-section .news-list {
     display: flex !important;
     flex-direction: column;
@@ -217,6 +226,10 @@
     justify-content: flex-start;
 
     margin-top: 34px;
+    margin-left: -18px;
+    margin-bottom: -22px;
+    padding: 0 28px 22px 18px;
+    overflow: visible;
 }
 
 .about-news-section .about-news-all-link {
@@ -224,17 +237,17 @@
     align-items: center;
     justify-content: center;
 
-    width: 320px;
-    min-height: 74px;
+    width: 220px;
+    min-height: 56px;
 
     margin-right: 64px;
 
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(120, 120, 120, 0.16);
 
     color: rgba(255, 255, 255, 0.72);
     font-family: "Holgada", sans-serif;
-    font-size: clamp(18px, 1.2vw, 24px);
+    font-size: clamp(16px, 1.15vw, 22px);
     font-weight: 400;
     line-height: 1;
     text-align: center;
@@ -261,6 +274,8 @@
 
     color: rgba(255, 255, 255, 0.78);
     font-size: clamp(18px, 1.1vw, 24px);
+    text-decoration: none;
+
 }
 
 .about-news-section .news-list-section__vk span {

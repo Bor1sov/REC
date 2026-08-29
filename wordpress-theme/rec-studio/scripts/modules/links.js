@@ -3,8 +3,8 @@ import { decodeMojibake } from "./text-normalize.js";
 
 const LINK_IMAGES = {
     faq: "faq.jpg",
-    projects: "projects-mobile.jpg",
-    help: "help.jpg",
+    projects: "b.jpg",
+    help: "a.jpg",
     news: "news.jpg",
     contact: "contact.png"
 };

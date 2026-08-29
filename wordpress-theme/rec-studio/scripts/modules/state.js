@@ -14,7 +14,13 @@ export const state = {
     isLogoMovingToMenu: false,
     aboutTitleEntryProgress: 0,
     aboutTitleEntryDone: false,
+    aboutTitleScrollIntroStarted: false,
+    aboutTitleScrollIntroStartTime: 0,
     aboutTitleScrollIntroComplete: false,
+    aboutDescriptionAutoScrollStarted: false,
+    aboutDescriptionAutoScrollComplete: false,
+    aboutDescriptionAutoScrollStartTime: 0,
+    aboutDescriptionAutoScrollStartProgress: 0,
 
     currentSize: 200,
     currentPosition: 5,

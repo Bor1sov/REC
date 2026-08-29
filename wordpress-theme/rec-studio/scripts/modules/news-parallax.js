@@ -1,6 +1,12 @@
 import { state } from "./state.js";
 import { updatePageScrollbar } from "./page-scrollbar.js";
 
+const NEWS_SCROLL_EASE = 0.045;
+const WHEEL_DELTA_LIMIT = 120;
+const WHEEL_PROGRESS_STEP = 0.0011;
+const NEWS_OLD_BUTTON_LABEL = "▲ Старые";
+const NEWS_NEW_BUTTON_LABEL = "▼ Новые";
+
 const newsState = {
     progress: 0,
     targetProgress: 0,
@@ -21,6 +27,7 @@ function getNewsElements() {
         articles: document.querySelectorAll(".news-article"),
         listSection: document.querySelector(".news-list-section"),
         newsList: document.querySelector(".news-list"),
+        tabs: document.querySelectorAll(".news-tabs__item"),
         listItems: document.querySelectorAll(".news-list__item"),
         relatedItems: document.querySelectorAll(".news-related__item"),
         backButtons: document.querySelectorAll(".news-back-to-list"),
@@ -91,28 +98,10 @@ function updateNewsScene(progressValue) {
     }
 
     if (arrow) {
-        const activeArticle = document.querySelector(".news-article.is-active");
-        const shareBlock = activeArticle
-            ? activeArticle.querySelector(".news-share")
-            : null;
-
-        let isShareReached = false;
-
-        if (activeArticle && shareBlock) {
-            const shareTop = activeArticle.offsetTop + shareBlock.offsetTop;
-
-            const shareTriggerProgress = Math.max(
-                0,
-                (shareTop - window.innerHeight * 0.78) / window.innerHeight
-            );
-
-            isShareReached = p >= shareTriggerProgress;
-        }
-
         const isEnd = p >= newsState.maxProgress - 0.04;
 
-        arrow.style.opacity = isEnd || isShareReached ? "0" : "1";
-        arrow.style.pointerEvents = isEnd || isShareReached ? "none" : "auto";
+        arrow.style.opacity = isEnd ? "0" : "1";
+        arrow.style.pointerEvents = isEnd ? "none" : "auto";
     }
 
     state.pageProgressMax = newsState.maxProgress;
@@ -147,7 +136,7 @@ function animateNews() {
     }
 
     newsState.progress +=
-        (newsState.targetProgress - newsState.progress) * 0.08;
+        (newsState.targetProgress - newsState.progress) * NEWS_SCROLL_EASE;
 
     if (Math.abs(newsState.targetProgress - newsState.progress) < 0.0005) {
         newsState.progress = newsState.targetProgress;
@@ -268,6 +257,105 @@ function setActiveArticle(articleKey) {
     resetNewsProgress();
 }
 
+function getNewsItemTags(item) {
+    return (item.dataset.newsTags || "")
+        .split(/\s+/)
+        .filter(Boolean);
+}
+
+function applyNewsFilter(filter = "all") {
+    const { listItems, newsList, listSection, showMoreButton } = getNewsElements();
+    const activeFilter = filter || "all";
+
+    listItems.forEach((item) => {
+        const tags = getNewsItemTags(item);
+        const isVisible =
+            activeFilter === "all" ||
+            (activeFilter === "new" && !tags.includes("old")) ||
+            tags.includes(activeFilter);
+
+        item.classList.toggle("is-filtered-out", !isVisible);
+        item.classList.remove("is-active");
+    });
+
+    if (listSection && activeFilter !== "all") {
+        listSection.classList.remove("is-expanded");
+    }
+
+    if (showMoreButton && activeFilter !== "all") {
+        showMoreButton.textContent = "Показать еще";
+    }
+
+    if (newsList) {
+        newsList.scrollTop = 0;
+    }
+
+    requestAnimationFrame(updateNewsListScrollbar);
+}
+
+function isNewsAgeToggle(tab) {
+    return tab.dataset.newsFilter === "old" || tab.dataset.newsFilter === "new";
+}
+
+function resetNewsAgeToggle(tab) {
+    if (!isNewsAgeToggle(tab)) return;
+
+    tab.dataset.newsFilter = "old";
+    tab.textContent = NEWS_OLD_BUTTON_LABEL;
+}
+
+function getNextNewsAgeFilter(tab) {
+    if (!isNewsAgeToggle(tab)) {
+        return tab.dataset.newsFilter || "all";
+    }
+
+    return tab.dataset.newsFilter === "old" ? "old" : "new";
+}
+
+function updateNewsAgeToggle(tab, filter) {
+    if (!isNewsAgeToggle(tab)) return;
+
+    if (filter === "old") {
+        tab.dataset.newsFilter = "new";
+        tab.textContent = NEWS_NEW_BUTTON_LABEL;
+        return;
+    }
+
+    tab.dataset.newsFilter = "old";
+    tab.textContent = NEWS_OLD_BUTTON_LABEL;
+}
+function initNewsTabs() {
+    const { tabs } = getNewsElements();
+
+    if (!tabs.length) return;
+
+    const activeTab =
+        Array.from(tabs).find((tab) => tab.classList.contains("is-active")) ||
+        tabs[0];
+
+    applyNewsFilter(isNewsAgeToggle(activeTab) ? "old" : activeTab.dataset.newsFilter || "all");
+
+    tabs.forEach((tab) => {
+        if (tab.dataset.tabReady === "true") return;
+
+        tab.addEventListener("click", () => {
+            const nextFilter = getNextNewsAgeFilter(tab);
+
+            tabs.forEach((item) => {
+                item.classList.toggle("is-active", item === tab);
+
+                if (item !== tab) {
+                    resetNewsAgeToggle(item);
+                }
+            });
+
+            applyNewsFilter(nextFilter);
+            updateNewsAgeToggle(tab, nextFilter);
+        });
+
+        tab.dataset.tabReady = "true";
+    });
+}
 function initNewsList() {
     const { listItems } = getNewsElements();
 
@@ -405,19 +493,20 @@ function initNewsWheel() {
 
                 if (!newsList) return;
 
-                newsList.scrollTop += event.deltaY;
+                const normalizedListDelta = Math.sign(event.deltaY) *
+                    Math.min(Math.abs(event.deltaY), WHEEL_DELTA_LIMIT);
+
+                newsList.scrollTop += normalizedListDelta;
 
                 updateNewsListScrollbar();
                 updateNewsScene(0);
 
                 return;
-            }
-
-            const direction = event.deltaY > 0 ? 1 : -1;
-            const speed = 0.16;
+            }            const normalizedDelta = Math.sign(event.deltaY) *
+                Math.min(Math.abs(event.deltaY), WHEEL_DELTA_LIMIT);
 
             newsState.targetProgress = clamp(
-                newsState.targetProgress + direction * speed,
+                newsState.targetProgress + normalizedDelta * WHEEL_PROGRESS_STEP,
                 0,
                 newsState.maxProgress
             );
@@ -497,6 +586,7 @@ function initNewsPage() {
     lockNativeScroll();
 
     initNewsList();
+    initNewsTabs();
     initRelatedNews();
     buildNewsFooterControls();
     initBackButtons();

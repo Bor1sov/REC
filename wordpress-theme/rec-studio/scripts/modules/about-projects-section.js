@@ -10,6 +10,101 @@ let isReady = false;
 let isLoading = false;
 
 const PREVIEW_LIMIT = 10;
+const PREVIEW_PROJECT_ORDER = [
+    ["tayna-molebki.jpg"],
+    ["izolyatsiya.jpg"],
+    ["alchnost.jpg"],
+    ["syschik.jpg"],
+    ["storozh.jpg"],
+    ["semeyny-patrul.jpg"],
+    ["dikaya-diviziya.jpg"],
+    ["gromkoe-delo.jpg"],
+    ["spetsnaz.jpg"],
+    ["nashi-mamashi.jpg"]
+];
+const FALLBACK_PREVIEW_PROJECTS = [
+    {
+        title: "Тайна Молебки",
+        genre: "Исторический детектив с элементами мистики",
+        image: "assets/tayna-molebki.jpg",
+        age: "18+",
+        format: "Сериал",
+        duration: "8 серий"
+    },
+    {
+        title: "Изоляция",
+        genre: "Научно-фантастический триллер",
+        image: "assets/izolyatsiya.jpg",
+        age: "18+",
+        format: "Сериал",
+        duration: "8 серий"
+    },
+    {
+        title: "Алчность",
+        genre: "Детектив, авантюрная мелодрама",
+        image: "assets/alchnost.jpg",
+        age: "18+",
+        format: "Сериал",
+        duration: "8 серий"
+    },
+    {
+        title: "Сыщик с Малого Гнездовского",
+        genre: "Исторический детектив",
+        image: "assets/syschik.jpg",
+        age: "18+",
+        format: "Сериал",
+        duration: "8 серий"
+    },
+    {
+        title: "Сторож",
+        genre: "Фантастика, триллер",
+        image: "assets/storozh.jpg",
+        age: "18+",
+        format: "Сериал",
+        duration: "8 серий"
+    },
+    {
+        title: "Семейный патруль",
+        genre: "Семейное ток-шоу",
+        image: "assets/semeyny-patrul.jpg",
+        age: "16+",
+        format: "ТВ-проект",
+        duration: "56 выпусков"
+    },
+    {
+        title: "Дикая дивизия",
+        genre: "Шпионский детектив",
+        image: "assets/dikaya-diviziya.jpg",
+        age: "18+",
+        format: "Сериал",
+        duration: "4 серии"
+    },
+    {
+        title: "Громкое дело",
+        genre: "Реалити-шоу выходного дня",
+        image: "assets/gromkoe-delo.jpg",
+        age: "12+",
+        format: "ТВ-проект",
+        duration: "52 мин."
+    },
+    {
+        title: "Специальное назначение",
+        genre: "Политический триллер",
+        image: "assets/spetsnaz.jpg",
+        age: "18+",
+        format: "Сериал",
+        duration: "10 серий"
+    },
+    {
+        title: "Наши мамаши",
+        genre: "Ситком",
+        image: "assets/nashi-mamashi.jpg",
+        age: "6+",
+        format: "Сериал",
+        duration: "20 серий"
+    }
+];
+const ABOUT_PROJECTS_SCROLL_END = 2.94;
 
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -17,6 +112,15 @@ function clamp(value, min, max) {
 
 function mapRange(value, inMin, inMax, outMin, outMax) {
     const progress = clamp((value - inMin) / (inMax - inMin), 0, 1);
+    return outMin + (outMax - outMin) * progress;
+}
+function smoothstep(value) {
+    const x = clamp(value, 0, 1);
+    return x * x * (3 - 2 * x);
+}
+
+function mapRangeSmooth(value, inMin, inMax, outMin, outMax) {
+    const progress = smoothstep((value - inMin) / (inMax - inMin));
     return outMin + (outMax - outMin) * progress;
 }
 
@@ -145,6 +249,56 @@ function getTitleSizeClass(title) {
     return "";
 }
 
+function getCardAssetName(card) {
+    const src = card.querySelector("img")?.getAttribute("src") || "";
+    const cleanSrc = src.split("?")[0].replace(/\\/g, "/");
+
+    return cleanSrc.substring(cleanSrc.lastIndexOf("/") + 1).toLowerCase();
+}
+
+function getOrderedPreviewCards(cards) {
+    const remaining = [...cards];
+    const ordered = [];
+
+    PREVIEW_PROJECT_ORDER.forEach((assetNames) => {
+        const index = remaining.findIndex((card) => {
+            const assetName = getCardAssetName(card);
+
+            return assetNames.includes(assetName);
+        });
+
+        if (index >= 0) {
+            ordered.push(remaining.splice(index, 1)[0]);
+        }
+    });
+
+    return [...ordered, ...remaining];
+}
+
+function createFallbackSourceCard(project) {
+    const card = document.createElement("article");
+    const img = document.createElement("img");
+
+    card.className = "project-card";
+    card.dataset.projectTitle = project.title;
+    card.dataset.projectGenre = project.genre;
+    card.dataset.projectAge = project.age;
+    card.dataset.projectFormat = project.format;
+    card.dataset.projectDuration = project.duration;
+    card.dataset.projectDescription =
+        project.description || "Описание проекта находится в разработке.";
+
+    img.src = getAssetUrl(project.image);
+    img.alt = project.title;
+    card.appendChild(img);
+
+    return card;
+}
+
+function getFallbackPreviewCards() {
+    return FALLBACK_PREVIEW_PROJECTS.map(createFallbackSourceCard);
+}
+
 function createPreviewCard(sourceCard) {
     const img = sourceCard.querySelector("img");
 
@@ -184,6 +338,13 @@ function createPreviewCard(sourceCard) {
         </div>
     `;
 
+    card.addEventListener("click", (e) => {
+        if (document.body.classList.contains("about-projects-request-open")) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        openDetail(card);
+    });
     return card;
 }
 
@@ -195,7 +356,7 @@ function buildSection(cards, detailNode, requestNode) {
     section.innerHTML = `
         <div class="about-projects-bg">
             <img
-                src="${getAssetUrl("assets/projects-mobile.jpg")}"
+                src="${getAssetUrl("assets/b.jpg")}"
                 class="about-projects-bg__img"
                 alt="Наши проекты"
             />
@@ -215,33 +376,54 @@ function buildSection(cards, detailNode, requestNode) {
                         <div class="about-projects-services">
                             <div class="about-projects-service">
                                 <span></span>
-                                <p>ТВ, фильмы,<br />сериалы,<br />док. кино</p>
+                                <p>свои<br />сценарии</p>
                             </div>
 
                             <div class="about-projects-service">
                                 <span></span>
-                                <p>Свои<br />сценарии</p>
+                                <p>осуществить<br />разработку<br />вашего проекта</p>
                             </div>
 
                             <div class="about-projects-service">
                                 <span></span>
-                                <p>Осуществить<br />разработку<br />вашего проекта</p>
+                                <p>участвовать<br />в совместном<br />производстве</p>
+                            </div>
+
+                            <div class="about-projects-service">
+                                <span></span>
+                                <p>кино, сериалы<br />и тв-проекты</p>
+                            </div>
+
+                            <div class="about-projects-service">
+                                <span></span>
+                                <p>док.фильмы</p>
                             </div>
 
                             <div class="about-projects-service" aria-hidden="true">
                                 <span></span>
-                                <p>ТВ, фильмы,<br />сериалы,<br />док. кино</p>
+                                <p>свои<br />сценарии</p>
                             </div>
 
                             <div class="about-projects-service" aria-hidden="true">
                                 <span></span>
-                                <p>Свои<br />сценарии</p>
+                                <p>осуществить<br />разработку<br />вашего проекта</p>
                             </div>
 
                             <div class="about-projects-service" aria-hidden="true">
                                 <span></span>
-                                <p>Осуществить<br />разработку<br />вашего проекта</p>
+                                <p>участвовать<br />в совместном<br />производстве</p>
                             </div>
+
+                            <div class="about-projects-service" aria-hidden="true">
+                                <span></span>
+                                <p>кино, сериалы<br />и тв-проекты</p>
+                            </div>
+
+                            <div class="about-projects-service" aria-hidden="true">
+                                <span></span>
+                                <p>док.фильмы</p>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -252,13 +434,6 @@ function buildSection(cards, detailNode, requestNode) {
 
                 <div class="about-projects-actions">
                     <a class="about-projects-all" href="${getPageUrl("projects")}">Все проекты</a>
-
-                    <button
-                        class="about-projects-open-request about-projects-request-btn"
-                        type="button"
-                    >
-                        Оставить заявку
-                    </button>
                 </div>
             </section>
         </div>
@@ -266,7 +441,7 @@ function buildSection(cards, detailNode, requestNode) {
 
     const grid = section.querySelector(".about-projects-grid");
 
-    cards.slice(0, PREVIEW_LIMIT).forEach((card) => {
+    getOrderedPreviewCards(cards).slice(0, PREVIEW_LIMIT).forEach((card) => {
         grid.appendChild(createPreviewCard(card));
     });
 
@@ -493,12 +668,27 @@ function initInteractions() {
         requestForm
     } = getElements();
 
-    document.querySelectorAll(".about-projects-card").forEach((card) => {
-        if (card.dataset.aboutProjectsDetailReady === "true") return;
+    if (document.body.dataset.aboutProjectsCardDelegationReady !== "true") {
+        document.addEventListener(
+            "click",
+            (e) => {
+                if (document.body.classList.contains("about-projects-request-open")) return;
 
-        card.addEventListener("click", () => openDetail(card));
-        card.dataset.aboutProjectsDetailReady = "true";
-    });
+                const card = e.target.closest(".about-projects-card");
+
+                if (!card) return;
+                if (!card.closest(".about-projects-section")) return;
+                if (card.closest(".about-projects-detail, .about-projects-request-popup")) return;
+
+                e.preventDefault();
+                e.stopPropagation();
+                openDetail(card);
+            },
+            true
+        );
+
+        document.body.dataset.aboutProjectsCardDelegationReady = "true";
+    }
 
     document.querySelectorAll(".about-projects-open-request").forEach((button) => {
         if (button.dataset.aboutProjectsRequestReady === "true") return;
@@ -625,7 +815,8 @@ async function loadProjectsContent() {
             node.remove();
         });
 
-        const cards = Array.from(doc.querySelectorAll(".project-card"));
+        const parsedCards = Array.from(doc.querySelectorAll(".project-card"));
+        const cards = parsedCards.length ? parsedCards : getFallbackPreviewCards();
         const detailNode = doc.querySelector(".project-detail");
         const requestNode = doc.querySelector(".projects-request-popup");
 
@@ -656,11 +847,23 @@ function getPreviewBottomShift(stage) {
 
     if (!preview) return 0;
 
-    const previewBottomInsideStage = preview.offsetTop + preview.offsetHeight;
+    const rawShift = window.getComputedStyle(preview)
+        .getPropertyValue("--about-projects-preview-overlap-shift")
+        .trim();
+    const overlapShift = rawShift.endsWith("vh")
+        ? (parseFloat(rawShift) / 100) * window.innerHeight
+        : parseFloat(rawShift) || 0;
+    const previewBottomInsideStage = preview.offsetTop + preview.offsetHeight - overlapShift;
+    const tallScreenBottomReserve =
+        window.innerWidth >= 1600 && window.innerHeight >= 1150
+            ? window.innerHeight * 0.3
+            : 0;
 
     return Math.max(
         0,
-        previewBottomInsideStage - window.innerHeight
+        previewBottomInsideStage -
+            window.innerHeight -
+            tallScreenBottomReserve
     );
 }
 
@@ -699,25 +902,24 @@ function syncAboutProjectsTitleBackground(bgImg, title) {
 }
 
 export function initAboutProjectsSection() {
-    if (!document.body.classList.contains("about-page")) return;
+    if (!document.querySelector(".about-projects-section")) return;
 
     loadProjectsContent();
 }
 
 export function updateAboutProjectsSection(globalProgress) {
-    if (!document.body.classList.contains("about-page")) return;
-
     const {
         section,
         bgImg,
         stage,
         titleLayer,
-        title
+        title,
+        preview
     } = getElements();
 
     if (!section) return;
 
-    const revealY = mapRange(
+    const revealY = mapRangeSmooth(
         globalProgress,
         ABOUT_PROJECTS_REVEAL_START,
         ABOUT_PROJECTS_START,
@@ -744,7 +946,7 @@ export function updateAboutProjectsSection(globalProgress) {
         const stageY = mapRange(
             localProgress,
             1,
-            ABOUT_PROJECTS_MAX,
+            ABOUT_PROJECTS_SCROLL_END,
             0,
             -maxStageShift
         );
@@ -753,15 +955,28 @@ export function updateAboutProjectsSection(globalProgress) {
     }
 
     if (bgImg) {
-        const bgMove = mapRange(localProgress, 0, ABOUT_PROJECTS_MAX, 0, 120);
-        const bgZoom = mapRange(localProgress, 0, ABOUT_PROJECTS_MAX, 1, 1.18);
+        const bgProgress = mapRangeSmooth(localProgress, 0, 1.85, 0, 1);
+        const bgZoom = 1 + bgProgress * 0.4;
+        const bgMove = bgProgress * 80;
 
+        bgImg.style.transformOrigin = "center center";
         bgImg.style.transform = `translateY(${bgMove}px) scale(${bgZoom})`;
     }
 
     if (titleLayer) {
         const textMove = mapRange(localProgress, 0, 1, 0, 100);
         titleLayer.style.transform = `translateY(${100 - textMove}%)`;
+    }
+
+    if (preview) {
+        const previewOverlapProgress = smoothstep(
+            mapRange(localProgress, 0.9, 3, 0, 1)
+        );
+
+        preview.style.setProperty(
+            "--about-projects-preview-overlap-progress",
+            previewOverlapProgress
+        );
     }
 
     if (bgImg && title) {

@@ -8,9 +8,9 @@
 get_header();
 ?>
 <section class="menu">
-      <a class="menu__logo-cont" href="<?php echo esc_url( home_url( '/' ) ); ?>"></a>
+      <a class="menu__logo-cont" href="<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>"></a>
 
-      <div class="menu-block" onclick="window.location.href='<?php echo esc_url( home_url( '/' ) ); ?>'">
+      <div class="menu-block" onclick="window.location.href='<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>'">
         <div class="menu-text">МЕНЮ</div>
 
         <button class="burger" type="button" aria-label="Вернуться в меню">
@@ -103,7 +103,9 @@ get_header();
               ></a>
 
               <a
-                href="#"
+                href="https://vk.com/viktor_anisimov2000"
+                target="_blank"
+                rel="noopener"
                 class="contacts__social contacts__social--vk"
                 aria-label="VK"
               ></a>

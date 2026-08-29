@@ -75,12 +75,19 @@
     z-index: 5;
 
     padding-left: 18%;
-    padding-top: 6%;
+    padding-top: 8%;
 
     transform: translateY(100%);
     will-change: transform;
 
     pointer-events: none;
+}
+
+.about-help-paralax-text,
+.about-help-parallax-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .about-help-paralax-text::before,
@@ -118,7 +125,7 @@
     color: transparent;
     -webkit-text-fill-color: transparent;
 
-    background-image: url("../../assets/help.jpg");
+    background-image: url("../../assets/a.jpg");
     background-size: 100vw auto;
     background-position: center center;
     background-repeat: no-repeat;
@@ -148,11 +155,13 @@
 
 .about-help-services-viewport {
     position: relative;
+    flex: 0 0 auto;
     z-index: 5;
 
-    width: 100vw;
-    margin-left: -18%;
-    margin-top: 25vh;
+    width: calc(100vw - 5vw);
+    margin-left: -18vw;
+    margin-top: 15%;
+    margin-bottom: 0;
 
     overflow: hidden;
 
@@ -231,32 +240,44 @@
    ========================================================= */
 
 .about-help-cards-section {
-    position: relative;
+    --about-help-cards-parallax-shift: 100vh;
+    --rec-slide-overlap: 3px;
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100vh - var(--rec-slide-overlap));
+    z-index: 20;
 
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
     width: 100%;
-    height: 100vh;
-    min-height: 100vh;
+    height: calc(100vh + var(--rec-slide-overlap));
+    min-height: calc(100vh + var(--rec-slide-overlap));
 
     margin-top: 0;
     padding: 0;
 
     background: #111;
-    overflow: hidden;
+    overflow: visible;
+    transform: translate3d(0, calc(-1 * var(--about-help-cards-parallax-shift) * var(--about-help-cards-overlap-progress, 0)), 0);
+    will-change: transform;
 }
 
 .about-help-large-card {
     position: relative;
+    display: block !important;
 
-    height: 100vh;
-    min-height: 100vh;
+    height: calc(100vh + var(--rec-slide-overlap));
+    min-height: calc(100vh + var(--rec-slide-overlap));
 
     overflow: hidden;
     cursor: pointer;
 
     background: #000;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .about-help-large-card img {
@@ -265,6 +286,7 @@
     display: block;
 
     object-fit: cover;
+    object-position: center;
 
     transition:
         transform 0.6s ease,
@@ -349,6 +371,9 @@
 .about-help-large-card:hover::after {
     opacity: 1;
     transform: translate(-50%, 0);
+    color: #ff0000;
+    border-color: #ff0000;
+    box-shadow: 0 0 16px rgba(255, 0, 0, 0.45);
 }
 
 .about-help-large-card__overlay {
@@ -719,7 +744,7 @@
     width: 17px;
     height: 17px;
 
-    background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2718%27%20height%3D%2718%27%20viewBox%3D%270%200%2018%2018%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cpath%20d%3D%27M9%202V11M9%2011L5.5%207.5M9%2011L12.5%207.5%27%20stroke%3D%27%23111111%27%20stroke-width%3D%271.35%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27/%3E%3Cpath%20d%3D%27M4%2013.5H14%27%20stroke%3D%27%23111111%27%20stroke-width%3D%271.35%27%20stroke-linecap%3D%27round%27/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2718%27%20height%3D%2718%27%20viewBox%3D%270%200%2018%2018%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%3E%3Cpath%20d%3D%27M9%202V11M9%2011L5.5%207.5M9%2011L12.5%207.5%27%20stroke%3D%27%23ffffff%27%20stroke-width%3D%271.35%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27/%3E%3Cpath%20d%3D%27M4%2013.5H14%27%20stroke%3D%27%23ffffff%27%20stroke-width%3D%271.35%27%20stroke-linecap%3D%27round%27/%3E%3C/svg%3E");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -1396,8 +1421,8 @@ body.about-help-request-open .about-help-arrow {
     }
 
     .about-help-services-viewport {
-        width: 100vw;
-        margin-left: -14%;
+        width: calc(100vw - 5vw);
+        margin-left: -14vw;
     }
 
     .about-help-services {
@@ -1460,8 +1485,8 @@ body.about-help-request-open .about-help-arrow {
 
     .about-help-services-viewport {
         width: calc(100vw - 60px);
-        margin-left: -66px;
-        margin-top: 9vh;
+        margin-left: -90px;
+        margin-top: 15%;
     }
 
     .about-help-services {
@@ -1476,6 +1501,13 @@ body.about-help-request-open .about-help-arrow {
     }
 
     .about-help-cards-section {
+        --about-help-cards-parallax-shift: 0px;
+
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        transform: none;
         grid-template-columns: 1fr;
         height: auto;
         min-height: 100vh;
@@ -1594,7 +1626,7 @@ body.about-help-request-open .about-help-arrow {
 
     .about-help-services-viewport {
         width: calc(100vw - 50px);
-        margin-left: -56px;
+        margin-left: -74px;
     }
 
     .about-help-service {
@@ -1660,5 +1692,173 @@ body.about-help-request-open .about-help-arrow {
     .about-help-request-popup__title {
         padding-right: 40px;
         font-size: 28px;
+    }
+}
+
+
+/* Shared hover button for about help cards */
+.about-help-large-card::after {
+    content: none;
+}
+
+.about-help-large-card:hover::after {
+    opacity: 0;
+    transform: none;
+}
+
+.about-help-cards-section::after {
+    content: "Подробнее";
+    position: absolute;
+    left: 50%;
+    top: 82%;
+    z-index: 28;
+
+    width: 260px;
+    min-height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.04);
+
+    color: rgba(255, 255, 255, 0.88);
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(16px, 1.15vw, 22px);
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 18px));
+
+    box-shadow: none;
+    pointer-events: none;
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease,
+        border-color 0.28s ease,
+        background-color 0.28s ease,
+        box-shadow 0.28s ease,
+        color 0.28s ease;
+}
+
+.about-help-cards-section:hover::after,
+.about-help-cards-section:focus-within::after {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    border-color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+    box-shadow:
+        0 0 12px rgba(255, 255, 255, 0.32),
+        0 0 28px rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 768px) {
+    .about-help-cards-section::after {
+        width: 220px;
+        min-height: 58px;
+    }
+}
+/* Real buttons for main About help cards */
+.about-help-large-card {
+    cursor: default;
+}
+
+.about-help-cards-section::after,
+.about-help-cards-section:hover::after,
+.about-help-cards-section:focus-within::after {
+    content: none;
+    display: none;
+}
+
+.about-help-card-button {
+    position: absolute;
+    left: 50%;
+    top: calc(50% + 92px);
+    z-index: 29;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 220px;
+    min-height: 56px;
+    padding: 0 24px;
+
+    font-family: "Holgada", sans-serif;
+    font-size: clamp(16px, 1.15vw, 22px);
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+    text-transform: none;
+
+    cursor: pointer;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+}
+
+.about-help-card-button:hover,
+.about-help-card-button:focus-visible {
+    transform: translate(-50%, 0);
+}
+
+@media (max-width: 768px) {
+    .about-help-card-button {
+        top: calc(50% + 76px);
+        width: 200px;
+        min-height: 56px;
+    }
+}
+.about-help-large-card:hover img {
+    transform: none;
+    filter: none;
+}
+
+.about-help-large-card:hover::before {
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.08) 0%,
+            rgba(0, 0, 0, 0.2) 42%,
+            rgba(0, 0, 0, 0.34) 100%
+        );
+}
+
+.about-help-large-card:hover .about-help-large-card__overlay h2 {
+    transform: none;
+    text-shadow: none;
+}
+
+.about-help-large-card:has(.about-help-card-button:hover) img,
+.about-help-large-card:has(.about-help-card-button:focus-visible) img {
+    transform: scale(1.05);
+    filter: brightness(0.58) saturate(0.88) blur(6px);
+}
+
+.about-help-large-card:has(.about-help-card-button:hover)::before,
+.about-help-large-card:has(.about-help-card-button:focus-visible)::before {
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.34) 0%,
+            rgba(0, 0, 0, 0.5) 45%,
+            rgba(0, 0, 0, 0.62) 100%
+        );
+}
+
+.about-help-large-card:has(.about-help-card-button:hover) .about-help-large-card__overlay h2,
+.about-help-large-card:has(.about-help-card-button:focus-visible) .about-help-large-card__overlay h2 {
+    transform: translateY(-34px);
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 768px) {
+    .about-help-large-card:has(.about-help-card-button:hover) .about-help-large-card__overlay h2,
+    .about-help-large-card:has(.about-help-card-button:focus-visible) .about-help-large-card__overlay h2 {
+        transform: translateY(-28px);
     }
 }

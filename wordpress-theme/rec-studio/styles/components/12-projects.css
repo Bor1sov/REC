@@ -93,7 +93,7 @@
     color: transparent;
     -webkit-text-fill-color: transparent;
 
-    background-image: url("../../assets/projects-mobile.jpg");
+    background-image: url("../../assets/b.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -199,8 +199,8 @@
     width: 100%;
     min-height: 100vh;
 
-    padding-left: 8.8%;
-    padding-right: 4%;
+    padding-left: 5%;
+    padding-right: 0;
     padding-top: 5.5%;
 
     background-attachment: fixed;
@@ -217,6 +217,7 @@
     display: flex;
     align-items: center;
     gap: 70px;
+    margin-top: 18px;
     margin-bottom: 28px;
 }
 
@@ -230,6 +231,23 @@
     line-height: 0.9;
     letter-spacing: -0.04em;
     text-transform: uppercase;
+}
+
+
+.projects-section--documentary .projects-section__head {
+    gap: clamp(28px, 2.2vw, 52px);
+    align-items: center;
+}
+
+.projects-section--documentary .projects-section__head h2 {
+    max-width: min(62vw, 1120px);
+    font-size: clamp(42px, 4.35vw, 82px);
+    line-height: 0.92;
+}
+
+.projects-section--documentary .projects-section__head button {
+    flex: 0 0 auto;
+    white-space: nowrap;
 }
 
 .projects-section__head button {
@@ -247,14 +265,30 @@
 }
 
 .projects-grid {
+    --projects-grid-columns: 5;
+
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--projects-grid-columns), minmax(0, 1fr));
     gap: 0;
+    width: 100%;
+    max-width: none;
 }
 
 .projects-grid--tv {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    max-width: 64%;
+    grid-template-columns: repeat(var(--projects-grid-columns), minmax(0, 1fr));
+    max-width: none;
+}
+.projects-section--cinema,
+.projects-section--documentary,
+.projects-section--tv {
+    min-height: auto;
+    height: auto;
+    padding-bottom: clamp(72px, 7vh, 112px);
+}
+
+.projects-grid--cinema {
+    grid-template-columns: repeat(var(--projects-grid-columns), minmax(0, 1fr));
+    max-width: none;
 }
 
 .project-card {
@@ -382,7 +416,7 @@
 .projects-section--tv {
     min-height: auto;
     height: auto;
-    padding-bottom: 0;
+    padding-bottom: clamp(72px, 7vh, 112px);
 }
 
 .projects-section--tv .projects-grid {
@@ -1096,12 +1130,13 @@ body.projects-request-open .projects-arrow {
     }
 
     .projects-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        --projects-grid-columns: 4;
     }
 
-    .projects-grid--tv {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        max-width: 74%;
+    .projects-grid--tv,
+    .projects-grid--cinema {
+        grid-template-columns: repeat(var(--projects-grid-columns), minmax(0, 1fr));
+        max-width: none;
     }
 }
 
@@ -1148,9 +1183,14 @@ body.projects-request-open .projects-arrow {
         flex-direction: column;
     }
 
+    .projects-grid {
+        --projects-grid-columns: 2;
+    }
+
     .projects-grid,
-    .projects-grid--tv {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    .projects-grid--tv,
+    .projects-grid--cinema {
+        grid-template-columns: repeat(var(--projects-grid-columns), minmax(0, 1fr));
         max-width: none;
     }
 
@@ -1264,9 +1304,14 @@ body.projects-request-open .projects-arrow {
         padding-right: 16px;
     }
 
+    .projects-grid {
+        --projects-grid-columns: 1;
+    }
+
     .projects-grid,
-    .projects-grid--tv {
-        grid-template-columns: 1fr;
+    .projects-grid--tv,
+    .projects-grid--cinema {
+        grid-template-columns: repeat(var(--projects-grid-columns), minmax(0, 1fr));
     }
 
     .project-detail {
@@ -1295,7 +1340,7 @@ body.projects-request-open .projects-arrow {
 }
 
 .projects-section--series {
-    margin-top: -1vh;
+    margin-top: -12vh;
 }
 
 /* =========================================================
@@ -1574,4 +1619,230 @@ body.projects-request-open .projects-arrow {
     background-clip: initial !important;
 
     filter: none !important;
+}
+/* Project detail/popup visual fixes */
+.project-detail__bottom button:focus,
+.project-detail__bottom button:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+.project-detail__teaser {
+    overflow: hidden;
+    border-bottom: 0;
+    box-shadow: none;
+}
+
+.projects-request-popup__title {
+    height: 18%;
+    padding: 3.1% 4.6% 1.8%;
+    font-size: clamp(24px, 1.95vw, 42px);
+    line-height: 0.9;
+    overflow: visible;
+}
+
+.projects-request-form {
+    height: 82%;
+}
+/* Center teaser play icon consistently across viewport ratios */
+.project-detail__teaser::before,
+.project-detail__teaser::after {
+    flex: 0 0 34px;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
+    align-self: center;
+}
+
+.project-detail__teaser {
+    display: inline-grid;
+    grid-template-columns: 34px auto;
+    column-gap: 16px;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.project-detail__teaser::before {
+    width: 34px;
+    height: 34px;
+}
+
+.project-detail__teaser::after {
+    position: static;
+    width: 12px;
+    height: 14px;
+    transform: translateX(1px);
+    margin: 0;
+}
+
+/* Keep request checkboxes aligned after popup title resize */
+.projects-request-form {
+    display: grid;
+    grid-template-rows: 10.5% 34% 24% 15.5%;
+}
+
+.projects-request-form__row,
+.projects-request-form__row--options,
+.projects-request-form__row--textarea,
+.projects-request-form__submit {
+    height: auto;
+}
+
+.projects-request-form__check {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    align-items: center;
+    gap: 14px;
+    min-height: 0;
+    padding: 0 5.2%;
+}
+
+.projects-request-form__check input[type="checkbox"] {
+    width: 10px;
+    height: 10px;
+    margin: 0;
+    justify-self: center;
+    align-self: center;
+}
+
+.projects-request-form__check span {
+    display: block;
+    line-height: 1.1;
+}
+/* Add more breathing room between request checkbox rows */
+.projects-request-form__field--checks {
+    justify-content: space-around;
+    padding: 3% 0;
+}
+
+.projects-request-form__check {
+    height: auto;
+    min-height: 28%;
+    border-bottom: 0;
+}
+/* Request overlay covers the whole viewport */
+.projects-request-popup {
+    inset: 0;
+    left: 0;
+}
+/* Final request form row sizing: six real rows, larger checkbox area */
+.projects-request-form {
+    grid-template-rows: 34% 11% 11% 11% 21% 12%;
+}
+
+.projects-request-form__row--options {
+    min-height: 0;
+}
+
+.projects-request-form__field--checks {
+    padding: 2% 0;
+}
+
+.projects-request-form__check {
+    min-height: 30%;
+}
+/* Remove internal separators in checkbox option area */
+.projects-request-form__row--options .projects-request-form__label::before,
+.projects-request-form__row--options .projects-request-form__label::after {
+    content: none;
+    display: none;
+}
+
+/* Checkbox option separators */
+.projects-request-form__field--checks .projects-request-form__check:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+/* Extra bottom room after TV project cards */
+.projects-section--tv {
+    padding-bottom: clamp(120px, 12vh, 190px);
+}
+/* Project detail navigation vertical balance */
+@media (min-width: 769px) {
+    .project-detail__text-wrap {
+        height: clamp(300px, 38vh, 420px);
+    }
+
+    .project-detail__meta {
+        margin-top: clamp(22px, 3vh, 42px);
+    }
+
+    .project-detail__status {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .project-detail__bottom {
+        min-height: 64px;
+    }
+}
+
+/* Requested project page alignment and navigation fixes */
+.projects-page .projects-section__head {
+    gap: clamp(32px, 3.4vw, 68px);
+    margin-top: clamp(28px, 4vh, 56px);
+    margin-bottom: clamp(24px, 3.2vh, 46px);
+}
+
+.projects-page .projects-section__head h2 {
+    font-size: clamp(52px, 5.2vw, 100px);
+    line-height: 0.88;
+    letter-spacing: 0;
+}
+
+.projects-page .projects-section--documentary .projects-section__head h2 {
+    max-width: min(60vw, 1080px);
+    font-size: clamp(46px, 4.6vw, 90px);
+    line-height: 0.9;
+}
+
+.project-detail__nav--prev::before {
+    background-image: url("../../assets/arrow-left.png");
+}
+
+.project-detail__nav--close::before {
+    background-image: url("../../assets/arrow-back.png");
+}
+
+.project-detail__nav--next::before {
+    background-image: url("../../assets/arrow-left.png");
+    transform: scaleX(-1);
+}
+
+.project-detail__bottom .project-detail__nav:nth-of-type(2)::before,
+.project-detail__bottom .project-detail__nav:nth-of-type(3)::before,
+.project-detail__bottom .project-detail__nav:nth-of-type(4)::before {
+    background-image: none;
+    transform: none;
+}
+
+.project-detail__bottom .project-detail__nav--prev::before {
+    background-image: url("../../assets/arrow-left.png");
+}
+
+.project-detail__bottom .project-detail__nav--close::before {
+    background-image: url("../../assets/arrow-back.png");
+}
+
+.project-detail__bottom .project-detail__nav--next::before {
+    background-image: url("../../assets/arrow-left.png");
+    transform: scaleX(-1);
+}
+
+.projects-request-popup__title {
+    white-space: nowrap;
+    font-size: clamp(24px, 1.75vw, 38px);
+    line-height: 1;
+}
+
+@media (max-width: 768px) {
+    .projects-page .projects-section__head h2,
+    .projects-page .projects-section--documentary .projects-section__head h2 {
+        font-size: clamp(38px, 12vw, 62px);
+    }
+
+    .projects-request-popup__title {
+        font-size: clamp(22px, 8vw, 32px);
+    }
 }

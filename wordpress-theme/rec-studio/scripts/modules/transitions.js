@@ -26,11 +26,11 @@ export function initMenuReturnToIndex() {
         "click",
         (e) => {
             const link = e.target.closest("a[href]");
-            const indexLink = link && link.href === getPageUrl("home");
+            const menuLink = link && link.href === getPageUrl("menu");
 
             const menuBlock = e.target.closest(".menu-block");
 
-            if (indexLink || (!dom.hasContentLinks && menuBlock)) {
+            if (menuLink || (!dom.hasContentLinks && menuBlock)) {
                 sessionStorage.setItem("recStudioSkipIntro", "true");
             }
         },

@@ -43,6 +43,10 @@ function rec_studio_use_query_page_urls() {
 
 function rec_theme_page_url( $slug ) {
 	$slug = trim( $slug, '/' );
+
+	if ( 'main' === $slug ) {
+		return home_url( '/' );
+	}
 	$page = get_page_by_path( $slug, OBJECT, 'page' );
 
 	if ( rec_studio_use_query_page_urls() ) {
@@ -61,7 +65,9 @@ function rec_studio_runtime_config() {
 		'assetBase' => trailingslashit( get_template_directory_uri() ),
 		'pages'     => array(
 			'home'     => home_url( '/' ),
-			'about'    => rec_theme_page_url( 'about' ),
+			'main'     => home_url( '/' ),
+			'menu'     => rec_theme_page_url( 'menu' ),
+			'about'    => home_url( '/' ),
 			'projects' => rec_theme_page_url( 'projects' ),
 			'help'     => rec_theme_page_url( 'help' ),
 			'news'     => rec_theme_page_url( 'news' ),
@@ -160,6 +166,12 @@ add_action( 'template_redirect', 'rec_studio_start_image_performance_buffer' );
 
 function rec_studio_body_classes( $classes ) {
 	if ( is_front_page() ) {
+		$classes[] = 'main-page';
+		$classes[] = 'about-page';
+	}
+
+	if ( is_page( 'menu' ) ) {
+		$classes[] = 'menu-page';
 		$classes[] = 'home-page';
 	}
 
@@ -181,9 +193,11 @@ function rec_studio_body_classes( $classes ) {
 }
 add_filter( 'body_class', 'rec_studio_body_classes' );
 
-function rec_studio_create_required_pages() {
+function rec_studio_create_required_pages( $flush_rewrite = true ) {
+	$created_page = false;
 	$pages = array(
-		'about'    => 'О нас',
+		'menu'     => 'Меню',
+		'about'    => 'Главная',
 		'projects' => 'Наши проекты',
 		'help'     => 'Услуги',
 		'news'     => 'Новости',
@@ -195,6 +209,7 @@ function rec_studio_create_required_pages() {
 			continue;
 		}
 
+		$created_page = true;
 		wp_insert_post(
 			array(
 				'post_type'    => 'page',
@@ -206,6 +221,13 @@ function rec_studio_create_required_pages() {
 		);
 	}
 
-	flush_rewrite_rules();
+	if ( $flush_rewrite && $created_page ) {
+		flush_rewrite_rules();
+	}
 }
 add_action( 'after_switch_theme', 'rec_studio_create_required_pages' );
+
+function rec_studio_ensure_required_pages() {
+	rec_studio_create_required_pages( false );
+}
+add_action( 'init', 'rec_studio_ensure_required_pages' );
