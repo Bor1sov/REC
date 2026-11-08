@@ -69,7 +69,7 @@
     position: absolute;
     inset: 0;
 
-    background-image: url("../../assets/main-background.jpg");
+    background-image: var(--rec-asset_main_background_jpg, url("../../assets/main-background.jpg"));
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -98,7 +98,7 @@
     color: transparent;
     -webkit-text-fill-color: transparent;
 
-    background-image: url("../../assets/a.jpg");
+    background-image: var(--rec-asset_a_jpg, url("../../assets/a.jpg"));
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -395,7 +395,7 @@
     display: grid;
     grid-template-columns: 37.5% 27.5% 37.5%;
 
-    background-image: url("../../assets/main-background.jpg");
+    background-image: var(--rec-asset_main_background_jpg, url("../../assets/main-background.jpg"));
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -462,7 +462,7 @@
 
     background:
         linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18)),
-        url("../../assets/main-background.jpg");
+        var(--rec-asset_main_background_jpg, url("../../assets/main-background.jpg"));
     background-size: cover;
     background-position: center;
 }
@@ -643,7 +643,7 @@
     width: 26px;
     height: 26px;
 
-    background-image: url("../../assets/arrow-back.png");
+    background-image: var(--rec-asset_arrow_back_png, url("../../assets/arrow-back.png"));
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -666,7 +666,7 @@
 
     background:
         linear-gradient(rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.62)),
-        url("../../assets/white-texture.jpg");
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
     background-size: 150% auto;
     background-position: center;
     background-blend-mode: screen, normal;
@@ -698,7 +698,7 @@
 .help-detail__download-price:hover {
     background:
         linear-gradient(rgba(220, 220, 220, 0.45), rgba(220, 220, 220, 0.45)),
-        url("../../assets/white-texture.jpg");
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
     background-size: 150% auto;
     background-position: center;
     background-blend-mode: multiply, normal;
@@ -725,7 +725,7 @@
 
     background:
         linear-gradient(rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.16)),
-        url("../../assets/main-background.jpg");
+        var(--rec-asset_main_background_jpg, url("../../assets/main-background.jpg"));
     background-size: cover;
     background-position: center;
 }
@@ -933,7 +933,7 @@ body.help-detail-open .help-arrow {
 
     background:
         linear-gradient(rgba(255, 255, 255, 0.72), rgba(245, 245, 245, 0.72)),
-        url("../../assets/white-texture.jpg");
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
 
     background-size: cover;
     background-position: center;
@@ -951,7 +951,7 @@ body.help-detail-open .help-arrow {
 
     background:
         linear-gradient(rgba(255, 255, 255, 0.58), rgba(245, 245, 245, 0.58)),
-        url("../../assets/white-texture.jpg");
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
 
     background-size: cover;
     background-position: center;
@@ -1123,7 +1123,7 @@ body.help-price-open .help-arrow {
 
     background:
         linear-gradient(rgba(255, 255, 255, 0.72), rgba(245, 245, 245, 0.72)),
-        url("../../assets/white-texture.jpg");
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
 
     background-size: cover;
     background-position: center;
@@ -1142,7 +1142,7 @@ body.help-price-open .help-arrow {
 
     background:
         linear-gradient(rgba(255, 255, 255, 0.64), rgba(245, 245, 245, 0.64)),
-        url("../../assets/white-texture.jpg");
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
 
     background-size: cover;
     background-position: center;
@@ -1293,7 +1293,7 @@ body.help-request-open .help-arrow {
    ========================================================= */
 
 .help-page {
-    --help-white-texture: url("../../assets/white-texture.jpg");
+    --help-white-texture: var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
 }
 
 .help-page .help__subtitle,

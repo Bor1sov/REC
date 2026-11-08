@@ -1,12 +1,6 @@
-import { getPageUrl } from "./runtime.js";
+import { escapeHtml } from "./runtime.js";
 
-const MENU_ITEMS = [
-    { title: "ГЛАВНАЯ", href: getPageUrl("home") },
-    { title: "НАШИ ПРОЕКТЫ", href: getPageUrl("projects") },
-    { title: "УСЛУГИ", href: getPageUrl("help") },
-    { title: "НОВОСТИ", href: getPageUrl("news") },
-    { title: "КОНТАКТЫ", href: getPageUrl("contacts") }
-];
+const MENU_ITEMS = window.recTheme?.menu || [];
 
 function createOverlay() {
     let overlay = document.querySelector(".site-menu-overlay");
@@ -23,8 +17,8 @@ function createOverlay() {
 
             <div class="site-menu-overlay__links">
                 ${MENU_ITEMS.map((item) => `
-                    <a class="site-menu-overlay__link" href="${item.href}">
-                        ${item.title}
+                    <a class="site-menu-overlay__link" href="${escapeHtml(item.href)}">
+                        ${escapeHtml(item.title)}
                     </a>
                 `).join("")}
             </div>

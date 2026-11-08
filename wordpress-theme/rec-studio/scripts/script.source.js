@@ -21,14 +21,18 @@ const isProjectsPage = body.classList.contains("projects-page");
 const isHelpPage = body.classList.contains("help-page");
 const isAboutPage = body.classList.contains("about-page");
 const ABOUT_TITLE_INTRO_COMPLETE_CLASS = "about-title-intro-complete";
+const shouldStartAboutDescriptionOnReturn =
+    isAboutPage &&
+    sessionStorage.getItem("recStudioStartAboutDescription") === "true" &&
+    !isPageReload;
 const shouldSkipAboutTitleIntro =
     isAboutPage &&
+    !shouldStartAboutDescriptionOnReturn &&
     sessionStorage.getItem("recStudioAboutTitleIntroComplete") === "true" &&
     !isPageReload;
 const ABOUT_TITLE_SCROLL_INTRO_DURATION = 6400;
 const ABOUT_DESCRIPTION_AUTO_SCROLL_DURATION = 4300;
-const ABOUT_PARALAX_TEXT_MOVE_PERCENT = 285;
-const ABOUT_PARALAX_REFERENCE_HEIGHT = 1200;
+const ABOUT_DESCRIPTION_COMPLETE_PROGRESS = 1;
 const PAGE_SCROLL_EASE = 0.045;
 
 let setInitialImagePosition = () => {};
@@ -42,18 +46,6 @@ let updateAboutContactsSection = () => {};
 let lastRenderedProgress = Number.NaN;
 let pageDownArrow = null;
 
-function getAboutParalaxTextMovePercent() {
-    if (window.innerWidth < 1600 || window.innerHeight >= ABOUT_PARALAX_REFERENCE_HEIGHT) {
-        return ABOUT_PARALAX_TEXT_MOVE_PERCENT;
-    }
-
-    return ABOUT_PARALAX_TEXT_MOVE_PERCENT *
-        (ABOUT_PARALAX_REFERENCE_HEIGHT / Math.max(window.innerHeight, 1));
-}
-
-function getAboutTitleTopOffset() {
-    return window.innerHeight < 1150 ? -window.innerHeight * 0.08 : 0;
-}
 
 function easeIntroExit(progress) {
     const x = Math.max(0, Math.min(1, progress));
@@ -68,23 +60,7 @@ function smoothstep(progress) {
 }
 
 function getAboutDescriptionAutoTargetProgress() {
-    const paralaxText = document.querySelector(".paralax-text");
-    const textHeight = Math.max(
-        1,
-        paralaxText?.offsetHeight ||
-            paralaxText?.getBoundingClientRect().height ||
-            window.innerHeight
-    );
-    const untransformedTop = window.innerHeight - textHeight;
-    const targetTranslatePercent = (-untransformedTop / textHeight) * 100;
-    const textMovePercent = 100 - targetTranslatePercent;
-    const paralaxTextTopProgress = Math.max(
-        0,
-        Math.min(1, textMovePercent / getAboutParalaxTextMovePercent())
-    );
-
-    return ABOUT_TITLE_STAGE_END +
-        (1 - ABOUT_TITLE_STAGE_END) * paralaxTextTopProgress;
+    return ABOUT_DESCRIPTION_COMPLETE_PROGRESS;
 }
 
 function startAboutDescriptionAutoScroll() {
@@ -111,7 +87,7 @@ state.shouldSkipIntro =
 state.pageProgressStops = null;
 state.pageProgressInstantSegments = null;
 
-body.classList.toggle(ABOUT_TITLE_INTRO_COMPLETE_CLASS, isAboutPage && shouldSkipAboutTitleIntro);
+body.classList.toggle(ABOUT_TITLE_INTRO_COMPLETE_CLASS, isAboutPage && (shouldSkipAboutTitleIntro || shouldStartAboutDescriptionOnReturn));
 
 if (isProjectsPage) {
     state.pageProgressMax = 5;
@@ -125,8 +101,20 @@ if (isProjectsPage) {
     state.pageProgressInstantSegments = null;
     state.pageSectionsCount = ABOUT_PAGE_SCROLL_STOPS.length - 1;
 
-    if (shouldSkipAboutTitleIntro) {
-        const aboutReturnProgress = getAboutDescriptionAutoTargetProgress();
+    if (shouldStartAboutDescriptionOnReturn) {
+        state.progress = ABOUT_TITLE_STAGE_END;
+        state.targetProgress = ABOUT_TITLE_STAGE_END;
+        state.aboutTitleEntryProgress = 1;
+        state.aboutTitleEntryDone = true;
+        state.aboutTitleScrollIntroStarted = true;
+        state.aboutTitleScrollIntroStartTime = 0;
+        state.aboutTitleScrollIntroComplete = true;
+        state.aboutDescriptionAutoScrollStarted = false;
+        state.aboutDescriptionAutoScrollComplete = false;
+        sessionStorage.setItem("recStudioAboutTitleIntroComplete", "true");
+        sessionStorage.removeItem("recStudioStartAboutDescription");
+    } else if (shouldSkipAboutTitleIntro) {
+        const aboutReturnProgress = ABOUT_DESCRIPTION_COMPLETE_PROGRESS;
 
         state.progress = aboutReturnProgress;
         state.targetProgress = aboutReturnProgress;
@@ -145,13 +133,14 @@ if (isProjectsPage) {
 
 if (isPageReload) {
     sessionStorage.removeItem("recStudioSkipIntro");
+    sessionStorage.removeItem("recStudioStartAboutDescription");
 }
 
 if (dom.main) {
     dom.main.classList.add("show");
     dom.main.classList.remove("hidden");
 
-    if (state.shouldSkipIntro && dom.hasContentLinks) {
+    if (state.shouldSkipIntro && (dom.hasContentLinks || isAboutPage)) {
         dom.main.classList.remove("ui-hidden");
         dom.main.classList.add("ui-visible");
         dom.main.classList.add("menu-logo-ready");

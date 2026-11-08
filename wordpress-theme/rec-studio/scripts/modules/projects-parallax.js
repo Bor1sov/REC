@@ -1,3 +1,5 @@
+import { openContentFile } from "./runtime.js";
+import { bindEnquiryForm, clearEnquiryFeedback } from "./forms.js";
 import { state } from "./state.js";
 import { updatePageScrollbar } from "./page-scrollbar.js";
 
@@ -262,8 +264,7 @@ function openProjectDetail(card) {
     const format = card.dataset.projectFormat || "";
     const duration = card.dataset.projectDuration || "";
     const description =
-        card.dataset.projectDescription ||
-        "Описание проекта находится в разработке.";
+        card.dataset.projectDescription ?? "";
 
     if (detailImg && img) {
         detailImg.src = img.getAttribute("src");
@@ -273,7 +274,19 @@ function openProjectDetail(card) {
     if (detailTitle) detailTitle.textContent = title;
     if (detailGenre) detailGenre.textContent = genre;
     if (detailNote) detailNote.textContent = note ? `(${note})` : "";
-    if (detailDescription) detailDescription.textContent = description;
+    if (detailDescription) {
+        if (card.dataset.projectDescriptionHtml !== undefined) detailDescription.innerHTML = card.dataset.projectDescriptionHtml;
+        else detailDescription.textContent = description;
+    }
+    const teaser = document.querySelector(".project-detail__teaser");
+    const status = document.querySelector(".project-detail__status");
+    if (status) status.replaceChildren(...(card.dataset.projectStatus || "").split("\n").filter(Boolean).map(line => {
+        const span = document.createElement("span"); span.textContent = line; return span;
+    }));
+    if (teaser) {
+        teaser.hidden = !card.dataset.projectTeaser;
+        teaser.onclick = () => openContentFile(card.dataset.projectTeaser);
+    }
     if (detailAge) detailAge.textContent = age;
     if (detailFormat) detailFormat.textContent = format;
     if (detailDuration) detailDuration.textContent = duration;
@@ -307,6 +320,7 @@ function closeProjectDetail() {
 }
 
 function openProjectRequest(projectTitle = "") {
+    clearEnquiryFeedback(document.querySelector(".projects-request-popup"));
     const {
         requestPopup,
         requestProjectInput
@@ -451,10 +465,7 @@ function initProjectRequestPopup() {
     }
 
     if (requestForm && requestForm.dataset.formReady !== "true") {
-        requestForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            closeProjectRequest(true);
-        });
+        bindEnquiryForm(requestForm);
 
         requestForm.dataset.formReady = "true";
     }

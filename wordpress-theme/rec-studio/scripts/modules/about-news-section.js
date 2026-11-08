@@ -1,5 +1,5 @@
 import { updatePageScrollbar } from "./page-scrollbar.js";
-import { getPageUrl } from "./runtime.js";
+import { getPageUrl, getLabel } from "./runtime.js";
 import {
     ABOUT_NEWS_MAX,
     ABOUT_NEWS_REVEAL_START,
@@ -181,7 +181,7 @@ function ensureAllNewsButton() {
     const link = document.createElement("a");
     link.className = "about-news-all-link";
     link.href = getPageUrl("news");
-    link.textContent = "Все новости";
+    link.textContent = getLabel("all_news", "Все новости");
 
     bottom.prepend(link);
 }

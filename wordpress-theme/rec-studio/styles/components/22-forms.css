@@ -1,0 +1,21 @@
+.rec-form-trap { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip-path: inset(50%); }
+.rec-form-status { grid-column: 1 / -1; flex: 0 0 auto; max-width: 100%; margin: 12px 0; padding: 12px; border: 1px solid currentColor; font-size: 16px; line-height: 1.5; white-space: normal; overflow-wrap: anywhere; }
+.rec-form-status[hidden] { display: none !important; }
+.rec-form-status[data-state="error"] { color: #9f1c24; }
+.rec-form-status[data-state="success"] { color: #176332; }
+.rec-form-status a { display: inline-block; margin-top: 8px; color: inherit; text-decoration: underline; }
+form[aria-busy="true"] [type="submit"] { cursor: wait; opacity: .6; }
+body.admin-bar :is(.projects-request-popup, .about-projects-request-popup, .help-request-popup, .about-help-request-popup, .help-price-popup, .about-help-price-popup) { top: var(--wp-admin--admin-bar--height, 32px); }
+.help-open-request, .about-help-open-request { display: block; max-width: 100%; padding: 8px 0; background: transparent; border: 0; color: inherit; font: inherit; line-height: 1.4; text-align: left; text-decoration: underline; white-space: normal; overflow-wrap: anywhere; cursor: pointer; }
+/* Status messages need natural row heights, including in the desktop dialogs. */
+@media (min-width: 1025px) {
+    body [class*="-popup"] [class$="-popup__container"] { height: auto; max-height: calc(100dvh - 100px); overflow-y: auto; }
+    body [class*="-popup"] [class$="-popup__dialog"] { height: auto; overflow: visible; }
+    body [class*="-popup"] [class$="-popup__title"] { height: auto; padding: 20px 44px 20px 16px; }
+    body [class*="-popup"] form[data-mail-ready="true"] { display: flex; flex-direction: column; height: auto; }
+    body [class*="-popup"] [class*="-form__row"] { height: auto; min-height: 44px; flex-shrink: 0; }
+    body [class*="-popup"] [class$="-form__check"] { height: auto; min-height: 36px; }
+    body [class*="-popup"] [class$="-form__label"] { padding: 12px; }
+    body [class*="-popup"] textarea { min-height: 90px; }
+    body [class*="-popup"] [class$="-form__submit"] { height: auto; min-height: 52px; flex-shrink: 0; }
+}

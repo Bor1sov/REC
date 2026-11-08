@@ -1,0 +1,1449 @@
+{
+  "fields": {
+    "form_success": { "label": "Успешная отправка заявки", "group": "forms", "type": "text", "default": "Спасибо! Ваша заявка отправлена. Мы свяжемся с вами." },
+    "form_sending": { "label": "Заявка отправляется", "group": "forms", "type": "text", "default": "Отправляем заявку…" },
+    "form_error": { "label": "Ошибка соединения при отправке", "group": "forms", "type": "text", "default": "Не удалось отправить заявку. Проверьте соединение и попробуйте позже." },
+    "form_timeout": { "label": "Долгое ожидание отправки", "group": "forms", "type": "text", "default": "Сервер отвечает дольше обычного. Повторите отправку с теми же данными через минуту." },
+    "form_choose_type": { "label": "Подсказка выбора типа заявки", "group": "forms", "type": "text", "default": "Выберите хотя бы один тип заявки." },
+    "language_label": {
+      "label": "Краткая надпись языка",
+      "group": "general",
+      "type": "text",
+      "default": "RU"
+    },
+    "about_title": {
+      "label": "Заголовок «О нас»",
+      "group": "home",
+      "type": "text",
+      "default": "О НАС"
+    },
+    "about_body": {
+      "label": "Текст «О нас»",
+      "group": "home",
+      "type": "richtext",
+      "default": "В команду РЕК СТУДИЯ входят продюсеры, режиссеры и сценаристы,\n            которые преимущественно предпочитают работать в жанрах — детективы,\n            триллеры, драмы и приключения. <br><br>Мы создаем нон-фикшн контент,\n            основанный на реальных событиях, с напряженным и драматичным\n            сюжетом. Герои наших историй – сильные и неординарные личности,\n            которые вызывают большой зрительский интерес в любой точке Мира."
+    },
+    "brand_rec": {
+      "label": "Первая часть названия",
+      "group": "general",
+      "type": "text",
+      "default": "REC"
+    },
+    "brand_studio": {
+      "label": "Вторая часть названия",
+      "group": "general",
+      "type": "text",
+      "default": "STUDIO"
+    },
+    "brand_tagline": {
+      "label": "Подпись логотипа",
+      "group": "general",
+      "type": "text",
+      "default": "PRODUCTION COMPANY"
+    },
+    "menu_label": {
+      "label": "Надпись бокового меню",
+      "group": "general",
+      "type": "text",
+      "default": "МЕНЮ"
+    },
+    "menu_home": {
+      "label": "Пункт меню: ГЛАВНАЯ",
+      "group": "menu",
+      "type": "text",
+      "default": "ГЛАВНАЯ"
+    },
+    "menu_projects": {
+      "label": "Пункт меню: НАШИ ПРОЕКТЫ",
+      "group": "menu",
+      "type": "text",
+      "default": "НАШИ ПРОЕКТЫ"
+    },
+    "menu_help": {
+      "label": "Пункт меню: УСЛУГИ",
+      "group": "menu",
+      "type": "text",
+      "default": "УСЛУГИ"
+    },
+    "menu_news": {
+      "label": "Пункт меню: НОВОСТИ",
+      "group": "menu",
+      "type": "text",
+      "default": "НОВОСТИ"
+    },
+    "menu_contacts": {
+      "label": "Пункт меню: КОНТАКТЫ",
+      "group": "menu",
+      "type": "text",
+      "default": "КОНТАКТЫ"
+    },
+    "projects_category_series": {
+      "label": "Раздел: Сериалы",
+      "group": "projects",
+      "type": "text",
+      "default": "Сериалы"
+    },
+    "projects_category_cinema": {
+      "label": "Раздел: Кино",
+      "group": "projects",
+      "type": "text",
+      "default": "Кино"
+    },
+    "projects_category_documentary": {
+      "label": "Раздел: док. фильмы",
+      "group": "projects",
+      "type": "text",
+      "default": "док. фильмы"
+    },
+    "projects_category_tv": {
+      "label": "Раздел: ТВ-проекты",
+      "group": "projects",
+      "type": "text",
+      "default": "ТВ-проекты"
+    },
+    "projects_title": {
+      "label": "Заголовок страницы",
+      "group": "projects",
+      "type": "text",
+      "default": "НАШИ ПРОЕКТЫ"
+    },
+    "projects_subtitle": {
+      "label": "Подзаголовок",
+      "group": "projects",
+      "type": "textarea",
+      "default": "Мы готовы предложить\nвашему вниманию"
+    },
+    "project_status": {
+      "label": "Стадии готовности (каждая с новой строки)",
+      "group": "projects",
+      "type": "lines",
+      "default": "Стадия готовности:\n1. Заявка\n2. Библия проекта\n3. Пилотная серия\n4. Посерийный план\n5. Тизер"
+    },
+    "projects_ticker": {
+      "label": "Бегущая строка (каждый пункт с новой строки)",
+      "group": "projects",
+      "type": "lines",
+      "default": "свои сценарии\nосуществить разработку вашего проекта\nучаствовать в совместном производстве\nкино, сериалы и тв-проекты\nдок.фильмы"
+    },
+    "request_button": {
+      "label": "Кнопка заявки",
+      "group": "forms",
+      "type": "text",
+      "default": "Оставить заявку"
+    },
+    "teaser_label": {
+      "label": "Кнопка тизера",
+      "group": "forms",
+      "type": "text",
+      "default": "Тизер"
+    },
+    "project_form_title": {
+      "label": "Заголовок заявки на проект",
+      "group": "forms",
+      "type": "text",
+      "default": "ЗАЯВКА НА СЦЕНАРИЙ"
+    },
+    "request_choose": {
+      "label": "Подпись выбора заявки",
+      "group": "forms",
+      "type": "text",
+      "default": "Выбрать*"
+    },
+    "request_buy": {
+      "label": "Вариант: покупка сценария",
+      "group": "forms",
+      "type": "text",
+      "default": "покупка сценария"
+    },
+    "request_develop": {
+      "label": "Вариант: разработка сценария",
+      "group": "forms",
+      "type": "text",
+      "default": "разработать сценарий"
+    },
+    "request_produce": {
+      "label": "Вариант: совместное производство",
+      "group": "forms",
+      "type": "text",
+      "default": "совместное производство фильма"
+    },
+    "field_email": {
+      "label": "Подпись электронной почты",
+      "group": "forms",
+      "type": "text",
+      "default": "E-mail"
+    },
+    "field_phone": {
+      "label": "Подпись телефона",
+      "group": "forms",
+      "type": "text",
+      "default": "Телефон*"
+    },
+    "field_name": {
+      "label": "Подпись имени",
+      "group": "forms",
+      "type": "text",
+      "default": "Имя"
+    },
+    "field_message": {
+      "label": "Подпись сообщения",
+      "group": "forms",
+      "type": "text",
+      "default": "Запрос"
+    },
+    "form_submit": {
+      "label": "Кнопка отправки",
+      "group": "forms",
+      "type": "text",
+      "default": "Отправить заявку"
+    },
+    "placeholder_email": {
+      "label": "Подсказка поля: email",
+      "group": "forms",
+      "type": "text",
+      "default": "youremail@yandex.ru"
+    },
+    "placeholder_phone": {
+      "label": "Подсказка поля: phone",
+      "group": "forms",
+      "type": "text",
+      "default": "8-800-555-35-35"
+    },
+    "placeholder_name": {
+      "label": "Подсказка поля: name",
+      "group": "forms",
+      "type": "text",
+      "default": "Филлип Бедросович"
+    },
+    "help_title": {
+      "label": "Заголовок страницы",
+      "group": "help",
+      "type": "text",
+      "default": "УСЛУГИ"
+    },
+    "help_subtitle": {
+      "label": "Подзаголовок",
+      "group": "help",
+      "type": "textarea",
+      "default": "Помогаем создать проекты"
+    },
+    "help_breadcrumb": {
+      "label": "Название в навигации услуг",
+      "group": "help",
+      "type": "text",
+      "default": "Услуги"
+    },
+    "help_ticker": {
+      "label": "Бегущая строка (каждый пункт с новой строки)",
+      "group": "help",
+      "type": "lines",
+      "default": "продакшн полного цикла\nпроизводство: фильмов, ТВ-передач, коммерческого видео\nпроекты «под ключ»\nзаявки на субсидии\nразработка презентаций"
+    },
+    "presentation_label": {
+      "label": "Кнопка презентации",
+      "group": "forms",
+      "type": "text",
+      "default": "Презентация"
+    },
+    "price_label": {
+      "label": "Кнопка прайса",
+      "group": "forms",
+      "type": "text",
+      "default": "Прайс"
+    },
+    "service_list_label": {
+      "label": "Заголовок списка услуг",
+      "group": "help",
+      "type": "text",
+      "default": "Виды услуг:"
+    },
+    "price_form_title": {
+      "label": "Заголовок прайс-листа",
+      "group": "forms",
+      "type": "text",
+      "default": "ПРАЙС-ЛИСТ"
+    },
+    "price_submit": {
+      "label": "Кнопка получения прайса",
+      "group": "forms",
+      "type": "text",
+      "default": "Скачать прайс"
+    },
+    "service_form_title": {
+      "label": "Заголовок заявки на услугу",
+      "group": "forms",
+      "type": "text",
+      "default": "ЗАЯВКА НА УСЛУГУ"
+    },
+    "field_service": {
+      "label": "Подпись услуги",
+      "group": "forms",
+      "type": "text",
+      "default": "Услуга"
+    },
+    "contact_phone": {
+      "label": "Телефон",
+      "group": "contacts",
+      "type": "text",
+      "default": "+7 925 340 99 29"
+    },
+    "contact_subscribe": {
+      "label": "Приглашение в социальные сети",
+      "group": "contacts",
+      "type": "text",
+      "default": "Подписывайтесь на наши соцсети"
+    },
+    "contact_place": {
+      "label": "Название места",
+      "group": "contacts",
+      "type": "text",
+      "default": "Кинобаза"
+    },
+    "contact_address": {
+      "label": "Адрес",
+      "group": "contacts",
+      "type": "textarea",
+      "default": "Москва, Электролитный пр-д, 3, стр. 2"
+    },
+    "contacts_title": {
+      "label": "Заголовок",
+      "group": "contacts",
+      "type": "text",
+      "default": "Контакты"
+    },
+    "copyright": {
+      "label": "Подпись внизу страницы",
+      "group": "contacts",
+      "type": "text",
+      "default": "Made in RECStudio © 2026"
+    },
+    "contact_map": {
+      "label": "Адрес встраиваемой карты (src iframe)",
+      "group": "contacts",
+      "type": "url",
+      "default": "https://yandex.ru/map-widget/v1/?indoorLevel=1&ll=37.617348%2C55.675240&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1NjY2NjA4NhJJ0KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAsINCt0LvQtdC60YLRgNC-0LvQuNGC0L3Ri9C5INC_0YDQvtC10LfQtCwgM9GBMiIKDSl4FkIVcrNeQg%2C%2C&z=17.18"
+    },
+    "social_telegram": {
+      "label": "Ссылка: Telegram",
+      "group": "contacts",
+      "type": "url",
+      "default": "#"
+    },
+    "social_phone": {
+      "label": "Ссылка: Phone",
+      "group": "contacts",
+      "type": "url",
+      "default": "tel:+79253409929"
+    },
+    "social_play": {
+      "label": "Ссылка: Max",
+      "group": "contacts",
+      "type": "url",
+      "default": "#"
+    },
+    "social_dzen": {
+      "label": "Ссылка: Dzen",
+      "group": "contacts",
+      "type": "url",
+      "default": "#"
+    },
+    "social_vk": {
+      "label": "Ссылка: VK",
+      "group": "contacts",
+      "type": "url",
+      "default": "https://vk.com/viktor_anisimov2000"
+    },
+    "social_ok": {
+      "label": "Ссылка: OK",
+      "group": "contacts",
+      "type": "url",
+      "default": "#"
+    },
+    "help_group_support": {
+      "label": "Раздел: Сопровождение проектов",
+      "group": "help",
+      "type": "text",
+      "default": "Сопровождение проектов"
+    },
+    "help_image_support": {
+      "label": "Обложка: Сопровождение проектов",
+      "group": "help",
+      "type": "media",
+      "default": "{{asset:assets/Услуги Текстура/сопровождение проектов.jpg}}"
+    },
+    "help_group_advertising": {
+      "label": "Раздел: Рекламный департамент",
+      "group": "help",
+      "type": "text",
+      "default": "Рекламный департамент"
+    },
+    "help_image_advertising": {
+      "label": "Обложка: Рекламный департамент",
+      "group": "help",
+      "type": "media",
+      "default": "{{asset:assets/Услуги Текстура/рекламный департамент.jpg}}"
+    },
+    "home_projects_limit": {
+      "label": "Количество проектов на главной",
+      "group": "home",
+      "type": "number",
+      "default": "10"
+    },
+    "all_projects": {
+      "label": "Кнопка всех проектов",
+      "group": "home",
+      "type": "text",
+      "default": "Все проекты"
+    },
+    "all_news": {
+      "label": "Кнопка всех новостей",
+      "group": "home",
+      "type": "text",
+      "default": "Все новости"
+    },
+    "more": {
+      "label": "Кнопка карточки услуги",
+      "group": "help",
+      "type": "text",
+      "default": "Подробнее"
+    },
+    "news_title": {
+      "label": "Заголовок списка",
+      "group": "news",
+      "type": "text",
+      "default": "Новости"
+    },
+    "news_share": {
+      "label": "Подпись социальных ссылок",
+      "group": "news",
+      "type": "text",
+      "default": "Поделитесь, если вам понравилась наша новость"
+    },
+    "news_vk_label": {
+      "label": "Подпись ссылки ВКонтакте",
+      "group": "news",
+      "type": "text",
+      "default": "Больше новостей у нас в группе ВК"
+    },
+    "news_previous": {
+      "label": "Предыдущая новость",
+      "group": "news",
+      "type": "text",
+      "default": "Предыдущая новость"
+    },
+    "news_next": {
+      "label": "Следующая новость",
+      "group": "news",
+      "type": "text",
+      "default": "Следующая новость"
+    },
+    "news_old": {
+      "label": "Архив новостей",
+      "group": "news",
+      "type": "text",
+      "default": "▲ Старые"
+    },
+    "news_new": {
+      "label": "Новые новости",
+      "group": "news",
+      "type": "text",
+      "default": "▼ Новые"
+    },
+    "news_all": {
+      "label": "Все новости в фильтре",
+      "group": "news",
+      "type": "text",
+      "default": "Все"
+    },
+    "news_producers": {
+      "label": "Категория «Продюсерам»",
+      "group": "news",
+      "type": "text",
+      "default": "Продюсерам"
+    },
+    "news_marketers": {
+      "label": "Категория «Маркетологам»",
+      "group": "news",
+      "type": "text",
+      "default": "Маркетологам"
+    },
+    "news_authors": {
+      "label": "Категория «Авторам»",
+      "group": "news",
+      "type": "text",
+      "default": "Авторам"
+    },
+    "news_more": {
+      "label": "Показать больше",
+      "group": "news",
+      "type": "text",
+      "default": "Показать еще"
+    },
+    "news_less": {
+      "label": "Свернуть",
+      "group": "news",
+      "type": "text",
+      "default": "Свернуть"
+    },
+    "empty_projects": {
+      "label": "Нет проектов",
+      "group": "projects",
+      "type": "text",
+      "default": "Проекты скоро появятся"
+    },
+    "empty_news": {
+      "label": "Нет новостей",
+      "group": "news",
+      "type": "text",
+      "default": "Новости скоро появятся"
+    },
+    "empty_services": {
+      "label": "Нет услуг",
+      "group": "help",
+      "type": "text",
+      "default": "Информация об услугах скоро появится"
+    },
+    "menu_url_home": {
+      "label": "Ссылка пункта «ГЛАВНАЯ» (пусто — страница сайта)",
+      "group": "menu",
+      "type": "url",
+      "default": ""
+    },
+    "menu_url_projects": {
+      "label": "Ссылка пункта «НАШИ ПРОЕКТЫ» (пусто — страница сайта)",
+      "group": "menu",
+      "type": "url",
+      "default": ""
+    },
+    "menu_url_help": {
+      "label": "Ссылка пункта «УСЛУГИ» (пусто — страница сайта)",
+      "group": "menu",
+      "type": "url",
+      "default": ""
+    },
+    "menu_url_news": {
+      "label": "Ссылка пункта «НОВОСТИ» (пусто — страница сайта)",
+      "group": "menu",
+      "type": "url",
+      "default": ""
+    },
+    "menu_url_contacts": {
+      "label": "Ссылка пункта «КОНТАКТЫ» (пусто — страница сайта)",
+      "group": "menu",
+      "type": "url",
+      "default": ""
+    },
+    "asset_main_background_jpg": {
+      "label": "Общий фон",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/main-background.jpg}}",
+      "asset": "assets/main-background.jpg"
+    },
+    "asset_about_jpg": {
+      "label": "Фон главной",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/about.jpg}}",
+      "asset": "assets/about.jpg"
+    },
+    "asset_about_mobile_jpg": {
+      "label": "Фон страницы «О нас»",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/about-mobile.jpg}}",
+      "asset": "assets/about-mobile.jpg"
+    },
+    "asset_b_jpg": {
+      "label": "Фон проектов",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/b.jpg}}",
+      "asset": "assets/b.jpg"
+    },
+    "asset_a_jpg": {
+      "label": "Фон услуг",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/a.jpg}}",
+      "asset": "assets/a.jpg"
+    },
+    "asset_faq_jpg": {
+      "label": "Меню: главная",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/faq.jpg}}",
+      "asset": "assets/faq.jpg"
+    },
+    "asset_news_jpg": {
+      "label": "Меню: новости",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/news.jpg}}",
+      "asset": "assets/news.jpg"
+    },
+    "asset_contact_png": {
+      "label": "Меню: контакты",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/contact.png}}",
+      "asset": "assets/contact.png"
+    },
+    "asset_white_texture_jpg": {
+      "label": "Светлая текстура",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/white-texture.jpg}}",
+      "asset": "assets/white-texture.jpg"
+    },
+    "asset_white_texture_creases_png": {
+      "label": "Текстура складок",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/white-texture-creases.png}}",
+      "asset": "assets/white-texture-creases.png"
+    },
+    "asset_click_sound_mp3": {
+      "label": "Звук нажатия",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/click-sound.mp3}}",
+      "asset": "assets/click-sound.mp3"
+    },
+    "asset_small_group_of_people_in_the_hospital_talking_wav": {
+      "label": "Звуковой фон главной",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/small-group-of-people-in-the-hospital-talking.wav}}",
+      "asset": "assets/small-group-of-people-in-the-hospital-talking.wav"
+    },
+    "asset_sound_on_png": {
+      "label": "Звук включён: иконка",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/sound-on.png}}",
+      "asset": "assets/sound-on.png"
+    },
+    "asset_sound_off_png": {
+      "label": "Звук выключен: иконка",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/sound-off.png}}",
+      "asset": "assets/sound-off.png"
+    },
+    "asset_social_telegram_png": {
+      "label": "Telegram: иконка",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/social-telegram.png}}",
+      "asset": "assets/social-telegram.png"
+    },
+    "asset_social_phone_png": {
+      "label": "Телефон: иконка",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/social-phone.png}}",
+      "asset": "assets/social-phone.png"
+    },
+    "asset_max_logo_white_png": {
+      "label": "MAX: иконка",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/max-logo-white.png}}",
+      "asset": "assets/max-logo-white.png"
+    },
+    "asset_social_vk_png": {
+      "label": "ВКонтакте: иконка",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/social-vk.png}}",
+      "asset": "assets/social-vk.png"
+    },
+    "asset_odnoklassniki_white_png": {
+      "label": "Одноклассники: иконка",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/odnoklassniki-white.png}}",
+      "asset": "assets/odnoklassniki-white.png"
+    },
+    "asset_social_facebook_png": {
+      "label": "Дзен: иконка",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/social-facebook.png}}",
+      "asset": "assets/social-facebook.png"
+    },
+    "asset_logo_png": {
+      "label": "Иконка сайта по умолчанию",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/logo.png}}",
+      "asset": "assets/logo.png"
+    },
+    "asset_arrow_left_png": {
+      "label": "Иконка перехода к соседнему материалу",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/arrow-left.png}}",
+      "asset": "assets/arrow-left.png"
+    },
+    "asset_arrow_back_png": {
+      "label": "Иконка возврата",
+      "group": "media",
+      "type": "media",
+      "default": "{{asset:assets/arrow-back.png}}",
+      "asset": "assets/arrow-back.png"
+    },
+    "field_phone_optional": {
+      "label": "Подпись телефона в форме прайса",
+      "group": "forms",
+      "type": "text",
+      "default": "Телефон"
+    }
+  },
+  "records": {
+    "rec_project": [
+      {
+        "kind": "rec_project",
+        "key": "project-0",
+        "title": "ВЕЩЕСТВЕННЫЕ ДОКАЗАТЕЛЬСТВА",
+        "content": "История о людях, для которых правда становится опаснее вымысла. Следы прошлого, улики и человеческие тайны постепенно складываются в цепь событий, где каждое доказательство может изменить судьбу героя.",
+        "order": 0,
+        "meta": {
+          "genre": "Ироничный детектив",
+          "note": "основано на реальных событиях",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "32 серии",
+          "group": "series",
+          "image": "{{asset:assets/veshchestvennye.jpg}}",
+          "featured": "1",
+          "home_order": 10,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-1",
+        "title": "ГЕНЕЗИС",
+        "content": "В мире, где технологии меняют природу человека, герой сталкивается с системой, которая скрывает истинную цену прогресса. Чем ближе он к разгадке, тем опаснее становится каждый следующий шаг.",
+        "order": 1,
+        "meta": {
+          "genre": "Мягкая фантастика, киберпанк, триллер, драма",
+          "note": "проект в разработке",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/genesis.jpg}}",
+          "featured": "1",
+          "home_order": 11,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-2",
+        "title": "ДИКАЯ ДИВИЗИЯ",
+        "content": "История людей, оказавшихся на переломе эпохи. Честь, долг, страх и личный выбор сталкиваются в событиях, где невозможно остаться в стороне.",
+        "order": 2,
+        "meta": {
+          "genre": "Шпионский детектив",
+          "note": "основано на реальных событиях",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "4 серии",
+          "group": "series",
+          "image": "{{asset:assets/dikaya-diviziya.jpg}}",
+          "featured": "1",
+          "home_order": 6,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-3",
+        "title": "ДОРОГА В ПОДНЕБЕСНУЮ",
+        "content": "Путь, который начинается как путешествие, превращается в испытание характера. Герои проходят через опасность, потери и открытия, чтобы понять, что на самом деле ведёт их вперёд.",
+        "order": 3,
+        "meta": {
+          "genre": "Историко-приключенческий детектив",
+          "note": "основано на реальных событиях",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/doroga-v.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-4",
+        "title": "ЗОЛОТО БЕЛОГОРСКОГО МОНАСТЫРЯ",
+        "content": "Легенда о пропавшем золоте становится началом опасного расследования. Старые тайны, человеческая жадность и память земли ведут героев к разгадке, которую многие хотели бы скрыть.",
+        "order": 4,
+        "meta": {
+          "genre": "Исторический детектив",
+          "note": "основано на реальных событиях",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/zoloto-belogorskogo-monastyrya.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-5",
+        "title": "ИЗОЛЯЦИЯ",
+        "content": "Замкнутое пространство становится испытанием для героев. Когда внешняя опасность отступает, главным врагом оказываются страх, память и невозможность доверять друг другу.",
+        "order": 5,
+        "meta": {
+          "genre": "Научно-фантастический триллер",
+          "note": "проект в разработке",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/izolyatsiya.jpg}}",
+          "featured": "1",
+          "home_order": 1,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-6",
+        "title": "ЛЮБИТ НЕ ЛЮБИТ",
+        "content": "История отношений, в которых лёгкость и ирония соседствуют с настоящими чувствами. Героям предстоит понять, где заканчивается игра и начинается любовь.",
+        "order": 6,
+        "meta": {
+          "genre": "Комедия, драмеди",
+          "note": "о любви — и в шутку, и всерьёз",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "20 серий",
+          "group": "series",
+          "image": "{{asset:assets/lyubit-ne-lyubit.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-7",
+        "title": "НАШИ МАМАШИ",
+        "content": "Яркая семейная история о взрослых, детях и ежедневном хаосе, в котором любовь, забота и юмор помогают справляться даже с самыми неожиданными ситуациями.",
+        "order": 7,
+        "meta": {
+          "genre": "Ситком",
+          "note": "проект в разработке",
+          "age": "6+",
+          "format": "Сериал",
+          "duration": "20 серий",
+          "group": "series",
+          "image": "{{asset:assets/nashi-mamashi.jpg}}",
+          "featured": "1",
+          "home_order": 9,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-8",
+        "title": "СПЕЦИАЛЬНОЕ НАЗНАЧЕНИЕ",
+        "content": "Когда приказ становится вопросом жизни и смерти, герои вынуждены действовать на пределе возможностей. Это история о долге, цене выбора и людях, которые не имеют права на ошибку.",
+        "order": 8,
+        "meta": {
+          "genre": "Политический триллер",
+          "note": "основано на реальных событиях",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "10 серий",
+          "group": "series",
+          "image": "{{asset:assets/spetsnaz.jpg}}",
+          "featured": "1",
+          "home_order": 8,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-9",
+        "title": "СТОРОЖ",
+        "content": "Заброшенное место хранит больше, чем кажется. Герой сталкивается с тайной, которая постепенно стирает границу между реальностью, страхом и тем, что невозможно объяснить.",
+        "order": 9,
+        "meta": {
+          "genre": "Фантастика, триллер",
+          "note": "проект в разработке",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/storozh.jpg}}",
+          "featured": "1",
+          "home_order": 4,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-10",
+        "title": "СЫЩИК С МАЛОГО ГНЕЗДОВСКОГО",
+        "content": "Расследование, начавшееся с одного странного дела, приводит героя к цепочке событий, где каждый свидетель что-то скрывает, а каждая версия оказывается опасной.",
+        "order": 10,
+        "meta": {
+          "genre": "Исторический детектив",
+          "note": "проект в разработке",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/syschik.jpg}}",
+          "featured": "1",
+          "home_order": 3,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-11",
+        "title": "ТАЙНА МОЛЕБКИ",
+        "content": "Таинственная местность становится точкой притяжения для людей, связанных прошлым. Чем глубже расследование, тем сильнее ощущение, что сама земля хранит ответы.",
+        "order": 11,
+        "meta": {
+          "genre": "Исторический детектив с элементами мистики",
+          "note": "проект в разработке",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/tayna-molebki.jpg}}",
+          "featured": "1",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-12",
+        "title": "ТРИ В ОДНОМ",
+        "content": "Три истории, три взгляда и одна общая тайна. Герои оказываются связаны событием, которое меняет их жизнь и заставляет пересмотреть всё, во что они верили.",
+        "order": 12,
+        "meta": {
+          "genre": "Мистическая драма, комедия",
+          "note": "проект в разработке",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/tri-v-odnom.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-13",
+        "title": "ШАПИРО",
+        "content": "История человека, чья фамилия становится символом страха и власти. В мире, где каждый шаг имеет цену, герой пытается удержать контроль над собственной судьбой.",
+        "order": 13,
+        "meta": {
+          "genre": "Шпионский детектив",
+          "note": "основано на реальных событиях",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/shapiro.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-14",
+        "title": "АЛЧНОСТЬ",
+        "content": "Москва и Советский Союз готовятся к Олимпиаде. Мария и Игорь приезжают покорять Москву. Мария работает моделью, а Игорь в закрытом НИИ. Марию находят мёртвой. Игорь и Виктор, брат Марии, начинают поиски убийц.\n\nГерои погружаются в закрытые круги советского общества. Месть — как двигатель открывает им новые горизонты, но превращает их в хищников.\n\nМосква и Советский Союз готовятся к Олимпиаде. Мария и Игорь приезжают покорять Москву. Мария работает моделью, а Игорь в закрытом НИИ. Марию находят мёртвой. Игорь и Виктор, брат Марии, начинают поиски убийц.",
+        "order": 14,
+        "meta": {
+          "genre": "Детектив, авантюрная мелодрама",
+          "note": "основано на реальных событиях",
+          "age": "18+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/alchnost.jpg}}",
+          "featured": "1",
+          "home_order": 2,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-15",
+        "title": "АТАМАНКА ИЗ АДАМОВКИ",
+        "content": "История сильной героини, которая оказывается в центре событий, где личная смелость становится единственным способом защитить себя, близких и своё право на будущее.",
+        "order": 15,
+        "meta": {
+          "genre": "Комедия, драмеди",
+          "note": "проект в разработке",
+          "age": "12+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/atamanka.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-16",
+        "title": "ПРИЕМНАЯ АДВОКАТА",
+        "content": "Документальный сериал о людях, для которых профессия становится ежедневным выбором между законом, ответственностью и человеческими историями.",
+        "order": 16,
+        "meta": {
+          "genre": "Документальный сериал",
+          "note": "проект в разработке",
+          "age": "16+",
+          "format": "Сериал",
+          "duration": "8 серий",
+          "group": "series",
+          "image": "{{asset:assets/Док/Адвокат.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-17",
+        "title": "КАК Я ВАС ВСЕХ",
+        "content": "Кинопроект находится в разработке. Сценарий, визуальное решение и производственный пакет готовятся к следующему этапу.",
+        "order": 17,
+        "meta": {
+          "genre": "Художественный фильм",
+          "note": "проект в разработке",
+          "age": "16+",
+          "format": "Кино",
+          "duration": "Полный метр",
+          "group": "cinema",
+          "image": "{{asset:assets/Кино/Как я вас всех.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-18",
+        "title": "ТРОЕ В БЕНТЛИ",
+        "content": "Кинопроект находится в разработке. Сценарий, визуальное решение и производственный пакет готовятся к следующему этапу.",
+        "order": 18,
+        "meta": {
+          "genre": "Художественный фильм",
+          "note": "проект в разработке",
+          "age": "16+",
+          "format": "Кино",
+          "duration": "Полный метр",
+          "group": "cinema",
+          "image": "{{asset:assets/Кино/Трое в бентли.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-19",
+        "title": "ВЕЛИКИЕ ЭМКИЗЫ",
+        "content": "Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки.",
+        "order": 19,
+        "meta": {
+          "genre": "Документальный фильм",
+          "note": "проект в разработке",
+          "age": "12+",
+          "format": "Документальный фильм",
+          "duration": "Полный метр",
+          "group": "documentary",
+          "image": "{{asset:assets/Док/Великие эмкизы.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-20",
+        "title": "ВЕТЕР И СКАТ",
+        "content": "Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки.",
+        "order": 20,
+        "meta": {
+          "genre": "Документальный фильм",
+          "note": "проект в разработке",
+          "age": "12+",
+          "format": "Документальный фильм",
+          "duration": "Полный метр",
+          "group": "documentary",
+          "image": "{{asset:assets/Док/Ветер и скат.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-21",
+        "title": "ГРОМКОЕ ДЕЛО",
+        "content": "Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки.",
+        "order": 21,
+        "meta": {
+          "genre": "Документальный фильм",
+          "note": "проект в разработке",
+          "age": "12+",
+          "format": "Документальный фильм",
+          "duration": "Полный метр",
+          "group": "documentary",
+          "image": "{{asset:assets/Док/Громкое дело.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-22",
+        "title": "ДВИЖНИЕ ФОРМЫ",
+        "content": "Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки.",
+        "order": 22,
+        "meta": {
+          "genre": "Документальный фильм",
+          "note": "проект в разработке",
+          "age": "12+",
+          "format": "Документальный фильм",
+          "duration": "Полный метр",
+          "group": "documentary",
+          "image": "{{asset:assets/Док/Движние формы.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-23",
+        "title": "ЖАЖДА ТВОРИТЬ",
+        "content": "Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки.",
+        "order": 23,
+        "meta": {
+          "genre": "Документальный фильм",
+          "note": "проект в разработке",
+          "age": "12+",
+          "format": "Документальный фильм",
+          "duration": "Полный метр",
+          "group": "documentary",
+          "image": "{{asset:assets/Док/Жажда творить.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-24",
+        "title": "РУБЕЖИ",
+        "content": "Документальный проект находится в разработке. Материалы, герои и визуальное решение уточняются на стадии подготовки.",
+        "order": 24,
+        "meta": {
+          "genre": "Документальный фильм",
+          "note": "проект в разработке",
+          "age": "12+",
+          "format": "Документальный фильм",
+          "duration": "Полный метр",
+          "group": "documentary",
+          "image": "{{asset:assets/Док/Рубежи.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-25",
+        "title": "УЗНАВАЙ-КА",
+        "content": "Познавательный проект для детей, где сложные вопросы объясняются легко, ярко и с юмором. Каждый выпуск помогает юным зрителям узнавать новое и смотреть на мир шире.",
+        "order": 25,
+        "meta": {
+          "genre": "Познавательная детская передача",
+          "note": "проект в разработке",
+          "age": "6+",
+          "format": "ТВ-проект",
+          "duration": "56 выпусков",
+          "group": "tv",
+          "image": "{{asset:assets/ТВ/Узнавайка.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      },
+      {
+        "kind": "rec_project",
+        "key": "project-26",
+        "title": "СЕМЕЙНЫЙ ПАТРУЛЬ",
+        "content": "Тёплый и важный проект о семье, поддержке и ответственности. В центре внимания — истории, которые помогают увидеть ценность заботы, доверия и участия.",
+        "order": 26,
+        "meta": {
+          "genre": "Семейное ток-шоу",
+          "note": "проект в разработке",
+          "age": "16+",
+          "format": "ТВ-проект",
+          "duration": "56 выпусков",
+          "group": "tv",
+          "image": "{{asset:assets/ТВ/Семейный патруль.jpg}}",
+          "featured": "0",
+          "home_order": 0,
+          "teaser": ""
+        }
+      }
+    ],
+    "rec_service": [
+      {
+        "kind": "rec_service",
+        "key": "service-support-0",
+        "title": "Разработка презентаций",
+        "content": "Презентация проекта — это ключевой этап, который открывает его дальнейшую судьбу. Важно не только иметь сильную идею, но и уметь эффектно и убедительно её подать. Хорошая презентация не просто информирует, а заряжает идеей.\n\nВ работу включены разработка структуры, основные визуальные принципы, которые сделают отличие и уникальность концепции проекта. Составляем помощь в грамотной подготовке всех разделов с учётом требований индустрии, где необходимо привлечь участие в разработке креатива и презентационных проектов.",
+        "order": 0,
+        "meta": {
+          "group": "support",
+          "image": "{{asset:assets/Услуги Текстура/Разраб Презентации.jpg}}",
+          "services": "Презентация проекта\nБиблия персонажей",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-support-1",
+        "title": "Ки-арт / дизайн",
+        "content": "Мы поможем с визуальным оформлением картины: разработаем ки-арт, изображения и композиции на основе референсов, соберём единый постер, титры, логотипы, промо-материалы, социальные сети, айдентику и другие визуальные элементы.\n\nЗадача — создать цельную и выразительную визуальную персонажность проекта.",
+        "order": 1,
+        "meta": {
+          "group": "support",
+          "image": "{{asset:assets/Услуги Текстура/Ки-арт.jpg}}",
+          "services": "Ки-арт для фильма\nРазработка постера\nРазработка логотипов\nТитры к фильму\nФотосъёмка\nДизайн для социальных сетей\nРазработка сайта",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-support-2",
+        "title": "Подготовка заявки в: Минкульт, Фонд кино, ИРИ, ПФКИ",
+        "content": "Профессионально и быстро подготовим пакет документов для получения субсидий, которые выделяются теми или иными производственно-индустриальными фондами, финансовой поддержкой ведомств и организаций.\n\nДля подачи или участия важно пройти этап подготовки правильно и последовательно. Мы ежегодно готовим документы на получение субсидий и имеем большой опыт подачи.",
+        "order": 2,
+        "meta": {
+          "group": "support",
+          "image": "{{asset:assets/Услуги Текстура/Подготовка заявки.jpg}}",
+          "services": "Оформление заявки на субсидию\nПроверка уже подготовленного пакета документов\nКонсультации",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-support-3",
+        "title": "Прокатное удостоверение",
+        "content": "Прокатное удостоверение — подтверждающий документ права владения на фильм. Наличие прокатного удостоверения обязательно для публичных показов фильмов.\n\nГрамотно подготовим пакет документов, отвезём его в Минкульт РФ, следим копию в архив, оплатим пошлины и отдадим вам готовое прокатное удостоверение. С 2024 прокатное удостоверение стало цифровым.",
+        "order": 3,
+        "meta": {
+          "group": "support",
+          "image": "{{asset:assets/Услуги Текстура/ПрокатУд.jpg}}",
+          "services": "Прокатное на игровой, анимацию, док, фильмы\nПрокатное на сериал\nСдача исходных материалов в ГФФ\nМонтажные и диалоговые листы\nЗапись жесткого диска с DCP и WAV\nЗапись кассет HDcam и DVD",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-support-4",
+        "title": "Постпродакшн",
+        "content": "Услуги режиссёрского монтажа с пониманием задачи и сроков. Смонтируем или сократим фильм, сделаем трейлер или фильм о фильме.\n\nПомогаем довести материал до финального состояния и подготовить его к презентации, передаче партнёрам или дальнейшему продвижению.",
+        "order": 4,
+        "meta": {
+          "group": "support",
+          "image": "{{asset:assets/Услуги Текстура/Постпродакшн.jpg}}",
+          "services": "Монтаж фильма\nМонтаж трейлера\nФильм о фильме",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-advertising-0",
+        "title": "Креатив",
+        "content": "Путь в тысячи миль начинается с первого шага, а создание качественного видео контента — с креативной и грамотно расписанной идеи.\n\nПрежде чем начать реализацию задумки, мы детально прорабатываем каждый будущий кадр и создаём надёжный фундамент для успешности проекта.",
+        "order": 0,
+        "meta": {
+          "group": "advertising",
+          "image": "{{asset:assets/Услуги Текстура/Креатив.jpg}}",
+          "services": "Сториборд\nНейминг\nКреативная концепция\nСценарии",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-advertising-1",
+        "title": "Дизайн",
+        "content": "Наша команда специалистов по созданию креативной рекламы и созданию ярких впечатлений в цифровых формах ваших брендов.",
+        "order": 1,
+        "meta": {
+          "group": "advertising",
+          "image": "{{asset:assets/Услуги Текстура/Дизайн.jpg}}",
+          "services": "Разработка фирменного стиля\nДизайн упаковки\nАдаптивный дизайн\nВеб-дизайн\nПроектирование интерфейсов\nЮзабилити\nАрт, иллюстрации\nИнфографика\nПроектирование и производство выставочных и торговых стендов\nPOS-материалы",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-advertising-2",
+        "title": "Планирование",
+        "content": "Работая со смыслами, мы делим на следующие этапы:\n\n1 — ПОИСК РАМОК\nЗа которые нам нужно выйти. Это поиск стереотипных действий, которые совершают наши конкуренты, и шаблоны мышления, в которых находятся потребители.\n\n2 — ПОИСК ТРЕНДОВ\nВ каком будущем предстоит жить бренду и на какие ценности важно отозваться и оказывать влияние.\n\n3 — СОЗДАНИЕ ИНСТРУМЕНТОВ\nКоторые разрушают стереотипы, которые позволяют легко донести ценности и обогнать конкурентов.",
+        "order": 2,
+        "meta": {
+          "group": "advertising",
+          "image": "{{asset:assets/Услуги Текстура/Планирование.jpg}}",
+          "services": "Исследование и аналитика\nСтратегии\nБренд-консалтинг",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-advertising-3",
+        "title": "Видеосъёмка",
+        "content": "Наша команда осуществляет полный цикл производства коммерческого видео, ТВ-передач, фильмов, сериалов и диджитал проектов.\n\nМы вам готовы предложить как проекты «под ключ», так и совместное производство.",
+        "order": 3,
+        "meta": {
+          "group": "advertising",
+          "image": "{{asset:assets/Услуги Текстура/Видеосъемка.jpg}}",
+          "services": "Рекламные ролики\nВирусные ролики\nИмиджевые ролики\nАнимационные ролики\nРазработка YouTube/SMM каналов\nКорпоративные фильмы\nТрансляции\nПродающее видео\nВидео-отзывы\nРепортажная съёмка\nАэросъёмка",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-advertising-4",
+        "title": "Фотосъёмка",
+        "content": "Наши фотохудожники готовы передать качество и эстетику вашей продукции до мельчайших подробностей. Мы используем только современное оборудование, а среди наших фотографов есть победители международных конкурсов.",
+        "order": 4,
+        "meta": {
+          "group": "advertising",
+          "image": "{{asset:assets/Услуги Текстура/Фотосъемка.jpg}}",
+          "services": "Предметная фотосъёмка\nДля маркетплейсов\nРекламная съёмка\nДополнительный сервис\nМероприятия",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-advertising-5",
+        "title": "Организация мероприятий",
+        "content": "Наши специалисты разработают креативную идею и реализуют её визуализацию. Мы изготовим элементы проекта, предоставляем мультимедийное оборудование и интерактивный контент, текстовые, фото, аудио и видеоматериалы.\n\nРазработаем, доставим и установим выставочные и торговые конструкции на объектах.",
+        "order": 5,
+        "meta": {
+          "group": "advertising",
+          "image": "{{asset:assets/Услуги Текстура/Организация мероприятий.jpg}}",
+          "services": "Концерты\nСпортивные мероприятия\nПроведение презентаций, конференций и других мероприятий",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-advertising-6",
+        "title": "Интернет-маркетинг",
+        "content": "Наше агентство работает с 95% площадок Рунета. Ваши рекламные объявления появляются в популярных системах Яндекс и Google, а также появляются на сайтах партнёров поисковых систем и социальных сетях.\n\nПодберём наиболее эффективные площадки для проведения рекламных кампаний.\n\nМЫ СЕРТИФИЦИРОВАННОЕ АГЕНТСТВО.",
+        "order": 6,
+        "meta": {
+          "group": "advertising",
+          "image": "{{asset:assets/Услуги Текстура/Интернет-маркетинг.jpg}}",
+          "services": "Поисковое продвижение\nSEO продвижение сайта\nРазработка сайтов\nБаинг",
+          "presentation": "",
+          "price": ""
+        }
+      },
+      {
+        "kind": "rec_service",
+        "key": "service-advertising-7",
+        "title": "СММ",
+        "content": "Управление маркетингом и социальных сетях. Работаем над имиджем вашей компании и помогаем выстроить коммуникацию с аудиторией.",
+        "order": 7,
+        "meta": {
+          "group": "advertising",
+          "image": "{{asset:assets/Услуги Текстура/СММ.jpg}}",
+          "services": "Представительство бренда в социальных сетях\nТаргетированная реклама\nРабота с блогерами",
+          "presentation": "",
+          "price": ""
+        }
+      }
+    ],
+    "rec_news": [
+      {
+        "kind": "rec_news",
+        "key": "news-sales",
+        "title": "Как повысить продажи через видео",
+        "content": "<div class=\"news-sales-layout\">\n            <div class=\"news-sales-layout__images\">\n              <img class=\"news-sales-layout__images__item-1\" src=\"{{asset:assets/pic-1.jpg}}\" alt=\"Потребительская воронка внимания\">\n              <img class=\"news-sales-layout__images__item-2\" src=\"{{asset:assets/pic-2.jpg}}\" alt=\"Классическая воронка AIDA\">\n              <img class=\"news-sales-layout__images__item-3\" src=\"{{asset:assets/pic-3.jpg}}\" alt=\"Схема потребительской воронки\">\n              <img class=\"news-sales-layout__images__item-4\" src=\"{{asset:assets/pic-4.jpg}}\" alt=\"Этапы потребительской воронки\">\n\n              <img class=\"news-sales-layout__images__item-5\" src=\"{{asset:assets/movie-scene.jpg}}\" alt=\"Информирование\">\n              <img class=\"news-sales-layout__images__item-6\" src=\"{{asset:assets/comics-people.jpg}}\" alt=\"Осведомлённость\">\n              <img class=\"news-sales-layout__images__item-7\" src=\"{{asset:assets/movie-book.jpg}}\" alt=\"Предпочтение\">\n              <img class=\"news-sales-layout__images__item-8\" src=\"{{asset:assets/comics-revolver.jpg}}\" alt=\"Убеждение\">\n              <img class=\"news-sales-layout__images__item-9\" src=\"{{asset:assets/comics-oscar.jpg}}\" alt=\"Совершение покупки\">\n\n              <img class=\"news-sales-layout__images__item-10\" src=\"{{asset:assets/pic-5.jpg}}\" alt=\"Итоговая схема воронки\">\n            </div>\n\n            <div class=\"news-article__text news-article__text--wide\">\n              <p>\n                Из самого названия понятно, что воронка призвана «затягивать»\n                потенциальных клиентов, побуждая к совершению покупки/сделки.\n              </p>\n\n              <p>\n                Важно учесть, что 75% информации об окружающем мире человек получает\n                благодаря визуальному восприятию. Именно поэтому видео реклама работает\n                эффективнее, чем, например, реклама на радио или в печатных изданиях.\n                Подробно процесс получения мозгом зрительной информации расписан в своей\n                книге «Постижение медиавизуалов» Джарис Хэнсон. Но работает это только\n                в том случае, если соблюдены все принципы потребительской воронки!\n              </p>\n\n              <p>\n                <strong>\n                  В компании REC STUDIO сложилось своё понимание воронки, основанное,\n                  впрочем, на её базовых принципах.\n                </strong>\n                Соблюдая эти правила и учитывая собственный опыт, мы делаем упор на\n                зрелищность и эмоциональную подачу видео рекламы.\n              </p>\n\n              <p>\n                Впервые данную разработку представил американский психолог и рекламист\n                Элдис Льюис в 1898 году. Льюис сформулировал основные принципы рекламы,\n                полагая, что она должна, прежде всего, заинтересовать человека, а затем,\n                в идеале, за руку привести к покупке.\n              </p>\n\n              <p>\n                Чуть позже, в 1911 году, потребительская воронка была усовершенствована\n                его соотечественником Ральфом Батлером. В своей книге «Реклама, продажи\n                и кредиты» он подробно расписал модель воронки, подсчитав в процентном\n                соотношении, насколько важен для успеха рекламы каждый этап.\n              </p>\n\n              <p>\n                Прошло более века, однако фундамент остался неизменным — и это\n                подтверждает мировая практика, включая практику REC STUDIO. В своей работе\n                мы чётко следуем всем критериям успешной рекламной кампании!\n              </p>\n\n              <p>\n                Итак, рассмотрим каждый этап потребительской воронки подробнее.\n              </p>\n\n              <h3>Этап № 1 — Информирование</h3>\n\n              <p>\n                <strong>Цель — рассказать о продукте тем, кто с ним пока не знаком.</strong><br>\n                <span class=\"news-red\">15% успеха продаж</span>\n              </p>\n\n              <p>\n                Нужно известить потенциального клиента о существовании Вашего товара/услуги,\n                при этом чётко ориентируясь на целевую аудиторию.\n              </p>\n\n              <p>\n                Например, бытовые товары, посуда и кухонные приборы интересны, прежде всего,\n                женщинам 25+, домохозяйкам. Различные мобильные приложения — молодёжи.\n                Спортивные товары — большинству активному и платёжеспособному населению.\n                Составив портрет своего потенциального клиента, Вы сможете общаться с ним\n                на его же языке, рассказывая о своём товаре/услуге в доступной форме.\n              </p>\n\n              <p>\n                А мы, со своей стороны, сделаем всё, чтобы привлечь внимание Вашей аудитории.\n                Яркие образы и нестандартные эмоциональные решения не только заставляют\n                задерживать взгляд, но и остаются в памяти надолго! Мы твёрдо убеждены:\n                рекламой должна быть такой, чтобы зритель не просто смотрел её, а сопереживал\n                персонажам, как сопереживает героям любимого фильма/сериала!\n              </p>\n\n              <h3>Этап № 2 — Осведомлённость</h3>\n\n              <p>\n                <strong>Цель — повысить уровень знаний о продукте</strong><br>\n                <span class=\"news-red\">25% успеха продаж</span>\n              </p>\n\n              <p>\n                Заслужить доверие потенциального потребителя — это следующий этап\n                потребительской воронки. Здесь мы раскрываем философию Вашего бренда,\n                определяем ключевую ценность продукта, которая должна быть доступна и\n                близка потребителю. История создания торговой марки, интересные и интригующие\n                факты никого не оставят равнодушным!\n              </p>\n\n              <h3>Этап № 3 — Предпочтение</h3>\n\n              <p>\n                <strong>\n                  Цель — подчеркнуть преимущества продукта по сравнению с другими\n                  аналогичными предложениями\n                </strong><br>\n                <span class=\"news-red\">40% успеха продаж</span>\n              </p>\n\n              <p>\n                На данном этапе нужно подчеркнуть выгоду покупки, указав на идеальное\n                соотношение цены и качества; обозначить основные отличия от продукции\n                конкурентов.\n              </p>\n\n              <p>\n                Возможно, сроки Вашего предложения ограничены? Об этом так же необходимо\n                информировать потенциального клиента, побуждая тем самым совершить покупку\n                как можно скорее.\n              </p>\n\n              <p>\n                Данный этап является важнейшим в потребительской воронке — от него зависит\n                почти половина успеха. Многие эксперты говорят, что повлиять на мнение\n                потребителя здесь практически невозможно. Мы готовы доказать обратное!\n              </p>\n\n              <h3>Этап № 4 — Убеждение</h3>\n\n              <p>\n                <strong>\n                  Цель — убедить в правильности выбора, в том, что покупка является\n                  оптимальным решением\n                </strong><br>\n                <span class=\"news-red\">20% успеха продаж</span>\n              </p>\n\n              <p>\n                Психология человека такова, что, даже приняв для себя решение, он нуждается\n                в подтверждении со стороны. Убедившись в том, что Ваша товар/услуга\n                действительно лучше, чем аналогичная продукция конкурентов, клиент наверняка\n                совершит покупку!\n              </p>\n\n              <h3>Этап № 5 — Совершение покупки</h3>\n\n              <h3>\n                Реклама, основанная на свойствах потребительской воронки, —\n                грамотный путь к успеху!\n              </h3>\n\n              <p>\n                А реклама, вызывающая неподдельные эмоции у потребителя, — это стопроцентная\n                гарантия попадания в цель!\n              </p>\n\n              <p>\n                Достичь всех перечисленных выше целей позволяют следующие рекламные\n                инструменты, которыми располагает REC STUDIO:\n              </p>\n\n              <p>\n                <strong class=\"news-green\">Информирование:</strong>\n                рекламный ролик, имиджевый ролик, вирусное видео, анимационный ролик,\n                флэш-анимация, анонсы;\n              </p>\n\n              <p>\n                <strong class=\"news-yellow\">Осведомлённость:</strong>\n                продающее видео, презентации продукции;\n              </p>\n\n              <p>\n                <strong class=\"news-blue\">Предпочтение:</strong>\n                корпоративные фильмы, обзорное видео, обучающее видео, мастер-классы,\n                репортажная съёмка, экспертные советы, ТВ-передачи;\n              </p>\n\n              <p>\n                <strong class=\"news-red\">Убеждение:</strong>\n                отзывы.\n              </p>\n            </div>\n          </div>",
+        "excerpt": "Создавая рекламу, мы ориентируемся, прежде всего, на такое понятие,\n            как потребительская воронка. Что же это такое?",
+        "date": "2025-08-20 12:00:00",
+        "order": 0,
+        "meta": {
+          "image": "{{asset:assets/marketing.jpg}}",
+          "group": "marketers",
+          "archived": "0"
+        }
+      },
+      {
+        "kind": "rec_news",
+        "key": "news-authors",
+        "title": "Авторам на заметку",
+        "content": "<div class=\"news-authors-layout\">\n            <div class=\"news-authors-layout__images\">\n              <img src=\"{{asset:assets/01.jpg}}\" alt=\"Авторы\">\n              <img src=\"{{asset:assets/02.jpg}}\" alt=\"Пираты Карибского моря\">\n              <img src=\"{{asset:assets/03.jpg}}\" alt=\"Дежа Вю\">\n              <img src=\"{{asset:assets/04.jpg}}\" alt=\"Пираты Карибского моря\">\n              <img src=\"{{asset:assets/05.jpg}}\" alt=\"Дежа Вю\">\n              <img src=\"{{asset:assets/06.jpg}}\" alt=\"Маска Зорро\">\n              <img src=\"{{asset:assets/07.jpg}}\" alt=\"Пираты Карибского моря\">\n              <img src=\"{{asset:assets/08.jpg}}\" alt=\"Шрек\">\n            </div>\n\n            <div class=\"news-article__text news-article__text--wide\">\n              <p>\n                Сокровища нации: Книга тайн / National Treasure: Book of Secrets (2007)\n                <span class=\"news-red\">сюжет</span>\n              </p>\n\n              <p>\n                Пираты Карибского моря: На краю света / Pirates of the Caribbean:\n                At World's End (2007)\n              </p>\n\n              <p>\n                Дежа Вю / Deja Vu (2006)\n              </p>\n\n              <p>\n                Пираты Карибского моря: Сундук мертвеца / Pirates of the Caribbean:\n                Dead Man's Chest (2006)\n                <span class=\"news-red\">сценарий и персонажи</span>\n              </p>\n\n              <p>\n                Пираты Карибского моря: Проклятие чёрной жемчужины / Pirates of the\n                Caribbean: The Curse of the Black Pearl (2003)\n              </p>\n\n              <p>\n                Шрек / Shrek (2001)\n                <span class=\"news-red\">сценарий</span>\n              </p>\n\n              <p>\n                Дорога на Эльдорадо / Road To El Dorado, The (2000)\n              </p>\n\n              <p>\n                Маска Зорро / Mask of Zorro, The (1998)\n                <span class=\"news-red\">сюжет</span>\n              </p>\n\n              <p>\n                Годзилла / Godzilla (1998)\n                <span class=\"news-red\">сюжет</span>\n              </p>\n\n              <p>\n                Аладдин / Aladdin (1992)\n              </p>\n\n              <h3>Часть 1<br>Концепция и сюжет</h3>\n\n              <p>1. Представьте свою идею как концептуальный «крючок».</p>\n\n              <p>\n                2. Действительно ли интригующе выглядит первая часть — или прежде\n                всего требуется пояснение?\n              </p>\n\n              <p>\n                3. Кто целевая аудитория? Почему ваши родители смотрят этот фильм?\n              </p>\n\n              <p>\n                4. Важно ли существование особого секрета или собственной жизни\n                ваших персонажей?\n              </p>\n\n              <p>\n                5. Если вы пишете о фантазии, воплотившейся в жизнь, быстро\n                передайте их желания, которые материализовались.\n              </p>\n\n              <p>\n                6. Создаёт ли сценарий вопросы: найдёт ли герой? Сделает ли это она?\n                Полюбят ли они друг друга? Имеется ли чёткая установка необходимого\n                узнать в финале?\n              </p>\n\n              <p>7. Оригинально ли это?</p>\n\n              <p>8. Есть ли цена? Топит?</p>\n\n              <p>9. Насколько энергично начинается сценарий?</p>\n\n              <p>10. Сценарий смешной, страшный или волнующий? Всё вместе?</p>\n\n              <p>\n                11. Что такого имеется в истории, что зрителю не может подойти\n                в реальной жизни?\n              </p>\n\n              <p>\n                12. Что на карте? Вопросы жизни и смерти наиболее драматичны.\n                Создаёт ли концепция потенциал, чтобы жизни ваших персонажей\n                изменились?\n              </p>\n\n              <p>\n                13. Какова подоплёка? Есть ли обоснованный вызов вашим персонажам?\n              </p>\n\n              <p>\n                14. Что вы пытаетесь сказать сценарием, и стоит ли это того,\n                чтобы об этом говорить?\n              </p>\n\n              <p>15. Волновался ли сценарий публику?</p>\n\n              <p>\n                16. Понимают ли сценарий? Основная идея возможности должна быть\n                ясна в основе сюжета, так и внутри каждой индивидуальной сцены.\n              </p>\n\n              <p>\n                17. Как только простая действительность фильма установлена, она\n                не может быть разрушена. Ограничения требуют оригинальных решений.\n              </p>\n\n              <p>18. Имеется ли решение, контрастное концепции?</p>\n\n              <p>19. Имеется ли речь? Есть ли персонаж?</p>\n\n              <p>\n                20. Есть ли сильная эмоция — сердце в центре истории? Избегайте\n                излишне сложных деталей.\n              </p>\n\n              <h3>Часть 2<br>Техническое исполнение</h3>\n\n              <p>21. Должна ли образом сформироваться сценарий?</p>\n\n              <p>\n                22. Проверьте орфографию и пунктуацию, устраните предложения,\n                которые «застревают» при чтении.\n              </p>\n\n              <p>23. Имеется ли отчётливая трёхчастная структура?</p>\n\n              <p>\n                24. Все ли сцены необходимы? Не нужно сцен, не привязанных к\n                сюжету, они цепляют за экран.\n              </p>\n\n              <p>\n                25. Не забывайте указания камеры, ориентируйтесь на возможные\n                размеры: вначале сцены — редактору.\n              </p>\n\n              <p>26. Начинайте сцены насколько возможно ближе к началу события.</p>\n\n              <p>\n                27. Начинайте сцену с необычного положения, завершайте как можно\n                раньше. Оставьте некоторые штрихи, чтобы продлить напряжение.\n              </p>\n\n              <p>28. Другими словами: сокращайте сцены.</p>\n\n              <p>\n                29. Визуальный сценарий. Вербальная — вторая природа. Выражайте\n                лица человека, которого только что застрелили, лучше всего звуком\n                или кадром.\n              </p>\n\n              <p>\n                30. Какова сцена, проносящаяся у вас в уме, и что со стороны\n                нужно зрителю?\n              </p>\n\n              <p>\n                31. Старайтесь по значению деталей сюжета для каждой роли или\n                союза отчётливо объяснять каждую сцену.\n              </p>\n\n              <p>\n                32. Многочисленные повторения места действия помогают установить\n                атмосферу фильма, позволяют глубже почувствовать себя комфортно.\n              </p>\n\n              <p>\n                33. Повторения и поддержания могут быть использованы для описания\n                второстепенных персонажей. Они также могут делать историю героя.\n              </p>\n\n              <p>\n                34. Должно ли всё сцены должны занимать по 5 страниц\n                диалога/действия. В хорошем сценарии множество драматических сцен,\n                чистота рождает темп.\n              </p>\n\n              <p>\n                35. Небольшие детали добавляют реалистичности. Вид ли тщательные\n                изображения?\n              </p>\n\n              <p>\n                36. Каждая строка диалога продвигает вперёд, может заставлять\n                смеяться, открывать черты характера персонажа.\n              </p>\n\n              <p>\n                37. Никаких объясняющих экспозиций хуже. Очень опасно вводить\n                в заблуждение аудиторию.\n              </p>\n\n              <p>\n                38. Пишите рассказчиком свою историю с помощью картинки.\n              </p>\n\n              <p>\n                39. Не более 125 страниц и не менее 110, или первое впечатление\n                от сценария будет «очень увесистым» или «ничего расследовать».\n              </p>\n\n              <p>\n                40. Не нарушайте сцены сценария, которые проходят «ДАЛЕЕ» и\n                «ПРОДОЛЖЕНИЕ СЛЕДУЕТ» только из обязательных.\n              </p>\n\n              <h3>Часть 3<br>Персонажи</h3>\n\n              <p>\n                41. На все ли роли можно пригласить актёров? Если ли в фильме роли,\n                которые остаются отчётливо знаковыми?\n              </p>\n\n              <p>\n                42. Действия героя должны исходить от персонажа, а не просто быть\n                внешней ради сцены.\n              </p>\n\n              <p>\n                43. Аудитория желает видеть персонажей, которые глубоко обеспокоены\n                и необычно проблемны — и особенно сильно переживают.\n              </p>\n\n              <p>\n                44. Имеется ли в сценарии сцена, где эмоциональный конфликт главного\n                героя приведёт к кризису?\n              </p>\n\n              <p>\n                45. Перед появлением персонажа должно строиться его основные черты\n                характера. Герои выглядят сильнее от персонажа — своей встречи.\n              </p>\n\n              <p>\n                46. Главные герои должны быть достаточно симпатичны — это люди,\n                о которых мы беспокоимся и которых хотим видеть защитить.\n              </p>\n\n              <p>\n                47. Какими нужными и живыми персонажами? В чем заключается основа\n                желания главного героя? Оно должно быть чётко определённым — и\n                понятным зрителю.\n              </p>\n\n              <p>\n                48. Нарастает перед персонажем должна быть отражением в реальных\n                страхах. Абстракции лишь вдохновляют и напоминают более реалистичные\n                и более интересные герои.\n              </p>\n            </div>\n          </div>",
+        "excerpt": "Тед Эллиот и Терри Россио авторы этой статьи долгое время работали\n            ридерами, а потом стали сценаристами и написали:",
+        "date": "2025-08-20 12:00:00",
+        "order": 1,
+        "meta": {
+          "image": "{{asset:assets/01.jpg}}",
+          "group": "authors",
+          "archived": "0"
+        }
+      },
+      {
+        "kind": "rec_news",
+        "key": "news-screenwriter",
+        "title": "Как стать сценаристом REC STUDIO?",
+        "content": "<div class=\"news-article__body\">\n            <div class=\"news-article__image\">\n              <img src=\"{{asset:assets/scenarists.jpg}}\" alt=\"Печатная машинка\">\n            </div>\n\n            <div class=\"news-article__text\">\n              <p>\n                Нужно иметь в виду, что REC STUDIO не имеет чёткой специализации,\n                как сценарное агентство: при отборе проектов мы ориентируемся на\n                текущие потребности ТВ-каналов касательно формата, жанра,\n                хронометража сценария.\n              </p>\n\n              <p>\n                Одобренные проекты мы доводим до законченных заявок, формируем\n                полноценную съёмочную группу, снимаем пилоты — чтобы представители\n                каналов смогли увидеть продукт наглядно, а значит, быстрее\n                заключить контракт.\n              </p>\n\n              <p>\n                <strong>\n                  Если вы решили отправить нам свою работу, на начальном этапе\n                  желательно ограничиться синопсисом.\n                </strong>\n                Если синопсиса нет, но есть готовый сценарий — достаточно первой\n                серии для сериалов или первых десяти страниц для полнометражных\n                проектов.\n              </p>\n\n              <p>\n                Мы добросовестно относимся к рассмотрению каждого проекта, и\n                поскольку объём поступающего материала достаточно велик, средний\n                срок рассмотрения — два месяца.\n              </p>\n\n              <p>\n                При попадании вашего проекта в лонг-лист мы непременно связываемся\n                с вами и сообщаем о своей заинтересованности в проекте, даём\n                дальнейшие рекомендации. Попадание в шорт-лист означает, что ваш\n                проект будет запущен в производство при первой возможности.\n              </p>\n            </div>\n          </div>\n<div class=\"news-article__rules\">\n            <h3>\n              С целью ускорения процесса отбора и взаимного удобства — предлагаем\n              прислать нам письмо соответствующей форме:\n            </h3>\n\n            <ol>\n              <li>ФИО автора / авторов</li>\n              <li>Рабочее название</li>\n              <li>Жанр</li>\n              <li>Целевая аудитория</li>\n              <li>Хронометраж</li>\n              <li>Логлайн</li>\n              <li>Референсы</li>\n              <li>Контакты для связи с вами</li>\n            </ol>\n\n            <p>\n              <a href=\"mailto:creative@recstudio.biz\">creative@recstudio.biz</a>\n              — по данному почтовому адресу отправлять готовое электронное письмо,\n              с пометкой названия проекта и его жанра.\n            </p>\n          </div>",
+        "excerpt": "Уважаемые авторы! Мы постоянно находимся в поиске свежих,\n            нестандартных идей и, конечно, заинтересованы в открытии новых имён!",
+        "date": "2025-08-20 12:00:00",
+        "order": 2,
+        "meta": {
+          "image": "{{asset:assets/scenarists.jpg}}",
+          "group": "authors",
+          "archived": "0"
+        }
+      }
+    ]
+  }
+}

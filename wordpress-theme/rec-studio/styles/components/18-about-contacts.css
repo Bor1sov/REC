@@ -10,7 +10,7 @@
 
     background:
         #111
-        url("../../assets/main-background.jpg")
+        var(--rec-asset_main_background_jpg, url("../../assets/main-background.jpg"))
         center top / cover
         repeat-y;
 
@@ -45,7 +45,7 @@
     overflow: hidden;
     pointer-events: auto;
 
-    background-image: url("../../assets/main-background.jpg");
+    background-image: var(--rec-asset_main_background_jpg, url("../../assets/main-background.jpg"));
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -223,27 +223,27 @@
 }
 
 .about-contacts-section .contacts__social--telegram {
-    background-image: url("../../assets/social-telegram.png");
+    background-image: var(--rec-asset_social_telegram_png, url("../../assets/social-telegram.png"));
 }
 
 .about-contacts-section .contacts__social--phone {
-    background-image: url("../../assets/social-phone.png");
+    background-image: var(--rec-asset_social_phone_png, url("../../assets/social-phone.png"));
 }
 
 .about-contacts-section .contacts__social--play {
-    background-image: url("../../assets/max-logo-white.png");
+    background-image: var(--rec-asset_max_logo_white_png, url("../../assets/max-logo-white.png"));
 }
 
 .about-contacts-section .contacts__social--vk {
-    background-image: url("../../assets/social-vk.png");
+    background-image: var(--rec-asset_social_vk_png, url("../../assets/social-vk.png"));
 }
 
 .about-contacts-section .contacts__social--ok {
-    background-image: url("../../assets/odnoklassniki-white.png");
+    background-image: var(--rec-asset_odnoklassniki_white_png, url("../../assets/odnoklassniki-white.png"));
 }
 
 .about-contacts-section .contacts__social--dzen {
-    background-image: url("../../assets/social-facebook.png");
+    background-image: var(--rec-asset_social_facebook_png, url("../../assets/social-facebook.png"));
 }
 
 .about-contacts-section .contacts__place {
@@ -331,7 +331,7 @@
     text-transform: uppercase;
     letter-spacing: 0;
 
-    background-image: url("../../assets/white-texture.jpg");
+    background-image: var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -15,7 +15,7 @@ body.news-page {
 
     background:
         #111
-        url("../../assets/main-background.jpg")
+        var(--rec-asset_main_background_jpg, url("../../assets/main-background.jpg"))
         center top / cover
         repeat-y;
 }
@@ -100,7 +100,7 @@ body.news-page {
     letter-spacing: -0.045em;
     text-transform: uppercase;
 
-    background-image: url("../../assets/white-texture.jpg");
+    background-image: var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
     background-size: cover;
     background-position: center;
 
@@ -340,7 +340,7 @@ body.news-page {
     top: 50%;
     width: 26px;
     height: 18px;
-    background: url("../../assets/arrow-back.png") center / contain no-repeat;
+    background: var(--rec-asset_arrow_back_png, url("../../assets/arrow-back.png")) center / contain no-repeat;
     transform: translate(-50%, -50%);
 }
 
@@ -521,7 +521,7 @@ body.news-page {
     border: 0;
     background:
         linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
-        url("../../assets/white-texture.jpg");
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
     background-size: cover;
     background-position: center;
 
@@ -540,7 +540,7 @@ body.news-page {
 .news-back-to-list:hover {
     background:
         linear-gradient(rgba(160, 160, 160, 0.85), rgba(160, 160, 160, 0.85)),
-        url("../../assets/white-texture.jpg");
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
     background-size: cover;
     background-position: center;
 }
@@ -581,7 +581,7 @@ body.news-page {
     letter-spacing: -0.05em;
     text-transform: uppercase;
 
-    background-image: url("../../assets/white-texture.jpg");
+    background-image: var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
     background-size: cover;
     background-position: center;
 
@@ -750,7 +750,7 @@ body.news-page {
 .news-show-more:hover {
     background:
         linear-gradient(rgba(160, 160, 160, 0.85), rgba(160, 160, 160, 0.85)),
-        url("../../assets/white-texture.jpg");
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
     background-size: cover;
     background-position: center;
 }
@@ -775,7 +775,7 @@ body.news-page {
 
     flex: 0 0 20px;
 
-    background-image: url("../../assets/social-vk.png");
+    background-image: var(--rec-asset_social_vk_png, url("../../assets/social-vk.png"));
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -922,7 +922,7 @@ body.news-page {
 
 .news-footer-controls .news-back-to-list {
     background-color: transparent !important;
-    background-image: url("../../assets/arrow-back.png") !important;
+    background-image: var(--rec-asset_arrow_back_png, url("../../assets/arrow-back.png")) !important;
     background-position: center !important;
     background-size: 32px auto !important;
     background-repeat: no-repeat !important;
@@ -942,7 +942,7 @@ body.news-page {
 
 .news-footer-controls .news-back-to-list:hover {
     background-color: rgba(255, 255, 255, 0.04) !important;
-    background-image: url("../../assets/arrow-back.png") !important;
+    background-image: var(--rec-asset_arrow_back_png, url("../../assets/arrow-back.png")) !important;
 }
 
 /* =========================================================

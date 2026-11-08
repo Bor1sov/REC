@@ -2,6 +2,10 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+// These templates now read WordPress content. The old static importer is kept
+// only for reference: rerunning it would remove the CMS integration.
+throw new Error("Шаблоны редактируются напрямую: импорт статического HTML больше не используется.");
+
 const toolsDir = path.dirname(fileURLToPath(import.meta.url));
 const themeDir = path.resolve(toolsDir, "..");
 const projectDir = path.resolve(themeDir, "..", "..");

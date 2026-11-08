@@ -119,7 +119,60 @@ function handleVirtualScroll(e) {
     setScrollbarScrollingState();
 }
 
+function initTouchScroll() {
+    let gesture = null;
+
+    window.addEventListener("touchstart", (event) => {
+        if (event.touches.length !== 1 || event.target.closest("input, textarea, select, iframe")) {
+            gesture = null;
+            return;
+        }
+
+        const touch = event.touches[0];
+        gesture = { target: event.target, x: touch.clientX, y: touch.clientY };
+    }, { passive: true });
+
+    window.addEventListener("touchmove", (event) => {
+        if (!gesture || event.touches.length !== 1) {
+            gesture = null;
+            return;
+        }
+
+        const touch = event.touches[0];
+        const deltaY = gesture.y - touch.clientY;
+        const deltaX = gesture.x - touch.clientX;
+        if (Math.abs(deltaY) < 8 || Math.abs(deltaX) > Math.abs(deltaY)) return;
+
+        // Keep native scrolling inside forms, details and scrollable text.
+        const inDialog = gesture.target.closest(
+            '.project-detail, .about-projects-detail, .help-detail, .about-help-detail, [class*="-popup"]'
+        );
+        let nativeScroll = Boolean(inDialog);
+        for (let element = gesture.target; !nativeScroll && element !== document.body; element = element.parentElement) {
+            if (!element) break;
+            const overflow = getComputedStyle(element).overflowY;
+            if (overflow !== "auto" && overflow !== "scroll") continue;
+            const maxScroll = element.scrollHeight - element.clientHeight;
+            nativeScroll = maxScroll > 1 && (deltaY < 0 ? element.scrollTop > 0 : element.scrollTop < maxScroll - 1);
+        }
+
+        gesture.x = touch.clientX;
+        gesture.y = touch.clientY;
+        if (nativeScroll) return;
+
+        // Reuse the scene's wheel routing, including News and the Home timeline.
+        const wheel = new WheelEvent("wheel", { deltaY, bubbles: true, cancelable: true });
+        gesture.target.dispatchEvent(wheel);
+        if (wheel.defaultPrevented && event.cancelable) event.preventDefault();
+    }, { passive: false });
+
+    const endGesture = () => { gesture = null; };
+    window.addEventListener("touchend", endGesture, { passive: true });
+    window.addEventListener("touchcancel", endGesture, { passive: true });
+}
+
 export function initScroll() {
+    initTouchScroll();
     if (dom.aboutInfoText) {
         dom.aboutInfoText.addEventListener(
             "wheel",

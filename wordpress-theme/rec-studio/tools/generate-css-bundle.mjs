@@ -34,3 +34,4 @@ for (const fileName of imports) {
 }
 
 writeFileSync(outputPath, `${parts.join("\n\n")}\n`, "utf8");
+

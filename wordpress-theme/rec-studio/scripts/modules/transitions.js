@@ -1,5 +1,24 @@
 import { dom } from "./dom.js";
 import { getPageUrl } from "./runtime.js";
+function normalizeUrl(url) {
+    const parsed = new URL(url, window.location.href);
+
+    parsed.hash = "";
+    parsed.search = "";
+
+    return parsed.href.replace(/\/+$/, "");
+}
+
+function isHomeHref(href) {
+    return normalizeUrl(href) === normalizeUrl(getPageUrl("home"));
+}
+
+function prepareHomeReturn(href) {
+    if (!isHomeHref(href)) return;
+
+    sessionStorage.setItem("recStudioSkipIntro", "true");
+    sessionStorage.setItem("recStudioStartAboutDescription", "true");
+}
 
 export function initPageTransitions() {
     const links = document.querySelectorAll(".content__links__item");
@@ -11,6 +30,7 @@ export function initPageTransitions() {
             if (!href || href === "#") return;
 
             e.preventDefault();
+            prepareHomeReturn(href);
 
             document.body.classList.add("page-leaving");
 

@@ -63,13 +63,41 @@ const config = window.recTheme || {};
 const themeBase = new URL("../../", import.meta.url).href;
 
 function getAssetUrl(path) {
+    if (!path) return "";
     const normalizedPath = String(path || "")
         .replace(/^\.\//, "")
         .replace(/^\/+/, "");
 
     const base = config.assetBase || themeBase;
 
+    const key = normalizedPath.split("?")[0];
+    if (Object.prototype.hasOwnProperty.call(config.assetOverrides || {}, key)) {
+        return config.assetOverrides[key];
+    }
+
     return new URL(normalizedPath, base).href;
+}
+
+function getLabel(key, fallback = "") {
+    return config.labels?.[key] ?? fallback;
+}
+
+function escapeHtml$2(value) {
+    return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+}
+
+function setDownloadLink(selector, url) {
+    const link = document.querySelector(selector);
+    if (!link) return;
+    link.href = url || "#";
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.hidden = !url;
+}
+
+function openContentFile(url) {
+    if (url && /^https?:\/\//i.test(url)) window.open(url, "_blank", "noopener,noreferrer");
 }
 
 function getPageUrl(slug) {
@@ -476,6 +504,11 @@ const AUTO_MOVE_DELAY =
 
 let autoMoveTimer = null;
 
+function getLogoBorderWidth() {
+    const borderWidth = Number.parseFloat(window.getComputedStyle(dom.logo).borderTopWidth);
+
+    return Number.isFinite(borderWidth) ? borderWidth : 25;
+}
 function revealUI() {
     if (!dom.main) return;
 
@@ -509,7 +542,7 @@ function moveLogoToMenuTop() {
     logoClone.style.zIndex = "10001";
     logoClone.style.transition = `all ${LOGO_TO_MENU_DURATION}ms cubic-bezier(0.7, 0, 0.2, 1)`;
     logoClone.style.pointerEvents = "none";
-    logoClone.style.border = "25px solid rgb(255, 0, 0)";
+    logoClone.style.border = `${getLogoBorderWidth()}px solid rgb(255, 0, 0)`;
     logoClone.style.borderRadius = "50%";
     logoClone.style.backgroundColor = "transparent";
     logoClone.style.opacity = "0.8";
@@ -1033,7 +1066,60 @@ function handleVirtualScroll(e) {
     setScrollbarScrollingState();
 }
 
+function initTouchScroll() {
+    let gesture = null;
+
+    window.addEventListener("touchstart", (event) => {
+        if (event.touches.length !== 1 || event.target.closest("input, textarea, select, iframe")) {
+            gesture = null;
+            return;
+        }
+
+        const touch = event.touches[0];
+        gesture = { target: event.target, x: touch.clientX, y: touch.clientY };
+    }, { passive: true });
+
+    window.addEventListener("touchmove", (event) => {
+        if (!gesture || event.touches.length !== 1) {
+            gesture = null;
+            return;
+        }
+
+        const touch = event.touches[0];
+        const deltaY = gesture.y - touch.clientY;
+        const deltaX = gesture.x - touch.clientX;
+        if (Math.abs(deltaY) < 8 || Math.abs(deltaX) > Math.abs(deltaY)) return;
+
+        // Keep native scrolling inside forms, details and scrollable text.
+        const inDialog = gesture.target.closest(
+            '.project-detail, .about-projects-detail, .help-detail, .about-help-detail, [class*="-popup"]'
+        );
+        let nativeScroll = Boolean(inDialog);
+        for (let element = gesture.target; !nativeScroll && element !== document.body; element = element.parentElement) {
+            if (!element) break;
+            const overflow = getComputedStyle(element).overflowY;
+            if (overflow !== "auto" && overflow !== "scroll") continue;
+            const maxScroll = element.scrollHeight - element.clientHeight;
+            nativeScroll = maxScroll > 1 && (deltaY < 0 ? element.scrollTop > 0 : element.scrollTop < maxScroll - 1);
+        }
+
+        gesture.x = touch.clientX;
+        gesture.y = touch.clientY;
+        if (nativeScroll) return;
+
+        // Reuse the scene's wheel routing, including News and the Home timeline.
+        const wheel = new WheelEvent("wheel", { deltaY, bubbles: true, cancelable: true });
+        gesture.target.dispatchEvent(wheel);
+        if (wheel.defaultPrevented && event.cancelable) event.preventDefault();
+    }, { passive: false });
+
+    const endGesture = () => { gesture = null; };
+    window.addEventListener("touchend", endGesture, { passive: true });
+    window.addEventListener("touchcancel", endGesture, { passive: true });
+}
+
 function initScroll() {
+    initTouchScroll();
     if (dom.aboutInfoText) {
         dom.aboutInfoText.addEventListener(
             "wheel",
@@ -1238,6 +1324,26 @@ function initContentLinksImages() {
     });
 }
 
+function normalizeUrl(url) {
+    const parsed = new URL(url, window.location.href);
+
+    parsed.hash = "";
+    parsed.search = "";
+
+    return parsed.href.replace(/\/+$/, "");
+}
+
+function isHomeHref(href) {
+    return normalizeUrl(href) === normalizeUrl(getPageUrl("home"));
+}
+
+function prepareHomeReturn(href) {
+    if (!isHomeHref(href)) return;
+
+    sessionStorage.setItem("recStudioSkipIntro", "true");
+    sessionStorage.setItem("recStudioStartAboutDescription", "true");
+}
+
 function initPageTransitions() {
     const links = document.querySelectorAll(".content__links__item");
 
@@ -1248,6 +1354,7 @@ function initPageTransitions() {
             if (!href || href === "#") return;
 
             e.preventDefault();
+            prepareHomeReturn(href);
 
             document.body.classList.add("page-leaving");
 
@@ -1282,14 +1389,18 @@ const isProjectsPage = body.classList.contains("projects-page");
 const isHelpPage = body.classList.contains("help-page");
 const isAboutPage = body.classList.contains("about-page");
 const ABOUT_TITLE_INTRO_COMPLETE_CLASS = "about-title-intro-complete";
+const shouldStartAboutDescriptionOnReturn =
+    isAboutPage &&
+    sessionStorage.getItem("recStudioStartAboutDescription") === "true" &&
+    !isPageReload;
 const shouldSkipAboutTitleIntro =
     isAboutPage &&
+    !shouldStartAboutDescriptionOnReturn &&
     sessionStorage.getItem("recStudioAboutTitleIntroComplete") === "true" &&
     !isPageReload;
 const ABOUT_TITLE_SCROLL_INTRO_DURATION = 6400;
 const ABOUT_DESCRIPTION_AUTO_SCROLL_DURATION = 4300;
-const ABOUT_PARALAX_TEXT_MOVE_PERCENT$1 = 285;
-const ABOUT_PARALAX_REFERENCE_HEIGHT$1 = 1200;
+const ABOUT_DESCRIPTION_COMPLETE_PROGRESS = 1;
 const PAGE_SCROLL_EASE = 0.045;
 
 let setInitialImagePosition$1 = () => {};
@@ -1302,14 +1413,6 @@ let updateAboutNewsSection$1 = () => {};
 let updateAboutContactsSection$1 = () => {};
 let lastRenderedProgress = Number.NaN;
 
-function getAboutParalaxTextMovePercent$1() {
-    if (window.innerWidth < 1600 || window.innerHeight >= ABOUT_PARALAX_REFERENCE_HEIGHT$1) {
-        return ABOUT_PARALAX_TEXT_MOVE_PERCENT$1;
-    }
-
-    return ABOUT_PARALAX_TEXT_MOVE_PERCENT$1 *
-        (ABOUT_PARALAX_REFERENCE_HEIGHT$1 / Math.max(window.innerHeight, 1));
-}
 
 function easeIntroExit(progress) {
     const x = Math.max(0, Math.min(1, progress));
@@ -1324,23 +1427,7 @@ function smoothstep$5(progress) {
 }
 
 function getAboutDescriptionAutoTargetProgress() {
-    const paralaxText = document.querySelector(".paralax-text");
-    const textHeight = Math.max(
-        1,
-        paralaxText?.offsetHeight ||
-            paralaxText?.getBoundingClientRect().height ||
-            window.innerHeight
-    );
-    const untransformedTop = window.innerHeight - textHeight;
-    const targetTranslatePercent = (-untransformedTop / textHeight) * 100;
-    const textMovePercent = 100 - targetTranslatePercent;
-    const paralaxTextTopProgress = Math.max(
-        0,
-        Math.min(1, textMovePercent / getAboutParalaxTextMovePercent$1())
-    );
-
-    return ABOUT_TITLE_STAGE_END +
-        (1 - ABOUT_TITLE_STAGE_END) * paralaxTextTopProgress;
+    return ABOUT_DESCRIPTION_COMPLETE_PROGRESS;
 }
 
 function startAboutDescriptionAutoScroll() {
@@ -1367,7 +1454,7 @@ state.shouldSkipIntro =
 state.pageProgressStops = null;
 state.pageProgressInstantSegments = null;
 
-body.classList.toggle(ABOUT_TITLE_INTRO_COMPLETE_CLASS, isAboutPage && shouldSkipAboutTitleIntro);
+body.classList.toggle(ABOUT_TITLE_INTRO_COMPLETE_CLASS, isAboutPage && (shouldSkipAboutTitleIntro || shouldStartAboutDescriptionOnReturn));
 
 if (isProjectsPage) {
     state.pageProgressMax = 5;
@@ -1381,8 +1468,20 @@ if (isProjectsPage) {
     state.pageProgressInstantSegments = null;
     state.pageSectionsCount = ABOUT_PAGE_SCROLL_STOPS.length - 1;
 
-    if (shouldSkipAboutTitleIntro) {
-        const aboutReturnProgress = getAboutDescriptionAutoTargetProgress();
+    if (shouldStartAboutDescriptionOnReturn) {
+        state.progress = ABOUT_TITLE_STAGE_END;
+        state.targetProgress = ABOUT_TITLE_STAGE_END;
+        state.aboutTitleEntryProgress = 1;
+        state.aboutTitleEntryDone = true;
+        state.aboutTitleScrollIntroStarted = true;
+        state.aboutTitleScrollIntroStartTime = 0;
+        state.aboutTitleScrollIntroComplete = true;
+        state.aboutDescriptionAutoScrollStarted = false;
+        state.aboutDescriptionAutoScrollComplete = false;
+        sessionStorage.setItem("recStudioAboutTitleIntroComplete", "true");
+        sessionStorage.removeItem("recStudioStartAboutDescription");
+    } else if (shouldSkipAboutTitleIntro) {
+        const aboutReturnProgress = ABOUT_DESCRIPTION_COMPLETE_PROGRESS;
 
         state.progress = aboutReturnProgress;
         state.targetProgress = aboutReturnProgress;
@@ -1401,13 +1500,14 @@ if (isProjectsPage) {
 
 if (isPageReload) {
     sessionStorage.removeItem("recStudioSkipIntro");
+    sessionStorage.removeItem("recStudioStartAboutDescription");
 }
 
 if (dom.main) {
     dom.main.classList.add("show");
     dom.main.classList.remove("hidden");
 
-    if (state.shouldSkipIntro && dom.hasContentLinks) {
+    if (state.shouldSkipIntro && (dom.hasContentLinks || isAboutPage)) {
         dom.main.classList.remove("ui-hidden");
         dom.main.classList.add("ui-visible");
         dom.main.classList.add("menu-logo-ready");
@@ -1754,6 +1854,20 @@ const ABOUT_INTRO_TITLE_START_SIZE = 0.1;
 const ABOUT_INTRO_TITLE_ENTRY_SIZE = 15;
 const ABOUT_INTRO_TITLE_MAX_SIZE = 625;
 
+function getAboutIntroTitleMaxSize() {
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 1024;
+
+    if (viewportWidth <= 480) {
+        return Math.max(210, Math.min(330, viewportWidth * 1.03));
+    }
+
+    if (viewportWidth <= 768) {
+        return Math.max(320, Math.min(470, viewportWidth * 0.72));
+    }
+
+    return ABOUT_INTRO_TITLE_MAX_SIZE;
+}
+
 function clamp$6(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
@@ -1768,8 +1882,7 @@ function smoothstep$4(value) {
     return x * x * (3 - 2 * x);
 }
 
-const ABOUT_PARALAX_TEXT_MOVE_PERCENT = 285;
-const ABOUT_PARALAX_REFERENCE_HEIGHT = 1200;
+const ABOUT_PARALAX_TEXT_MOVE_PERCENT = 100;
 const ABOUT_INTRO_AMBIENT_SRC = "assets/small-group-of-people-in-the-hospital-talking.wav";
 const ABOUT_INTRO_AMBIENT_VOLUME = 0.45;
 const ABOUT_INTRO_AMBIENT_FADE_DISTANCE = 220;
@@ -1786,27 +1899,11 @@ let aboutIntroAmbientRevealRetryTimer = null;
 let aboutIntroAmbientRevealRetryCount = 0;
 
 function getAboutParalaxTextMovePercent() {
-    if (window.innerWidth < 1600 || window.innerHeight >= ABOUT_PARALAX_REFERENCE_HEIGHT) {
-        return ABOUT_PARALAX_TEXT_MOVE_PERCENT;
-    }
-
-    return ABOUT_PARALAX_TEXT_MOVE_PERCENT *
-        (ABOUT_PARALAX_REFERENCE_HEIGHT / Math.max(window.innerHeight, 1));
+    return ABOUT_PARALAX_TEXT_MOVE_PERCENT;
 }
 
 function getAboutTextReachTopProgress() {
-    const { paralaxText } = getSceneElements();
-    const textHeight = Math.max(
-        1,
-        paralaxText?.offsetHeight ||
-            paralaxText?.getBoundingClientRect().height ||
-            window.innerHeight
-    );
-    const untransformedTop = window.innerHeight - textHeight;
-    const targetTranslatePercent = (-untransformedTop / textHeight) * 100;
-    const textMovePercent = 100 - targetTranslatePercent;
-
-    return clamp$6(textMovePercent / getAboutParalaxTextMovePercent(), 0, 1);
+    return 1;
 }
 
 function getAboutIntroAmbientAudio() {
@@ -1815,7 +1912,7 @@ function getAboutIntroAmbientAudio() {
 
     aboutIntroAmbientAudio = document.createElement("audio");
     aboutIntroAmbientAudio.src = getAssetUrl(ABOUT_INTRO_AMBIENT_SRC);
-    aboutIntroAmbientAudio.preload = "auto";
+    aboutIntroAmbientAudio.preload = "metadata";
     aboutIntroAmbientAudio.loop = true;
     aboutIntroAmbientAudio.volume = ABOUT_INTRO_AMBIENT_VOLUME;
     aboutIntroAmbientAudio.muted = true;
@@ -2169,7 +2266,7 @@ function updateAboutTitleIntro(progressValue) {
         0,
         1,
         ABOUT_INTRO_TITLE_START_SIZE,
-        ABOUT_INTRO_TITLE_MAX_SIZE
+        getAboutIntroTitleMaxSize()
     );
 
     const backgroundTransitionProgress = smoothstep$4(
@@ -2425,104 +2522,97 @@ var aboutParallax = /*#__PURE__*/Object.freeze({
     updateScene: updateScene
 });
 
+function clearEnquiryFeedback(popup) {
+    const form = popup?.querySelector("form");
+    if (!form || form.getAttribute("aria-busy") === "true") return;
+    const status = form.querySelector(".rec-form-status");
+    if (status) { status.hidden = true; status.replaceChildren(); }
+}
+
+function bindEnquiryForm(form, getContext = () => ({})) {
+    if (!form || form.dataset.mailReady === "true") return;
+    form.dataset.mailReady = "true";
+    const status = form.querySelector(".rec-form-status");
+    const button = form.querySelector('[type="submit"]');
+    let pending = false;
+    let requestId = "";
+    let previousPayload = "";
+    const report = (message, state) => {
+        status.hidden = false;
+        status.dataset.state = state;
+        status.textContent = message;
+    };
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (pending || !form.reportValidity()) return;
+        const data = new FormData(form);
+        if (data.get("form_type") === "project" && !data.getAll("request_type[]").length) {
+            report(getLabel("form_choose_type", "Выберите хотя бы один тип заявки."), "error");
+            status.focus();
+            return;
+        }
+        Object.entries(getContext()).forEach(([key, value]) => data.set(key, value ?? ""));
+        const payload = JSON.stringify([...data.entries()]);
+        if (!requestId || payload !== previousPayload) {
+            requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+            previousPayload = payload;
+        }
+        pending = true;
+        button.disabled = true;
+        form.setAttribute("aria-busy", "true");
+        report(getLabel("form_sending", "Отправляем заявку…"), "pending");
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 60000);
+        try {
+            const endpoint = window.recTheme?.forms?.endpoint;
+            if (!endpoint) throw new Error(getLabel("form_error", "Не удалось отправить заявку. Попробуйте позже."));
+            // Fetch a current nonce even when the page itself came from a cache.
+            const tokenUrl = new URL(endpoint, location.origin);
+            tokenUrl.searchParams.set("action", "rec_studio_form_token");
+            const tokenResponse = await fetch(tokenUrl, { credentials: "same-origin", cache: "no-store", signal: controller.signal });
+            const token = await tokenResponse.json();
+            if (!tokenResponse.ok || !token.success || !token.data?.nonce) throw new Error();
+            data.set("nonce", token.data.nonce);
+            data.set("request_id", requestId);
+            data.set("action", "rec_studio_submit_form");
+            const response = await fetch(endpoint, { method: "POST", body: data, credentials: "same-origin", signal: controller.signal });
+            const result = await response.json();
+            if (!response.ok || !result.success) throw new Error(result.data?.message || "");
+            report(result.data.message || getLabel("form_success", "Спасибо! Ваша заявка отправлена."), "success");
+            if (result.data.download && /^https?:\/\//i.test(result.data.download)) {
+                const link = document.createElement("a");
+                link.href = result.data.download;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                link.textContent = getLabel("price_submit", "Скачать прайс");
+                status.append(document.createElement("br"), link);
+            }
+            const context = [...form.querySelectorAll('input[type="hidden"], input[readonly]')].map(input => [input, input.value]);
+            form.reset();
+            context.forEach(([input, value]) => { input.value = value; });
+            requestId = "";
+            previousPayload = "";
+            status.focus();
+        } catch (error) {
+            // Keep both user input and request ID: retrying a lost response must not duplicate mail.
+            report(error.name === "AbortError"
+                ? getLabel("form_timeout", "Сервер отвечает дольше обычного. Повторите отправку: повторная попытка с теми же данными не создаст вторую заявку в течение часа.")
+                : (error.message && error.name === "Error" ? error.message : getLabel("form_error", "Не удалось отправить заявку. Проверьте соединение и попробуйте позже.")), "error");
+            status.focus();
+        } finally {
+            clearTimeout(timeout);
+            pending = false;
+            button.disabled = false;
+            form.removeAttribute("aria-busy");
+        }
+    });
+}
+
 let isReady$3 = false;
 let isLoading$3 = false;
+let currentDetailCard = null;
 
-const PREVIEW_LIMIT = 10;
-const PREVIEW_PROJECT_ORDER = [
-    ["tayna-molebki.jpg"],
-    ["izolyatsiya.jpg"],
-    ["alchnost.jpg"],
-    ["syschik.jpg"],
-    ["storozh.jpg"],
-    ["semeyny-patrul.jpg"],
-    ["dikaya-diviziya.jpg"],
-    ["gromkoe-delo.jpg"],
-    ["spetsnaz.jpg"],
-    ["nashi-mamashi.jpg"]
-];
-const FALLBACK_PREVIEW_PROJECTS = [
-    {
-        title: "Тайна Молебки",
-        genre: "Исторический детектив с элементами мистики",
-        image: "assets/tayna-molebki.jpg",
-        age: "18+",
-        format: "Сериал",
-        duration: "8 серий"
-    },
-    {
-        title: "Изоляция",
-        genre: "Научно-фантастический триллер",
-        image: "assets/izolyatsiya.jpg",
-        age: "18+",
-        format: "Сериал",
-        duration: "8 серий"
-    },
-    {
-        title: "Алчность",
-        genre: "Детектив, авантюрная мелодрама",
-        image: "assets/alchnost.jpg",
-        age: "18+",
-        format: "Сериал",
-        duration: "8 серий"
-    },
-    {
-        title: "Сыщик с Малого Гнездовского",
-        genre: "Исторический детектив",
-        image: "assets/syschik.jpg",
-        age: "18+",
-        format: "Сериал",
-        duration: "8 серий"
-    },
-    {
-        title: "Сторож",
-        genre: "Фантастика, триллер",
-        image: "assets/storozh.jpg",
-        age: "18+",
-        format: "Сериал",
-        duration: "8 серий"
-    },
-    {
-        title: "Семейный патруль",
-        genre: "Семейное ток-шоу",
-        image: "assets/semeyny-patrul.jpg",
-        age: "16+",
-        format: "ТВ-проект",
-        duration: "56 выпусков"
-    },
-    {
-        title: "Дикая дивизия",
-        genre: "Шпионский детектив",
-        image: "assets/dikaya-diviziya.jpg",
-        age: "18+",
-        format: "Сериал",
-        duration: "4 серии"
-    },
-    {
-        title: "Громкое дело",
-        genre: "Реалити-шоу выходного дня",
-        image: "assets/gromkoe-delo.jpg",
-        age: "12+",
-        format: "ТВ-проект",
-        duration: "52 мин."
-    },
-    {
-        title: "Специальное назначение",
-        genre: "Политический триллер",
-        image: "assets/spetsnaz.jpg",
-        age: "18+",
-        format: "Сериал",
-        duration: "10 серий"
-    },
-    {
-        title: "Наши мамаши",
-        genre: "Ситком",
-        image: "assets/nashi-mamashi.jpg",
-        age: "6+",
-        format: "Сериал",
-        duration: "20 серий"
-    }
-];
+const PREVIEW_LIMIT = Number(getLabel("home_projects_limit", 10));
 const ABOUT_PROJECTS_SCROLL_END = 2.94;
 
 function clamp$5(value, min, max) {
@@ -2597,6 +2687,9 @@ const CLASS_MAP = {
     "project-detail__bottom": "about-projects-detail__bottom",
     "project-detail__teaser": "about-projects-detail__teaser",
     "project-detail__nav": "about-projects-detail__nav",
+    "project-detail__nav--prev": "about-projects-detail__nav--prev",
+    "project-detail__nav--close": "about-projects-detail__nav--close",
+    "project-detail__nav--next": "about-projects-detail__nav--next",
     "project-detail__request": "about-projects-detail__request",
 
     "projects-request-popup": "about-projects-request-popup",
@@ -2668,54 +2761,9 @@ function getTitleSizeClass$1(title) {
     return "";
 }
 
-function getCardAssetName(card) {
-    const src = card.querySelector("img")?.getAttribute("src") || "";
-    const cleanSrc = src.split("?")[0].replace(/\\/g, "/");
-
-    return cleanSrc.substring(cleanSrc.lastIndexOf("/") + 1).toLowerCase();
-}
-
 function getOrderedPreviewCards(cards) {
-    const remaining = [...cards];
-    const ordered = [];
-
-    PREVIEW_PROJECT_ORDER.forEach((assetNames) => {
-        const index = remaining.findIndex((card) => {
-            const assetName = getCardAssetName(card);
-
-            return assetNames.includes(assetName);
-        });
-
-        if (index >= 0) {
-            ordered.push(remaining.splice(index, 1)[0]);
-        }
-    });
-
-    return [...ordered, ...remaining];
-}
-
-function createFallbackSourceCard(project) {
-    const card = document.createElement("article");
-    const img = document.createElement("img");
-
-    card.className = "project-card";
-    card.dataset.projectTitle = project.title;
-    card.dataset.projectGenre = project.genre;
-    card.dataset.projectAge = project.age;
-    card.dataset.projectFormat = project.format;
-    card.dataset.projectDuration = project.duration;
-    card.dataset.projectDescription =
-        project.description || "Описание проекта находится в разработке.";
-
-    img.src = getAssetUrl(project.image);
-    img.alt = project.title;
-    card.appendChild(img);
-
-    return card;
-}
-
-function getFallbackPreviewCards() {
-    return FALLBACK_PREVIEW_PROJECTS.map(createFallbackSourceCard);
+    return cards.filter(card => card.dataset.projectFeatured === "1")
+        .sort((a, b) => Number(a.dataset.projectHomeOrder || 0) - Number(b.dataset.projectHomeOrder || 0));
 }
 
 function createPreviewCard(sourceCard) {
@@ -2767,96 +2815,24 @@ function createPreviewCard(sourceCard) {
     return card;
 }
 
-function buildSection(cards, detailNode, requestNode) {
+function buildSection(cards, detailNode, requestNode, source) {
     const { section } = getElements$3();
 
     if (!section) return;
 
-    section.innerHTML = `
-        <div class="about-projects-bg">
-            <img
-                src="${getAssetUrl("assets/b.jpg")}"
-                class="about-projects-bg__img"
-                alt="Наши проекты"
-            />
-        </div>
-
-        <div class="about-projects-stage">
-            <section class="about-projects-hero">
-                <div class="about-projects-paralax-text">
-                    <h2 class="about-projects__title">НАШИ ПРОЕКТЫ</h2>
-
-                    <p class="about-projects__subtitle">
-                        Мы готовы предложить<br />
-                        вашему вниманию
-                    </p>
-
-                    <div class="about-projects-services-viewport">
-                        <div class="about-projects-services">
-                            <div class="about-projects-service">
-                                <span></span>
-                                <p>свои<br />сценарии</p>
-                            </div>
-
-                            <div class="about-projects-service">
-                                <span></span>
-                                <p>осуществить<br />разработку<br />вашего проекта</p>
-                            </div>
-
-                            <div class="about-projects-service">
-                                <span></span>
-                                <p>участвовать<br />в совместном<br />производстве</p>
-                            </div>
-
-                            <div class="about-projects-service">
-                                <span></span>
-                                <p>кино, сериалы<br />и тв-проекты</p>
-                            </div>
-
-                            <div class="about-projects-service">
-                                <span></span>
-                                <p>док.фильмы</p>
-                            </div>
-
-                            <div class="about-projects-service" aria-hidden="true">
-                                <span></span>
-                                <p>свои<br />сценарии</p>
-                            </div>
-
-                            <div class="about-projects-service" aria-hidden="true">
-                                <span></span>
-                                <p>осуществить<br />разработку<br />вашего проекта</p>
-                            </div>
-
-                            <div class="about-projects-service" aria-hidden="true">
-                                <span></span>
-                                <p>участвовать<br />в совместном<br />производстве</p>
-                            </div>
-
-                            <div class="about-projects-service" aria-hidden="true">
-                                <span></span>
-                                <p>кино, сериалы<br />и тв-проекты</p>
-                            </div>
-
-                            <div class="about-projects-service" aria-hidden="true">
-                                <span></span>
-                                <p>док.фильмы</p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="about-projects-preview">
-                <div class="about-projects-grid"></div>
-
-                <div class="about-projects-actions">
-                    <a class="about-projects-all" href="${getPageUrl("projects")}">Все проекты</a>
-                </div>
-            </section>
-        </div>
-    `;
+    section.innerHTML = `<div class="about-projects-stage"><section class="about-projects-preview">
+        <div class="about-projects-grid"></div><div class="about-projects-actions">
+        <a class="about-projects-all" href="${getPageUrl("projects")}">${escapeHtml$1(getLabel("all_projects"))}</a>
+        </div></section></div>`;
+    for (const selector of [".projects-bg", ".projects-hero"]) {
+        const node = source.querySelector(selector)?.cloneNode(true);
+        if (!node) continue;
+        [node, ...node.querySelectorAll("*")].forEach(element => {
+            element.className = [...element.classList].map(name => name.startsWith("projects") ? "about-" + name : name).join(" ");
+        });
+        if (selector === ".projects-bg") section.prepend(node);
+        else section.querySelector(".about-projects-stage").prepend(node);
+    }
 
     const grid = section.querySelector(".about-projects-grid");
 
@@ -2970,6 +2946,22 @@ function updateDetailLayout() {
     updateDetailTextScrollbar();
 }
 
+
+function getPreviewCards() {
+    return Array.from(document.querySelectorAll(".about-projects-card"));
+}
+
+function openAdjacentDetail(direction) {
+    if (!currentDetailCard) return;
+
+    const cards = getPreviewCards();
+    const currentIndex = cards.indexOf(currentDetailCard);
+
+    if (currentIndex < 0 || !cards.length) return;
+
+    const nextIndex = (currentIndex + direction + cards.length) % cards.length;
+    openDetail$1(cards[nextIndex]);
+}
 function getCurrentDetailProjectTitle$1() {
     const { detail, detailTitle } = getElements$3();
 
@@ -2996,6 +2988,8 @@ function openDetail$1(card) {
 
     if (!detail || !card) return;
 
+    currentDetailCard = card;
+
     const img = card.querySelector("img");
 
     const title = card.dataset.projectTitle || img?.alt || "";
@@ -3005,8 +2999,7 @@ function openDetail$1(card) {
     const format = card.dataset.projectFormat || "";
     const duration = card.dataset.projectDuration || "";
     const description =
-        card.dataset.projectDescription ||
-        "Описание проекта находится в разработке.";
+        card.dataset.projectDescription ?? "";
 
     if (detailImg && img) {
         detailImg.src = img.getAttribute("src");
@@ -3016,7 +3009,19 @@ function openDetail$1(card) {
     if (detailTitle) detailTitle.textContent = title;
     if (detailGenre) detailGenre.textContent = genre;
     if (detailNote) detailNote.textContent = note ? `(${note})` : "";
-    if (detailDescription) detailDescription.textContent = description;
+    if (detailDescription) {
+        if (card.dataset.projectDescriptionHtml !== undefined) detailDescription.innerHTML = card.dataset.projectDescriptionHtml;
+        else detailDescription.textContent = description;
+    }
+    const teaser = document.querySelector(".about-projects-detail__teaser");
+    const status = document.querySelector(".about-projects-detail__status");
+    if (status) status.replaceChildren(...(card.dataset.projectStatus || "").split("\n").filter(Boolean).map(line => {
+        const span = document.createElement("span"); span.textContent = line; return span;
+    }));
+    if (teaser) {
+        teaser.hidden = !card.dataset.projectTeaser;
+        teaser.onclick = () => openContentFile(card.dataset.projectTeaser);
+    }
     if (detailAge) detailAge.textContent = age;
     if (detailFormat) detailFormat.textContent = format;
     if (detailDuration) detailDuration.textContent = duration;
@@ -3049,6 +3054,7 @@ function closeDetail$1() {
 }
 
 function openRequest$1(projectTitle = "") {
+    clearEnquiryFeedback(document.querySelector(".about-projects-request-popup"));
     const { requestPopup, requestProjectInput } = getElements$3();
 
     if (!requestPopup) return;
@@ -3126,12 +3132,28 @@ function initInteractions$2() {
         detailClose.dataset.closeReady = "true";
     }
 
-    detailBackButtons.forEach((button, index) => {
+    detailBackButtons.forEach((button) => {
         if (button.dataset.backReady === "true") return;
 
-        if (index === 1) {
+        if (button.classList.contains("about-projects-detail__nav--prev")) {
+            button.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                openAdjacentDetail(-1);
+            });
+        } else if (button.classList.contains("about-projects-detail__nav--next")) {
+            button.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                openAdjacentDetail(1);
+            });
+        } else if (button.classList.contains("about-projects-detail__nav--close")) {
             button.setAttribute("aria-label", "Вернуться к списку проектов");
-            button.addEventListener("click", closeDetail$1);
+            button.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                closeDetail$1();
+            });
         }
 
         button.dataset.backReady = "true";
@@ -3195,10 +3217,7 @@ function initInteractions$2() {
     }
 
     if (requestForm && requestForm.dataset.formReady !== "true") {
-        requestForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            closeRequest$1(true);
-        });
+        bindEnquiryForm(requestForm);
 
         requestForm.dataset.formReady = "true";
     }
@@ -3225,6 +3244,7 @@ async function loadProjectsContent() {
 
     try {
         const response = await fetch(getPageUrl("projects"));
+        if (!response.ok) throw new Error("Projects page could not be loaded");
         const html = await response.text();
 
         const parser = new DOMParser();
@@ -3235,11 +3255,11 @@ async function loadProjectsContent() {
         });
 
         const parsedCards = Array.from(doc.querySelectorAll(".project-card"));
-        const cards = parsedCards.length ? parsedCards : getFallbackPreviewCards();
+        const cards = parsedCards;
         const detailNode = doc.querySelector(".project-detail");
         const requestNode = doc.querySelector(".projects-request-popup");
 
-        buildSection(cards, detailNode, requestNode);
+        buildSection(cards, detailNode, requestNode, doc);
         initInteractions$2();
 
         isReady$3 = true;
@@ -3419,187 +3439,7 @@ let isLoading$2 = false;
 let currentDetailGroupKey$1 = "support";
 let detailWheelLocked$1 = false;
 
-const detailGroups$1 = {
-    support: {
-        title: "Сопровождение проектов",
-        items: [
-            {
-                title: "Разработка презентаций",
-                description:
-                    "Презентация проекта — это ключевой этап, который открывает его дальнейшую судьбу. Важно не только иметь сильную идею, но и уметь эффектно и убедительно её подать. Хорошая презентация не просто информирует, а заряжает идеей.\n\nВ работу включены разработка структуры, основные визуальные принципы, которые сделают отличие и уникальность концепции проекта. Составляем помощь в грамотной подготовке всех разделов с учётом требований индустрии, где необходимо привлечь участие в разработке креатива и презентационных проектов.",
-                services: [
-                    "Презентация проекта",
-                    "Библия персонажей"
-                ],
-                image: "./assets/Услуги Текстура/Разраб Презентации.jpg"
-            },
-            {
-                title: "Ки-арт / дизайн",
-                description:
-                    "Мы поможем с визуальным оформлением картины: разработаем ки-арт, изображения и композиции на основе референсов, соберём единый постер, титры, логотипы, промо-материалы, социальные сети, айдентику и другие визуальные элементы.\n\nЗадача — создать цельную и выразительную визуальную персонажность проекта.",
-                services: [
-                    "Ки-арт для фильма",
-                    "Разработка постера",
-                    "Разработка логотипов",
-                    "Титры к фильму",
-                    "Фотосъёмка",
-                    "Дизайн для социальных сетей",
-                    "Разработка сайта"
-                ],
-                image: "./assets/Услуги Текстура/Ки-арт.jpg"
-            },
-            {
-                title: "Подготовка <br>заявки в: Минкульт,<br> Фонд кино, ИРИ, ПФКИ",
-                description:
-                    "Профессионально и быстро подготовим пакет документов для получения субсидий, которые выделяются теми или иными производственно-индустриальными фондами, финансовой поддержкой ведомств и организаций.\n\nДля подачи или участия важно пройти этап подготовки правильно и последовательно. Мы ежегодно готовим документы на получение субсидий и имеем большой опыт подачи.",
-                services: [
-                    "Оформление заявки на субсидию",
-                    "Проверка уже подготовленного пакета документов",
-                    "Консультации"
-                ],
-                image: "./assets/Услуги Текстура/Подготовка заявки.jpg"
-            },
-            {
-                title: "Прокатное удостоверение",
-                description:
-                    "Прокатное удостоверение — подтверждающий документ права владения на фильм. Наличие прокатного удостоверения обязательно для публичных показов фильмов.\n\nГрамотно подготовим пакет документов, отвезём его в Минкульт РФ, следим копию в архив, оплатим пошлины и отдадим вам готовое прокатное удостоверение. С 2024 прокатное удостоверение стало цифровым.",
-                services: [
-                    "Прокатное на игровой, анимацию, док, фильмы",
-                    "Прокатное на сериал",
-                    "Сдача исходных материалов в ГФФ",
-                    "Монтажные и диалоговые листы",
-                    "Запись жесткого диска с DCP и WAV",
-                    "Запись кассет HDcam и DVD"
-                ],
-                image: "./assets/Услуги Текстура/ПрокатУд.jpg"
-            },
-            {
-                title: "Постпродакшн",
-                description:
-                    "Услуги режиссёрского монтажа с пониманием задачи и сроков. Смонтируем или сократим фильм, сделаем трейлер или фильм о фильме.\n\nПомогаем довести материал до финального состояния и подготовить его к презентации, передаче партнёрам или дальнейшему продвижению.",
-                services: [
-                    "Монтаж фильма",
-                    "Монтаж трейлера",
-                    "Фильм о фильме"
-                ],
-                image: "./assets/Услуги Текстура/Постпродакшн.jpg"
-            }
-        ]
-    },
-
-    advertising: {
-        title: "Рекламный департамент",
-        items: [
-            {
-                title: "Креатив",
-                description:
-                    "Путь в тысячи миль начинается с первого шага, а создание качественного видео контента — с креативной и грамотно расписанной идеи.\n\nПрежде чем начать реализацию задумки, мы детально прорабатываем каждый будущий кадр и создаём надёжный фундамент для успешности проекта.",
-                services: [
-                    "Сториборд",
-                    "Нейминг",
-                    "Креативная концепция",
-                    "Сценарии"
-                ],
-                image: "./assets/Услуги Текстура/Креатив.jpg"
-            },
-            {
-                title: "Дизайн",
-                description:
-                    "Наша команда специалистов по созданию креативной рекламы и созданию ярких впечатлений в цифровых формах ваших брендов.",
-                services: [
-                    "Разработка фирменного стиля",
-                    "Дизайн упаковки",
-                    "Адаптивный дизайн",
-                    "Веб-дизайн",
-                    "Проектирование интерфейсов",
-                    "Юзабилити",
-                    "Арт, иллюстрации",
-                    "Инфографика",
-                    "Проектирование и производство выставочных и торговых стендов",
-                    "POS-материалы"
-                ],
-                image: "./assets/Услуги Текстура/Дизайн.jpg"
-            },
-            {
-                title: "Планирование",
-                description:
-                    "Работая со смыслами, мы делим на следующие этапы:\n\n1 — ПОИСК РАМОК\nЗа которые нам нужно выйти. Это поиск стереотипных действий, которые совершают наши конкуренты, и шаблоны мышления, в которых находятся потребители.\n\n2 — ПОИСК ТРЕНДОВ\nВ каком будущем предстоит жить бренду и на какие ценности важно отозваться и оказывать влияние.\n\n3 — СОЗДАНИЕ ИНСТРУМЕНТОВ\nКоторые разрушают стереотипы, которые позволяют легко донести ценности и обогнать конкурентов.",
-                services: [
-                    "Исследование и аналитика",
-                    "Стратегии",
-                    "Бренд-консалтинг"
-                ],
-                image: "./assets/Услуги Текстура/Планирование.jpg"
-            },
-            {
-                title: "Видеосъёмка",
-                description:
-                    "Наша команда осуществляет полный цикл производства коммерческого видео, ТВ-передач, фильмов, сериалов и диджитал проектов.\n\nМы вам готовы предложить как проекты «под ключ», так и совместное производство.",
-                services: [
-                    "Рекламные ролики",
-                    "Вирусные ролики",
-                    "Имиджевые ролики",
-                    "Анимационные ролики",
-                    "Разработка YouTube/SMM каналов",
-                    "Корпоративные фильмы",
-                    "Трансляции",
-                    "Продающее видео",
-                    "Видео-отзывы",
-                    "Репортажная съёмка",
-                    "Аэросъёмка"
-                ],
-                image: "./assets/Услуги Текстура/Видеосъемка.jpg"
-            },
-            {
-                title: "Фотосъёмка",
-                description:
-                    "Наши фотохудожники готовы передать качество и эстетику вашей продукции до мельчайших подробностей. Мы используем только современное оборудование, а среди наших фотографов есть победители международных конкурсов.",
-                services: [
-                    "Предметная фотосъёмка",
-                    "Для маркетплейсов",
-                    "Рекламная съёмка",
-                    "Дополнительный сервис",
-                    "Мероприятия"
-                ],
-                image: "./assets/Услуги Текстура/Фотосъемка.jpg"
-            },
-            {
-                title: "Организация мероприятий",
-                description:
-                    "Наши специалисты разработают креативную идею и реализуют её визуализацию. Мы изготовим элементы проекта, предоставляем мультимедийное оборудование и интерактивный контент, текстовые, фото, аудио и видеоматериалы.\n\nРазработаем, доставим и установим выставочные и торговые конструкции на объектах.",
-                services: [
-                    "Концерты",
-                    "Спортивные мероприятия",
-                    "Проведение презентаций, конференций и других мероприятий"
-                ],
-                image: "./assets/Услуги Текстура/Организация мероприятий.jpg"
-            },
-            {
-                title: "Интернет-маркетинг",
-                description:
-                    "Наше агентство работает с 95% площадок Рунета. Ваши рекламные объявления появляются в популярных системах Яндекс и Google, а также появляются на сайтах партнёров поисковых систем и социальных сетях.\n\nПодберём наиболее эффективные площадки для проведения рекламных кампаний.\n\nМЫ СЕРТИФИЦИРОВАННОЕ АГЕНТСТВО.",
-                services: [
-                    "Поисковое продвижение",
-                    "SEO продвижение сайта",
-                    "Разработка сайтов",
-                    "Баинг"
-                ],
-                image: "./assets/Услуги Текстура/Интернет-маркетинг.jpg"
-            },
-            {
-                title: "СММ",
-                description:
-                    "Управление маркетингом и социальных сетях. Работаем над имиджем вашей компании и помогаем выстроить коммуникацию с аудиторией.",
-                services: [
-                    "Представительство бренда в социальных сетях",
-                    "Таргетированная реклама",
-                    "Работа с блогерами"
-                ],
-                image: "./assets/Услуги Текстура/СММ.jpg"
-            }
-        ]
-    }
-};
+const detailGroups$1 = window.recTheme?.serviceGroups || {};
 
 function clamp$4(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -3691,7 +3531,7 @@ function getElements$2() {
 }
 
 function getCurrentGroup$1() {
-    return detailGroups$1[currentDetailGroupKey$1] || detailGroups$1.support;
+    return detailGroups$1[currentDetailGroupKey$1] || Object.values(detailGroups$1)[0] || { title: "", items: [] };
 }
 
 function getCurrentDetailIndex$1() {
@@ -3704,6 +3544,7 @@ function getCurrentDetailIndex$1() {
 
 function switchDetailGroup$1(direction = 1, targetIndex = 0) {
     const groupKeys = Object.keys(detailGroups$1);
+    if (!groupKeys.length) return;
     const currentGroupIndex = Math.max(
         0,
         groupKeys.indexOf(currentDetailGroupKey$1)
@@ -3725,14 +3566,11 @@ function switchDetailGroup$1(direction = 1, targetIndex = 0) {
 function stepDetail$1(direction = 1) {
     const group = getCurrentGroup$1();
     const currentIndex = getCurrentDetailIndex$1();
-    const nextIndex = currentIndex + direction;
 
-    if (nextIndex >= 0 && nextIndex < group.items.length) {
-        renderDetail$1(nextIndex);
-        return;
-    }
+    if (!group.items.length) return;
 
-    switchDetailGroup$1(direction, direction > 0 ? 0 : -1);
+    const nextIndex = (currentIndex + direction + group.items.length) % group.items.length;
+    renderDetail$1(nextIndex);
 }
 
 function getOffsetTopInside$3(parent, child) {
@@ -3823,7 +3661,7 @@ function renderDetailNav$1(activeIndex = 0) {
                     type="button"
                     data-about-help-detail-index="${index}"
                 >
-                    ${item.title}
+                    ${escapeHtml$2(item.title)}
                 </button>
             `;
         })
@@ -3849,6 +3687,7 @@ function renderDetail$1(index) {
     const item = group.items[index];
 
     if (!item) return;
+    setDownloadLink(".about-help-detail__download-link", item.presentation);
 
     if (detailNavList) {
         detailNavList.querySelectorAll(".about-help-detail__nav-item").forEach((button, buttonIndex) => {
@@ -3857,7 +3696,7 @@ function renderDetail$1(index) {
     }
 
     if (detailDescription) {
-        detailDescription.textContent = item.description;
+        detailDescription.innerHTML = item.descriptionHtml || "";
     }
 
     if (detailText) {
@@ -3866,7 +3705,7 @@ function renderDetail$1(index) {
 
     if (detailServicesList) {
         detailServicesList.innerHTML = item.services
-            .map((service) => `<li>${service}</li>`)
+            .map((service) => `<li>${escapeHtml$2(service)}</li>`)
             .join("");
     }
 
@@ -3901,7 +3740,7 @@ function ensureCardDetailButtons(root = document) {
 
         button.className = "about-help-card-button";
         button.type = "button";
-        button.textContent = "\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435";
+        button.textContent = getLabel("more", "Подробнее");
 
         card.appendChild(button);
     });
@@ -3926,6 +3765,7 @@ function getCurrentDetailServiceTitle$1() {
 }
 
 function openRequest(serviceTitle = "") {
+    clearEnquiryFeedback(document.querySelector(".about-help-request-popup"));
     const { requestPopup, requestServiceInput, requestServiceVisibleInput } = getElements$2();
 
     if (!requestPopup) return;
@@ -3960,6 +3800,7 @@ function closeRequest(resetForm = false) {
 }
 
 function openPricePopup() {
+    clearEnquiryFeedback(document.querySelector(".about-help-price-popup"));
     const { pricePopup } = getElements$2();
 
     if (!pricePopup) return;
@@ -4090,10 +3931,7 @@ function initInteractions$1() {
     }
 
     if (priceForm && priceForm.dataset.aboutHelpPriceFormReady !== "true") {
-        priceForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            closePricePopup(true);
-        });
+        bindEnquiryForm(priceForm, () => ({ service_key: getCurrentGroup$1().items[getCurrentDetailIndex$1()]?.key }));
 
         priceForm.dataset.aboutHelpPriceFormReady = "true";
     }
@@ -4139,10 +3977,7 @@ function initInteractions$1() {
     }
 
     if (requestForm && requestForm.dataset.aboutHelpFormReady !== "true") {
-        requestForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            closeRequest(true);
-        });
+        bindEnquiryForm(requestForm, () => ({ service_key: getCurrentGroup$1().items[getCurrentDetailIndex$1()]?.key }));
 
         requestForm.dataset.aboutHelpFormReady = "true";
     }
@@ -4232,21 +4067,13 @@ async function loadHelpContent() {
         });
 
 
-        const cardImages = {
-            support: "assets/Услуги Текстура/сопровождение проектов.jpg",
-            advertising: "assets/Услуги Текстура/рекламный департамент.jpg"
-        };
-
         section.querySelectorAll(".about-help-large-card").forEach((card) => {
             const image = card.querySelector("img");
-            const imagePath = cardImages[card.dataset.helpKind];
-
-            if (!image || !imagePath) return;
+            if (!image) return;
 
             image.removeAttribute("srcset");
             image.loading = "eager";
             image.decoding = "async";
-            image.src = getAssetUrl(imagePath);
         });
         normalizeMojibake(section);
         ensureCardDetailButtons(section);
@@ -4542,7 +4369,7 @@ function ensureAllNewsButton() {
     const link = document.createElement("a");
     link.className = "about-news-all-link";
     link.href = getPageUrl("news");
-    link.textContent = "Все новости";
+    link.textContent = getLabel("all_news", "Все новости");
 
     bottom.prepend(link);
 }
@@ -5225,8 +5052,7 @@ function openProjectDetail(card) {
     const format = card.dataset.projectFormat || "";
     const duration = card.dataset.projectDuration || "";
     const description =
-        card.dataset.projectDescription ||
-        "Описание проекта находится в разработке.";
+        card.dataset.projectDescription ?? "";
 
     if (detailImg && img) {
         detailImg.src = img.getAttribute("src");
@@ -5236,7 +5062,19 @@ function openProjectDetail(card) {
     if (detailTitle) detailTitle.textContent = title;
     if (detailGenre) detailGenre.textContent = genre;
     if (detailNote) detailNote.textContent = note ? `(${note})` : "";
-    if (detailDescription) detailDescription.textContent = description;
+    if (detailDescription) {
+        if (card.dataset.projectDescriptionHtml !== undefined) detailDescription.innerHTML = card.dataset.projectDescriptionHtml;
+        else detailDescription.textContent = description;
+    }
+    const teaser = document.querySelector(".project-detail__teaser");
+    const status = document.querySelector(".project-detail__status");
+    if (status) status.replaceChildren(...(card.dataset.projectStatus || "").split("\n").filter(Boolean).map(line => {
+        const span = document.createElement("span"); span.textContent = line; return span;
+    }));
+    if (teaser) {
+        teaser.hidden = !card.dataset.projectTeaser;
+        teaser.onclick = () => openContentFile(card.dataset.projectTeaser);
+    }
     if (detailAge) detailAge.textContent = age;
     if (detailFormat) detailFormat.textContent = format;
     if (detailDuration) detailDuration.textContent = duration;
@@ -5270,6 +5108,7 @@ function closeProjectDetail() {
 }
 
 function openProjectRequest(projectTitle = "") {
+    clearEnquiryFeedback(document.querySelector(".projects-request-popup"));
     const {
         requestPopup,
         requestProjectInput
@@ -5414,10 +5253,7 @@ function initProjectRequestPopup() {
     }
 
     if (requestForm && requestForm.dataset.formReady !== "true") {
-        requestForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            closeProjectRequest(true);
-        });
+        bindEnquiryForm(requestForm);
 
         requestForm.dataset.formReady = "true";
     }
@@ -5661,187 +5497,7 @@ var projectCardHover = /*#__PURE__*/Object.freeze({
 const HELP_MAX_PROGRESS = 2.25;
 const HELP_CARDS_IDLE_START = 1.18;
 
-const detailGroups = {
-    support: {
-        title: "Сопровождение проектов",
-        items: [
-            {
-                title: "Разработка презентаций",
-                description:
-                    "Презентация проекта — это ключевой этап, который открывает его дальнейшую судьбу. Важно не только иметь сильную идею, но и уметь эффектно и убедительно её подать. Хорошая презентация не просто информирует, а заряжает идеей.\n\nВ работу включены разработка структуры, основные визуальные принципы, которые сделают отличие и уникальность концепции проекта. Составляем помощь в грамотной подготовке всех разделов с учётом требований индустрии, где необходимо привлечь участие в разработке креатива и презентационных проектов.",
-                services: [
-                    "Презентация проекта",
-                    "Библия персонажей"
-                ],
-                image: "./assets/Услуги Текстура/Разраб Презентации.jpg"
-            },
-            {
-                title: "Ки-арт / дизайн",
-                description:
-                    "Мы поможем с визуальным оформлением картины: разработаем ки-арт, изображения и композиции на основе референсов, соберём единый постер, титры, логотипы, промо-материалы, социальные сети, айдентику и другие визуальные элементы.\n\nЗадача — создать цельную и выразительную визуальную персонажность проекта.",
-                services: [
-                    "Ки-арт для фильма",
-                    "Разработка постера",
-                    "Разработка логотипов",
-                    "Титры к фильму",
-                    "Фотосъёмка",
-                    "Дизайн для социальных сетей",
-                    "Разработка сайта"
-                ],
-                image: "./assets/Услуги Текстура/Ки-арт.jpg"
-            },
-            {
-                title: "Подготовка <br>заявки в: Минкульт,<br> Фонд кино, ИРИ, ПФКИ",
-                description:
-                    "Профессионально и быстро подготовим пакет документов для получения субсидий, которые выделяются теми или иными производственно-индустриальными фондами, финансовой поддержкой ведомств и организаций.\n\nДля подачи или участия важно пройти этап подготовки правильно и последовательно. Мы ежегодно готовим документы на получение субсидий и имеем большой опыт подачи.",
-                services: [
-                    "Оформление заявки на субсидию",
-                    "Проверка уже подготовленного пакета документов",
-                    "Консультации"
-                ],
-                image: "./assets/Услуги Текстура/Подготовка заявки.jpg"
-            },
-            {
-                title: "Прокатное удостоверение",
-                description:
-                    "Прокатное удостоверение — подтверждающий документ права владения на фильм. Наличие прокатного удостоверения обязательно для публичных показов фильмов.\n\nГрамотно подготовим пакет документов, отвезём его в Минкульт РФ, следим копию в архив, оплатим пошлины и отдадим вам готовое прокатное удостоверение. С 2024 прокатное удостоверение стало цифровым.",
-                services: [
-                    "Прокатное на игровой, анимацию, док, фильмы",
-                    "Прокатное на сериал",
-                    "Сдача исходных материалов в ГФФ",
-                    "Монтажные и диалоговые листы",
-                    "Запись жесткого диска с DCP и WAV",
-                    "Запись кассет HDcam и DVD"
-                ],
-                image: "./assets/Услуги Текстура/ПрокатУд.jpg"
-            },
-            {
-                title: "Постпродакшн",
-                description:
-                    "Услуги режиссёрского монтажа с пониманием задачи и сроков. Смонтируем или сократим фильм, сделаем трейлер или фильм о фильме.\n\nПомогаем довести материал до финального состояния и подготовить его к презентации, передаче партнёрам или дальнейшему продвижению.",
-                services: [
-                    "Монтаж фильма",
-                    "Монтаж трейлера",
-                    "Фильм о фильме"
-                ],
-                image: "./assets/Услуги Текстура/Постпродакшн.jpg"
-            }
-        ]
-    },
-
-    advertising: {
-        title: "Рекламный департамент",
-        items: [
-            {
-                title: "Креатив",
-                description:
-                    "Путь в тысячи миль начинается с первого шага, а создание качественного видео контента — с креативной и грамотно расписанной идеи.\n\nПрежде чем начать реализацию задумки, мы детально прорабатываем каждый будущий кадр и создаём надёжный фундамент для успешности проекта.",
-                services: [
-                    "Сториборд",
-                    "Нейминг",
-                    "Креативная концепция",
-                    "Сценарии"
-                ],
-                image: "./assets/Услуги Текстура/Креатив.jpg"
-            },
-            {
-                title: "Дизайн",
-                description:
-                    "Наша команда специалистов по созданию креативной рекламы и созданию ярких впечатлений в цифровых формах ваших брендов.",
-                services: [
-                    "Разработка фирменного стиля",
-                    "Дизайн упаковки",
-                    "Адаптивный дизайн",
-                    "Веб-дизайн",
-                    "Проектирование интерфейсов",
-                    "Юзабилити",
-                    "Арт, иллюстрации",
-                    "Инфографика",
-                    "Проектирование и производство выставочных и торговых стендов",
-                    "POS-материалы"
-                ],
-                image: "./assets/Услуги Текстура/Дизайн.jpg"
-            },
-            {
-                title: "Планирование",
-                description:
-                    "Работая со смыслами, мы делим на следующие этапы:\n\n1 — ПОИСК РАМОК\nЗа которые нам нужно выйти. Это поиск стереотипных действий, которые совершают наши конкуренты, и шаблоны мышления, в которых находятся потребители.\n\n2 — ПОИСК ТРЕНДОВ\nВ каком будущем предстоит жить бренду и на какие ценности важно отозваться и оказывать влияние.\n\n3 — СОЗДАНИЕ ИНСТРУМЕНТОВ\nКоторые разрушают стереотипы, которые позволяют легко донести ценности и обогнать конкурентов.",
-                services: [
-                    "Исследование и аналитика",
-                    "Стратегии",
-                    "Бренд-консалтинг"
-                ],
-                image: "./assets/Услуги Текстура/Планирование.jpg"
-            },
-            {
-                title: "Видеосъёмка",
-                description:
-                    "Наша команда осуществляет полный цикл производства коммерческого видео, ТВ-передач, фильмов, сериалов и диджитал проектов.\n\nМы вам готовы предложить как проекты «под ключ», так и совместное производство.",
-                services: [
-                    "Рекламные ролики",
-                    "Вирусные ролики",
-                    "Имиджевые ролики",
-                    "Анимационные ролики",
-                    "Разработка YouTube/SMM каналов",
-                    "Корпоративные фильмы",
-                    "Трансляции",
-                    "Продающее видео",
-                    "Видео-отзывы",
-                    "Репортажная съёмка",
-                    "Аэросъёмка"
-                ],
-                image: "./assets/Услуги Текстура/Видеосъемка.jpg"
-            },
-            {
-                title: "Фотосъёмка",
-                description:
-                    "Наши фотохудожники готовы передать качество и эстетику вашей продукции до мельчайших подробностей. Мы используем только современное оборудование, а среди наших фотографов есть победители международных конкурсов.",
-                services: [
-                    "Предметная фотосъёмка",
-                    "Для маркетплейсов",
-                    "Рекламная съёмка",
-                    "Дополнительный сервис",
-                    "Мероприятия"
-                ],
-                image: "./assets/Услуги Текстура/Фотосъемка.jpg"
-            },
-            {
-                title: "Организация мероприятий",
-                description:
-                    "Наши специалисты разработают креативную идею и реализуют её визуализацию. Мы изготовим элементы проекта, предоставляем мультимедийное оборудование и интерактивный контент, текстовые, фото, аудио и видеоматериалы.\n\nРазработаем, доставим и установим выставочные и торговые конструкции на объектах.",
-                services: [
-                    "Концерты",
-                    "Спортивные мероприятия",
-                    "Проведение презентаций, конференций и других мероприятий"
-                ],
-                image: "./assets/Услуги Текстура/Организация мероприятий.jpg"
-            },
-            {
-                title: "Интернет-маркетинг",
-                description:
-                    "Наше агентство работает с 95% площадок Рунета. Ваши рекламные объявления появляются в популярных системах Яндекс и Google, а также появляются на сайтах партнёров поисковых систем и социальных сетях.\n\nПодберём наиболее эффективные площадки для проведения рекламных кампаний.\n\nМЫ СЕРТИФИЦИРОВАННОЕ АГЕНТСТВО.",
-                services: [
-                    "Поисковое продвижение",
-                    "SEO продвижение сайта",
-                    "Разработка сайтов",
-                    "Баинг"
-                ],
-                image: "./assets/Услуги Текстура/Интернет-маркетинг.jpg"
-            },
-            {
-                title: "СММ",
-                description:
-                    "Управление маркетингом и социальных сетях. Работаем над имиджем вашей компании и помогаем выстроить коммуникацию с аудиторией.",
-                services: [
-                    "Представительство бренда в социальных сетях",
-                    "Таргетированная реклама",
-                    "Работа с блогерами"
-                ],
-                image: "./assets/Услуги Текстура/СММ.jpg"
-            }
-        ]
-    }
-};
+const detailGroups = window.recTheme?.serviceGroups || {};
 
 let currentDetailGroupKey = "support";
 let detailWheelLocked = false;
@@ -5890,7 +5546,7 @@ function getHelpElements() {
 }
 
 function getCurrentGroup() {
-    return detailGroups[currentDetailGroupKey] || detailGroups.support;
+    return detailGroups[currentDetailGroupKey] || Object.values(detailGroups)[0] || { title: "", items: [] };
 }
 
 function getCurrentDetailIndex() {
@@ -5901,6 +5557,7 @@ function getCurrentDetailIndex() {
 
 function switchDetailGroup(direction = 1, targetIndex = 0) {
     const groupKeys = Object.keys(detailGroups);
+    if (!groupKeys.length) return;
     const currentGroupIndex = Math.max(
         0,
         groupKeys.indexOf(currentDetailGroupKey)
@@ -5922,14 +5579,11 @@ function switchDetailGroup(direction = 1, targetIndex = 0) {
 function stepDetail(direction = 1) {
     const group = getCurrentGroup();
     const currentIndex = getCurrentDetailIndex();
-    const nextIndex = currentIndex + direction;
 
-    if (nextIndex >= 0 && nextIndex < group.items.length) {
-        renderDetail(nextIndex);
-        return;
-    }
+    if (!group.items.length) return;
 
-    switchDetailGroup(direction, direction > 0 ? 0 : -1);
+    const nextIndex = (currentIndex + direction + group.items.length) % group.items.length;
+    renderDetail(nextIndex);
 }
 
 function getOffsetTopInside(parent, child) {
@@ -6019,7 +5673,7 @@ function renderDetailNav(activeIndex = 0) {
                     type="button"
                     data-help-detail-index="${index}"
                 >
-                    ${item.title}
+                    ${escapeHtml$2(item.title)}
                 </button>
             `;
         })
@@ -6046,6 +5700,7 @@ function renderDetail(index) {
     const item = group.items[index];
 
     if (!item) return;
+    setDownloadLink(".help-detail__download-link", item.presentation);
 
     if (detailNavList) {
         detailNavList.querySelectorAll(".help-detail__nav-item").forEach((button, buttonIndex) => {
@@ -6054,7 +5709,7 @@ function renderDetail(index) {
     }
 
     if (detailDescription) {
-        detailDescription.textContent = item.description;
+        detailDescription.innerHTML = item.descriptionHtml || "";
     }
 
     if (detailText) {
@@ -6063,7 +5718,7 @@ function renderDetail(index) {
 
     if (detailServicesList) {
         detailServicesList.innerHTML = item.services
-            .map((service) => `<li>${service}</li>`)
+            .map((service) => `<li>${escapeHtml$2(service)}</li>`)
             .join("");
     }
 
@@ -6120,6 +5775,7 @@ function getCurrentDetailServiceTitle() {
 }
 
 function openHelpRequest(serviceTitle = "") {
+    clearEnquiryFeedback(document.querySelector(".help-request-popup"));
     const {
         requestPopup,
         requestServiceInput,
@@ -6161,6 +5817,7 @@ function closeHelpRequest(resetForm = false) {
 }
 
 function openHelpPricePopup() {
+    clearEnquiryFeedback(document.querySelector(".help-price-popup"));
     const { pricePopup } = getHelpElements();
 
     if (!pricePopup) return;
@@ -6195,7 +5852,7 @@ function ensureHelpCardDetailButtons(root = document) {
 
         button.className = "help-card-button";
         button.type = "button";
-        button.textContent = "\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435";
+        button.textContent = getLabel("more", "Подробнее");
 
         card.appendChild(button);
     });
@@ -6308,10 +5965,7 @@ function initHelpPricePopup() {
     }
 
     if (priceForm && priceForm.dataset.priceFormReady !== "true") {
-        priceForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            closeHelpPricePopup(true);
-        });
+        bindEnquiryForm(priceForm, () => ({ service_key: getCurrentGroup().items[getCurrentDetailIndex()]?.key }));
 
         priceForm.dataset.priceFormReady = "true";
     }
@@ -6374,10 +6028,7 @@ function initHelpRequestPopup() {
     }
 
     if (requestForm && requestForm.dataset.formReady !== "true") {
-        requestForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            closeHelpRequest(true);
-        });
+        bindEnquiryForm(requestForm, () => ({ service_key: getCurrentGroup().items[getCurrentDetailIndex()]?.key }));
 
         requestForm.dataset.formReady = "true";
     }

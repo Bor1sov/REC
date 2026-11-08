@@ -3,7 +3,7 @@
     inset: 0;
     min-height: 100vh;
 
-    background-image: url("../../assets/main-background.jpg");
+    background-image: var(--rec-asset_main_background_jpg, url("../../assets/main-background.jpg"));
     background-size: cover;
     background-position: center;
 
@@ -172,27 +172,27 @@
 }
 
 .contacts__social--telegram {
-    background-image: url("../../assets/social-telegram.png");
+    background-image: var(--rec-asset_social_telegram_png, url("../../assets/social-telegram.png"));
 }
 
 .contacts__social--phone {
-    background-image: url("../../assets/social-phone.png");
+    background-image: var(--rec-asset_social_phone_png, url("../../assets/social-phone.png"));
 }
 
 .contacts__social--play {
-    background-image: url("../../assets/max-logo-white.png");
+    background-image: var(--rec-asset_max_logo_white_png, url("../../assets/max-logo-white.png"));
 }
 
 .contacts__social--vk {
-    background-image: url("../../assets/social-vk.png");
+    background-image: var(--rec-asset_social_vk_png, url("../../assets/social-vk.png"));
 }
 
 .contacts__social--ok {
-    background-image: url("../../assets/odnoklassniki-white.png");
+    background-image: var(--rec-asset_odnoklassniki_white_png, url("../../assets/odnoklassniki-white.png"));
 }
 
 .contacts__social--dzen {
-    background-image: url("../../assets/social-facebook.png");
+    background-image: var(--rec-asset_social_facebook_png, url("../../assets/social-facebook.png"));
 }
 
 .contacts__place {
@@ -276,7 +276,7 @@
     text-transform: uppercase;
     letter-spacing: 0;
 
-    background-image: url("../../assets/white-texture.jpg");
+    background-image: var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg"));
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

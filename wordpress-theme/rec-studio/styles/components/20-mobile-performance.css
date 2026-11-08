@@ -1,0 +1,80 @@
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+    .about__title,
+    .projects__title,
+    .projects-paralax-text::before,
+    .projects-section,
+    .project-detail__content,
+    .help-paralax-text::before,
+    .help-parallax-text::before,
+    .help__title,
+    .about-projects-paralax-text::before,
+    .about-projects-parallax-text::before,
+    .about-projects-preview,
+    .about-projects-detail__content,
+    .about-help-paralax-text::before,
+    .about-help-parallax-text::before,
+    .about-help__title,
+    .about-help-detail__content {
+        background-attachment: scroll !important;
+    }
+
+    .about-info::before {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .project-detail__media::after,
+    .about-projects-detail__media::after,
+    .help-detail__media::after,
+    .about-help-detail__media::after {
+        filter: brightness(0.7) saturate(0.9);
+    }
+
+    .about,
+    .about__img,
+    .paralax-text,
+    .about__title,
+    .projects-bg__img,
+    .projects-stage,
+    .projects-paralax-text,
+    .projects__title,
+    .projects-services,
+    .help-bg__img,
+    .help-stage,
+    .help-paralax-text,
+    .help-parallax-text,
+    .help__title,
+    .help-services,
+    .about-projects-bg__img,
+    .about-projects-stage,
+    .about-projects-paralax-text,
+    .about-projects-parallax-text,
+    .about-projects__title,
+    .about-projects-services,
+    .about-help-bg__img,
+    .about-help-stage,
+    .about-help-paralax-text,
+    .about-help-parallax-text,
+    .about-help__title,
+    .about-help-services,
+    .about-news-bg__img,
+    .about-news-stage,
+    .about-contacts-bg__img,
+    .about-contacts-stage {
+        will-change: auto !important;
+    }
+
+    .projects-services,
+    .help-services,
+    .about-projects-services,
+    .about-help-services {
+        animation-duration: 56s !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-info::before {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+}

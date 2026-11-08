@@ -37,7 +37,7 @@
     display: flex;
     width: 100%;
     height: 100vh;
-    background-image: url("../../assets/main-background.jpg");
+    background-image: var(--rec-asset_main_background_jpg, url("../../assets/main-background.jpg"));
     background-size: cover;
     background-position: center;
     opacity: 0;
@@ -174,4 +174,170 @@
     left: 20px !important;
     transform: translate(0, 0) scale(0.5) !important;
     z-index: 10000 !important;
+}
+
+/* Main intro mobile fit */
+@media (max-width: 768px) {
+    .main-page .logo-wrapper,
+    .about-page .logo-wrapper {
+        max-width: calc(100vw - 32px);
+    }
+
+    .main-page .main__container__logo,
+    .about-page .main__container__logo {
+        width: 58px;
+        height: 58px;
+        border-width: 18px;
+    }
+
+    .main-page .logo-text,
+    .about-page .logo-text {
+        left: 68px;
+        width: max-content;
+        max-width: 0;
+        margin-left: 0;
+        margin-top: 0;
+    }
+
+    .main-page .logo-top,
+    .about-page .logo-top {
+        width: max-content;
+        margin-left: 0;
+        padding-left: 2px;
+    }
+
+    .main-page .rec,
+    .main-page .studio,
+    .about-page .rec,
+    .about-page .studio {
+        font-size: 50px;
+    }
+
+    .main-page .rec,
+    .about-page .rec {
+        letter-spacing: -3px;
+    }
+
+    .main-page .studio,
+    .about-page .studio {
+        margin-left: -22px;
+        letter-spacing: -5px;
+    }
+
+    .main-page .logo-sub,
+    .about-page .logo-sub {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 3px;
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-align: center;
+    }
+
+    .main-page .logo-wrapper.logo-shifted,
+    .about-page .logo-wrapper.logo-shifted {
+        transform: translate(calc(-50% - 108px), -50%);
+    }
+
+    .main-page .logo-wrapper.text-visible .logo-text,
+    .about-page .logo-wrapper.text-visible .logo-text {
+        max-width: min(238px, calc(100vw - 84px));
+    }
+}
+
+@media (max-width: 480px) {
+    .main-page .main__container__logo,
+    .about-page .main__container__logo {
+        width: 48px;
+        height: 48px;
+        border-width: 15px;
+    }
+
+    .main-page .logo-text,
+    .about-page .logo-text {
+        left: 56px;
+    }
+
+    .main-page .rec,
+    .main-page .studio,
+    .about-page .rec,
+    .about-page .studio {
+        font-size: 34px;
+    }
+
+    .main-page .rec,
+    .about-page .rec {
+        letter-spacing: -3px;
+    }
+
+    .main-page .studio,
+    .about-page .studio {
+        margin-left: -15px;
+        letter-spacing: -3px;
+    }
+
+    .main-page .logo-sub,
+    .about-page .logo-sub {
+        font-size: 9px;
+        letter-spacing: 0.1em;
+    }
+
+    .main-page .logo-wrapper.logo-shifted,
+    .about-page .logo-wrapper.logo-shifted {
+        transform: translate(calc(-50% - 76px), -50%);
+    }
+
+    .main-page .logo-wrapper.text-visible .logo-text,
+    .about-page .logo-wrapper.text-visible .logo-text {
+        max-width: min(206px, calc(100vw - 92px));
+    }
+}
+
+/* iPhone SE intro text fit */
+@media (max-width: 380px) {
+    .main-page .main__container__logo,
+    .about-page .main__container__logo {
+        width: 44px;
+        height: 44px;
+        border-width: 14px;
+    }
+
+    .main-page .logo-text,
+    .about-page .logo-text {
+        left: 50px;
+    }
+
+    .main-page .rec,
+    .main-page .studio,
+    .about-page .rec,
+    .about-page .studio {
+        font-size: 31px;
+    }
+
+    .main-page .rec,
+    .about-page .rec {
+        letter-spacing: -2px;
+    }
+
+    .main-page .studio,
+    .about-page .studio {
+        margin-left: -13px;
+        letter-spacing: -2.6px;
+    }
+
+    .main-page .logo-sub,
+    .about-page .logo-sub {
+        font-size: 8px;
+        letter-spacing: 0.08em;
+    }
+
+    .main-page .logo-wrapper.logo-shifted,
+    .about-page .logo-wrapper.logo-shifted {
+        transform: translate(calc(-50% - 72px), -50%);
+    }
+
+    .main-page .logo-wrapper.text-visible .logo-text,
+    .about-page .logo-wrapper.text-visible .logo-text {
+        max-width: min(198px, calc(100vw - 94px));
+    }
 }

@@ -13,10 +13,10 @@ get_header();
 
         <div class="logo-text">
           <div class="logo-top">
-            <span class="rec">REC</span><span class="studio">STUDIO</span>
+            <span class="rec"><?php rec_studio_text( 'brand_rec' ); ?></span><span class="studio"><?php rec_studio_text( 'brand_studio' ); ?></span>
           </div>
 
-          <div class="logo-sub">PRODUCTION COMPANY</div>
+          <div class="logo-sub"><?php rec_studio_text( 'brand_tagline' ); ?></div>
         </div>
       </div>
 
@@ -24,7 +24,7 @@ get_header();
       <a class="menu__logo-cont" href="<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>"></a>
 
       <div class="menu-block" onclick="window.location.href='<?php echo esc_url( rec_theme_page_url( 'menu' ) ); ?>'">
-        <div class="menu-text">МЕНЮ</div>
+        <div class="menu-text"><?php rec_studio_text( 'menu_label' ); ?></div>
 
         <button class="burger" type="button" aria-label="Открыть меню">
           <span></span>
@@ -35,34 +35,23 @@ get_header();
     </section>
 
     <section class="settings">
-      <button class="settings__lang-btn">RU</button>
+      <button class="settings__lang-btn"><?php rec_studio_text( 'language_label' ); ?></button>
 
       <button class="settings__valume-btn">
-        <img
-          src="<?php echo esc_url( rec_theme_asset( 'assets/sound-on.png' ) ); ?>"
-          class="settings__valume-btn__img"
-          alt="volume"
-        />
+        <img src="<?php echo esc_url( rec_theme_asset( 'assets/sound-on.png' ) ); ?>" class="settings__valume-btn__img" alt="volume">
       </button>
     </section>
 
     <section class="content content--page">
       <div class="about about--base">
-        <img src="<?php echo esc_url( rec_theme_asset( 'assets/about.jpg' ) ); ?>" class="about__img" alt="О нас" decoding="async" fetchpriority="high" />
+        <img src="<?php echo esc_url( rec_theme_asset( 'assets/about.jpg' ) ); ?>" class="about__img" alt="О нас" decoding="async" fetchpriority="high">
       </div>
 
       <div class="paralax-text">
-        <h1 class="about__title mask">О НАС</h1>
+        <h1 class="about__title mask"><?php rec_studio_text( 'about_title' ); ?></h1>
 
         <div class="about-info">
-          <div class="about-info-text">
-            В команду РЕК СТУДИЯ входят продюсеры, режиссеры и сценаристы,
-            которые преимущественно предпочитают работать в жанрах — детективы,
-            триллеры, драмы и приключения. <br><br>Мы создаем нон-фикшн контент,
-            основанный на реальных событиях, с напряженным и драматичным
-            сюжетом. Герои наших историй – сильные и неординарные личности,
-            которые вызывают большой зрительский интерес в любой точке Мира.
-          </div>
+          <div class="about-info-text"><?php rec_studio_html( 'about_body' ); ?></div>
         </div>
       </div>
 
@@ -83,5 +72,4 @@ get_header();
       </section>
     </section>
 </main>
-<?php
-get_footer();
+<?php get_footer(); ?>

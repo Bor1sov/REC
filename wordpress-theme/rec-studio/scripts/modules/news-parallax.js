@@ -1,11 +1,12 @@
+import { getLabel } from "./runtime.js";
 import { state } from "./state.js";
 import { updatePageScrollbar } from "./page-scrollbar.js";
 
 const NEWS_SCROLL_EASE = 0.045;
 const WHEEL_DELTA_LIMIT = 120;
 const WHEEL_PROGRESS_STEP = 0.0011;
-const NEWS_OLD_BUTTON_LABEL = "▲ Старые";
-const NEWS_NEW_BUTTON_LABEL = "▼ Новые";
+const NEWS_OLD_BUTTON_LABEL = getLabel("news_old", "▲ Старые");
+const NEWS_NEW_BUTTON_LABEL = getLabel("news_new", "▼ Новые");
 
 const newsState = {
     progress: 0,
@@ -283,7 +284,7 @@ function applyNewsFilter(filter = "all") {
     }
 
     if (showMoreButton && activeFilter !== "all") {
-        showMoreButton.textContent = "Показать еще";
+        showMoreButton.textContent = getLabel("news_more", "Показать еще");
     }
 
     if (newsList) {
@@ -461,8 +462,8 @@ function initShowMore() {
         const isExpanded = listSection.classList.toggle("is-expanded");
 
         showMoreButton.textContent = isExpanded
-            ? "Свернуть"
-            : "Показать еще";
+            ? getLabel("news_less", "Свернуть")
+            : getLabel("news_more", "Показать еще");
 
         resetNewsProgress();
 

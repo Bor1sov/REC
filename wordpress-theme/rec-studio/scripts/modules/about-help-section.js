@@ -1,5 +1,6 @@
 import { updatePageScrollbar } from "./page-scrollbar.js";
-import { getAssetUrl, getPageUrl } from "./runtime.js";
+import { getAssetUrl, getPageUrl, getLabel, escapeHtml, setDownloadLink } from "./runtime.js";
+import { bindEnquiryForm, clearEnquiryFeedback } from "./forms.js";
 import { normalizeMojibake } from "./text-normalize.js";
 import {
     ABOUT_HELP_MAX,
@@ -16,187 +17,7 @@ let isLoading = false;
 let currentDetailGroupKey = "support";
 let detailWheelLocked = false;
 
-const detailGroups = {
-    support: {
-        title: "Сопровождение проектов",
-        items: [
-            {
-                title: "Разработка презентаций",
-                description:
-                    "Презентация проекта — это ключевой этап, который открывает его дальнейшую судьбу. Важно не только иметь сильную идею, но и уметь эффектно и убедительно её подать. Хорошая презентация не просто информирует, а заряжает идеей.\n\nВ работу включены разработка структуры, основные визуальные принципы, которые сделают отличие и уникальность концепции проекта. Составляем помощь в грамотной подготовке всех разделов с учётом требований индустрии, где необходимо привлечь участие в разработке креатива и презентационных проектов.",
-                services: [
-                    "Презентация проекта",
-                    "Библия персонажей"
-                ],
-                image: "./assets/Услуги Текстура/Разраб Презентации.jpg"
-            },
-            {
-                title: "Ки-арт / дизайн",
-                description:
-                    "Мы поможем с визуальным оформлением картины: разработаем ки-арт, изображения и композиции на основе референсов, соберём единый постер, титры, логотипы, промо-материалы, социальные сети, айдентику и другие визуальные элементы.\n\nЗадача — создать цельную и выразительную визуальную персонажность проекта.",
-                services: [
-                    "Ки-арт для фильма",
-                    "Разработка постера",
-                    "Разработка логотипов",
-                    "Титры к фильму",
-                    "Фотосъёмка",
-                    "Дизайн для социальных сетей",
-                    "Разработка сайта"
-                ],
-                image: "./assets/Услуги Текстура/Ки-арт.jpg"
-            },
-            {
-                title: "Подготовка <br>заявки в: Минкульт,<br> Фонд кино, ИРИ, ПФКИ",
-                description:
-                    "Профессионально и быстро подготовим пакет документов для получения субсидий, которые выделяются теми или иными производственно-индустриальными фондами, финансовой поддержкой ведомств и организаций.\n\nДля подачи или участия важно пройти этап подготовки правильно и последовательно. Мы ежегодно готовим документы на получение субсидий и имеем большой опыт подачи.",
-                services: [
-                    "Оформление заявки на субсидию",
-                    "Проверка уже подготовленного пакета документов",
-                    "Консультации"
-                ],
-                image: "./assets/Услуги Текстура/Подготовка заявки.jpg"
-            },
-            {
-                title: "Прокатное удостоверение",
-                description:
-                    "Прокатное удостоверение — подтверждающий документ права владения на фильм. Наличие прокатного удостоверения обязательно для публичных показов фильмов.\n\nГрамотно подготовим пакет документов, отвезём его в Минкульт РФ, следим копию в архив, оплатим пошлины и отдадим вам готовое прокатное удостоверение. С 2024 прокатное удостоверение стало цифровым.",
-                services: [
-                    "Прокатное на игровой, анимацию, док, фильмы",
-                    "Прокатное на сериал",
-                    "Сдача исходных материалов в ГФФ",
-                    "Монтажные и диалоговые листы",
-                    "Запись жесткого диска с DCP и WAV",
-                    "Запись кассет HDcam и DVD"
-                ],
-                image: "./assets/Услуги Текстура/ПрокатУд.jpg"
-            },
-            {
-                title: "Постпродакшн",
-                description:
-                    "Услуги режиссёрского монтажа с пониманием задачи и сроков. Смонтируем или сократим фильм, сделаем трейлер или фильм о фильме.\n\nПомогаем довести материал до финального состояния и подготовить его к презентации, передаче партнёрам или дальнейшему продвижению.",
-                services: [
-                    "Монтаж фильма",
-                    "Монтаж трейлера",
-                    "Фильм о фильме"
-                ],
-                image: "./assets/Услуги Текстура/Постпродакшн.jpg"
-            }
-        ]
-    },
-
-    advertising: {
-        title: "Рекламный департамент",
-        items: [
-            {
-                title: "Креатив",
-                description:
-                    "Путь в тысячи миль начинается с первого шага, а создание качественного видео контента — с креативной и грамотно расписанной идеи.\n\nПрежде чем начать реализацию задумки, мы детально прорабатываем каждый будущий кадр и создаём надёжный фундамент для успешности проекта.",
-                services: [
-                    "Сториборд",
-                    "Нейминг",
-                    "Креативная концепция",
-                    "Сценарии"
-                ],
-                image: "./assets/Услуги Текстура/Креатив.jpg"
-            },
-            {
-                title: "Дизайн",
-                description:
-                    "Наша команда специалистов по созданию креативной рекламы и созданию ярких впечатлений в цифровых формах ваших брендов.",
-                services: [
-                    "Разработка фирменного стиля",
-                    "Дизайн упаковки",
-                    "Адаптивный дизайн",
-                    "Веб-дизайн",
-                    "Проектирование интерфейсов",
-                    "Юзабилити",
-                    "Арт, иллюстрации",
-                    "Инфографика",
-                    "Проектирование и производство выставочных и торговых стендов",
-                    "POS-материалы"
-                ],
-                image: "./assets/Услуги Текстура/Дизайн.jpg"
-            },
-            {
-                title: "Планирование",
-                description:
-                    "Работая со смыслами, мы делим на следующие этапы:\n\n1 — ПОИСК РАМОК\nЗа которые нам нужно выйти. Это поиск стереотипных действий, которые совершают наши конкуренты, и шаблоны мышления, в которых находятся потребители.\n\n2 — ПОИСК ТРЕНДОВ\nВ каком будущем предстоит жить бренду и на какие ценности важно отозваться и оказывать влияние.\n\n3 — СОЗДАНИЕ ИНСТРУМЕНТОВ\nКоторые разрушают стереотипы, которые позволяют легко донести ценности и обогнать конкурентов.",
-                services: [
-                    "Исследование и аналитика",
-                    "Стратегии",
-                    "Бренд-консалтинг"
-                ],
-                image: "./assets/Услуги Текстура/Планирование.jpg"
-            },
-            {
-                title: "Видеосъёмка",
-                description:
-                    "Наша команда осуществляет полный цикл производства коммерческого видео, ТВ-передач, фильмов, сериалов и диджитал проектов.\n\nМы вам готовы предложить как проекты «под ключ», так и совместное производство.",
-                services: [
-                    "Рекламные ролики",
-                    "Вирусные ролики",
-                    "Имиджевые ролики",
-                    "Анимационные ролики",
-                    "Разработка YouTube/SMM каналов",
-                    "Корпоративные фильмы",
-                    "Трансляции",
-                    "Продающее видео",
-                    "Видео-отзывы",
-                    "Репортажная съёмка",
-                    "Аэросъёмка"
-                ],
-                image: "./assets/Услуги Текстура/Видеосъемка.jpg"
-            },
-            {
-                title: "Фотосъёмка",
-                description:
-                    "Наши фотохудожники готовы передать качество и эстетику вашей продукции до мельчайших подробностей. Мы используем только современное оборудование, а среди наших фотографов есть победители международных конкурсов.",
-                services: [
-                    "Предметная фотосъёмка",
-                    "Для маркетплейсов",
-                    "Рекламная съёмка",
-                    "Дополнительный сервис",
-                    "Мероприятия"
-                ],
-                image: "./assets/Услуги Текстура/Фотосъемка.jpg"
-            },
-            {
-                title: "Организация мероприятий",
-                description:
-                    "Наши специалисты разработают креативную идею и реализуют её визуализацию. Мы изготовим элементы проекта, предоставляем мультимедийное оборудование и интерактивный контент, текстовые, фото, аудио и видеоматериалы.\n\nРазработаем, доставим и установим выставочные и торговые конструкции на объектах.",
-                services: [
-                    "Концерты",
-                    "Спортивные мероприятия",
-                    "Проведение презентаций, конференций и других мероприятий"
-                ],
-                image: "./assets/Услуги Текстура/Организация мероприятий.jpg"
-            },
-            {
-                title: "Интернет-маркетинг",
-                description:
-                    "Наше агентство работает с 95% площадок Рунета. Ваши рекламные объявления появляются в популярных системах Яндекс и Google, а также появляются на сайтах партнёров поисковых систем и социальных сетях.\n\nПодберём наиболее эффективные площадки для проведения рекламных кампаний.\n\nМЫ СЕРТИФИЦИРОВАННОЕ АГЕНТСТВО.",
-                services: [
-                    "Поисковое продвижение",
-                    "SEO продвижение сайта",
-                    "Разработка сайтов",
-                    "Баинг"
-                ],
-                image: "./assets/Услуги Текстура/Интернет-маркетинг.jpg"
-            },
-            {
-                title: "СММ",
-                description:
-                    "Управление маркетингом и социальных сетях. Работаем над имиджем вашей компании и помогаем выстроить коммуникацию с аудиторией.",
-                services: [
-                    "Представительство бренда в социальных сетях",
-                    "Таргетированная реклама",
-                    "Работа с блогерами"
-                ],
-                image: "./assets/Услуги Текстура/СММ.jpg"
-            }
-        ]
-    }
-};
+const detailGroups = window.recTheme?.serviceGroups || {};
 
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -288,7 +109,7 @@ function getElements() {
 }
 
 function getCurrentGroup() {
-    return detailGroups[currentDetailGroupKey] || detailGroups.support;
+    return detailGroups[currentDetailGroupKey] || Object.values(detailGroups)[0] || { title: "", items: [] };
 }
 
 function getCurrentDetailIndex() {
@@ -301,6 +122,7 @@ function getCurrentDetailIndex() {
 
 function switchDetailGroup(direction = 1, targetIndex = 0) {
     const groupKeys = Object.keys(detailGroups);
+    if (!groupKeys.length) return;
     const currentGroupIndex = Math.max(
         0,
         groupKeys.indexOf(currentDetailGroupKey)
@@ -322,14 +144,11 @@ function switchDetailGroup(direction = 1, targetIndex = 0) {
 function stepDetail(direction = 1) {
     const group = getCurrentGroup();
     const currentIndex = getCurrentDetailIndex();
-    const nextIndex = currentIndex + direction;
 
-    if (nextIndex >= 0 && nextIndex < group.items.length) {
-        renderDetail(nextIndex);
-        return;
-    }
+    if (!group.items.length) return;
 
-    switchDetailGroup(direction, direction > 0 ? 0 : -1);
+    const nextIndex = (currentIndex + direction + group.items.length) % group.items.length;
+    renderDetail(nextIndex);
 }
 
 function getOffsetTopInside(parent, child) {
@@ -420,7 +239,7 @@ function renderDetailNav(activeIndex = 0) {
                     type="button"
                     data-about-help-detail-index="${index}"
                 >
-                    ${item.title}
+                    ${escapeHtml(item.title)}
                 </button>
             `;
         })
@@ -446,6 +265,7 @@ function renderDetail(index) {
     const item = group.items[index];
 
     if (!item) return;
+    setDownloadLink(".about-help-detail__download-link", item.presentation);
 
     if (detailNavList) {
         detailNavList.querySelectorAll(".about-help-detail__nav-item").forEach((button, buttonIndex) => {
@@ -454,7 +274,7 @@ function renderDetail(index) {
     }
 
     if (detailDescription) {
-        detailDescription.textContent = item.description;
+        detailDescription.innerHTML = item.descriptionHtml || "";
     }
 
     if (detailText) {
@@ -463,7 +283,7 @@ function renderDetail(index) {
 
     if (detailServicesList) {
         detailServicesList.innerHTML = item.services
-            .map((service) => `<li>${service}</li>`)
+            .map((service) => `<li>${escapeHtml(service)}</li>`)
             .join("");
     }
 
@@ -498,7 +318,7 @@ function ensureCardDetailButtons(root = document) {
 
         button.className = "about-help-card-button";
         button.type = "button";
-        button.textContent = "\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435";
+        button.textContent = getLabel("more", "Подробнее");
 
         card.appendChild(button);
     });
@@ -523,6 +343,7 @@ function getCurrentDetailServiceTitle() {
 }
 
 function openRequest(serviceTitle = "") {
+    clearEnquiryFeedback(document.querySelector(".about-help-request-popup"));
     const { requestPopup, requestServiceInput, requestServiceVisibleInput } = getElements();
 
     if (!requestPopup) return;
@@ -557,6 +378,7 @@ function closeRequest(resetForm = false) {
 }
 
 function openPricePopup() {
+    clearEnquiryFeedback(document.querySelector(".about-help-price-popup"));
     const { pricePopup } = getElements();
 
     if (!pricePopup) return;
@@ -687,10 +509,7 @@ function initInteractions() {
     }
 
     if (priceForm && priceForm.dataset.aboutHelpPriceFormReady !== "true") {
-        priceForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            closePricePopup(true);
-        });
+        bindEnquiryForm(priceForm, () => ({ service_key: getCurrentGroup().items[getCurrentDetailIndex()]?.key }));
 
         priceForm.dataset.aboutHelpPriceFormReady = "true";
     }
@@ -736,10 +555,7 @@ function initInteractions() {
     }
 
     if (requestForm && requestForm.dataset.aboutHelpFormReady !== "true") {
-        requestForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            closeRequest(true);
-        });
+        bindEnquiryForm(requestForm, () => ({ service_key: getCurrentGroup().items[getCurrentDetailIndex()]?.key }));
 
         requestForm.dataset.aboutHelpFormReady = "true";
     }
@@ -829,21 +645,13 @@ async function loadHelpContent() {
         });
 
 
-        const cardImages = {
-            support: "assets/Услуги Текстура/сопровождение проектов.jpg",
-            advertising: "assets/Услуги Текстура/рекламный департамент.jpg"
-        };
-
         section.querySelectorAll(".about-help-large-card").forEach((card) => {
             const image = card.querySelector("img");
-            const imagePath = cardImages[card.dataset.helpKind];
-
-            if (!image || !imagePath) return;
+            if (!image) return;
 
             image.removeAttribute("srcset");
             image.loading = "eager";
             image.decoding = "async";
-            image.src = getAssetUrl(imagePath);
         });
         normalizeMojibake(section);
         ensureCardDetailButtons(section);

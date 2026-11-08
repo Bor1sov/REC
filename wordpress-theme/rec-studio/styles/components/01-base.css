@@ -1,5 +1,5 @@
 :root {
-    --mask-image: url("../../assets/about-mobile.jpg");
+    --mask-image: var(--rec-asset_about_mobile_jpg, url("../../assets/about-mobile.jpg"));
 }
 
 * {

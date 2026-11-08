@@ -150,8 +150,8 @@
 .about-page .about-help__subtitle {
     background-image:
         linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(205, 205, 205, 0.82)),
-        url("../../assets/white-texture-creases.png"),
-        url("../../assets/white-texture.jpg") !important;
+        var(--rec-asset_white_texture_creases_png, url("../../assets/white-texture-creases.png")),
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg")) !important;
     background-size: cover, 460px auto, cover !important;
     background-position: center, center, center !important;
     background-repeat: no-repeat, repeat, no-repeat !important;
@@ -182,8 +182,8 @@
 .news-show-more {
     background:
         linear-gradient(rgba(255, 255, 255, 0.86), rgba(218, 218, 218, 0.84)),
-        url("../../assets/white-texture-creases.png"),
-        url("../../assets/white-texture.jpg") !important;
+        var(--rec-asset_white_texture_creases_png, url("../../assets/white-texture-creases.png")),
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg")) !important;
     background-size: cover, 360px auto, cover !important;
     background-position: center, center, center !important;
     background-repeat: no-repeat, repeat, no-repeat !important;
@@ -209,8 +209,8 @@
 .news-show-more:hover {
     background:
         linear-gradient(rgba(255, 255, 255, 0.9), rgba(208, 208, 208, 0.86)),
-        url("../../assets/white-texture-creases.png"),
-        url("../../assets/white-texture.jpg") !important;
+        var(--rec-asset_white_texture_creases_png, url("../../assets/white-texture-creases.png")),
+        var(--rec-asset_white_texture_jpg, url("../../assets/white-texture.jpg")) !important;
     background-size: cover, 340px auto, cover !important;
     background-position: center, center, center !important;
     background-repeat: no-repeat, repeat, no-repeat !important;

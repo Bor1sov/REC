@@ -9,6 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/inc/content.php';
+require_once __DIR__ . '/inc/forms.php';
+require_once __DIR__ . '/inc/mail-admin.php';
+
 function rec_studio_theme_setup() {
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'post-thumbnails' );
@@ -28,6 +32,9 @@ function rec_studio_theme_setup() {
 add_action( 'after_setup_theme', 'rec_studio_theme_setup' );
 
 function rec_theme_asset( $path = '' ) {
+	$overrides = rec_studio_asset_overrides();
+	$key = strtok( ltrim( $path, '/' ), '?' );
+	if ( array_key_exists( $key, $overrides ) ) { return $overrides[ $key ]; }
 	return trailingslashit( get_template_directory_uri() ) . ltrim( $path, '/' );
 }
 
@@ -61,8 +68,9 @@ function rec_theme_page_url( $slug ) {
 }
 
 function rec_studio_runtime_config() {
-	return array(
+	return array_merge( rec_studio_content_runtime(), array(
 		'assetBase' => trailingslashit( get_template_directory_uri() ),
+		'forms'    => array( 'endpoint' => admin_url( 'admin-ajax.php', 'relative' ) ),
 		'pages'     => array(
 			'home'     => home_url( '/' ),
 			'main'     => home_url( '/' ),
@@ -73,13 +81,13 @@ function rec_studio_runtime_config() {
 			'news'     => rec_theme_page_url( 'news' ),
 			'contacts' => rec_theme_page_url( 'contacts' ),
 		),
-	);
+	) );
 }
 
 function rec_studio_print_runtime_config() {
 	printf(
 		'<script id="rec-studio-runtime-config">window.recTheme=%s;</script>' . "\n",
-		wp_json_encode( rec_studio_runtime_config() )
+		wp_json_encode( rec_studio_runtime_config(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT )
 	);
 }
 add_action( 'wp_head', 'rec_studio_print_runtime_config', 1 );

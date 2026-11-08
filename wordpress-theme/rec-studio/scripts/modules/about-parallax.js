@@ -12,6 +12,20 @@ const ABOUT_INTRO_TITLE_START_SIZE = 0.1;
 const ABOUT_INTRO_TITLE_ENTRY_SIZE = 15;
 const ABOUT_INTRO_TITLE_MAX_SIZE = 625;
 
+function getAboutIntroTitleMaxSize() {
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 1024;
+
+    if (viewportWidth <= 480) {
+        return Math.max(210, Math.min(330, viewportWidth * 1.03));
+    }
+
+    if (viewportWidth <= 768) {
+        return Math.max(320, Math.min(470, viewportWidth * 0.72));
+    }
+
+    return ABOUT_INTRO_TITLE_MAX_SIZE;
+}
+
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
@@ -26,8 +40,7 @@ function smoothstep(value) {
     return x * x * (3 - 2 * x);
 }
 
-const ABOUT_PARALAX_TEXT_MOVE_PERCENT = 285;
-const ABOUT_PARALAX_REFERENCE_HEIGHT = 1200;
+const ABOUT_PARALAX_TEXT_MOVE_PERCENT = 100;
 const ABOUT_INTRO_AMBIENT_SRC = "assets/small-group-of-people-in-the-hospital-talking.wav";
 const ABOUT_INTRO_AMBIENT_VOLUME = 0.45;
 const ABOUT_INTRO_AMBIENT_FADE_DISTANCE = 220;
@@ -47,12 +60,7 @@ let aboutIntroAmbientRevealRetryTimer = null;
 let aboutIntroAmbientRevealRetryCount = 0;
 
 function getAboutParalaxTextMovePercent() {
-    if (window.innerWidth < 1600 || window.innerHeight >= ABOUT_PARALAX_REFERENCE_HEIGHT) {
-        return ABOUT_PARALAX_TEXT_MOVE_PERCENT;
-    }
-
-    return ABOUT_PARALAX_TEXT_MOVE_PERCENT *
-        (ABOUT_PARALAX_REFERENCE_HEIGHT / Math.max(window.innerHeight, 1));
+    return ABOUT_PARALAX_TEXT_MOVE_PERCENT;
 }
 
 function getAboutTitleTopOffset() {
@@ -60,18 +68,7 @@ function getAboutTitleTopOffset() {
 }
 
 function getAboutTextReachTopProgress() {
-    const { paralaxText } = getSceneElements();
-    const textHeight = Math.max(
-        1,
-        paralaxText?.offsetHeight ||
-            paralaxText?.getBoundingClientRect().height ||
-            window.innerHeight
-    );
-    const untransformedTop = window.innerHeight - textHeight;
-    const targetTranslatePercent = (-untransformedTop / textHeight) * 100;
-    const textMovePercent = 100 - targetTranslatePercent;
-
-    return clamp(textMovePercent / getAboutParalaxTextMovePercent(), 0, 1);
+    return 1;
 }
 
 function getAboutIntroAmbientAudio() {
@@ -80,7 +77,7 @@ function getAboutIntroAmbientAudio() {
 
     aboutIntroAmbientAudio = document.createElement("audio");
     aboutIntroAmbientAudio.src = getAssetUrl(ABOUT_INTRO_AMBIENT_SRC);
-    aboutIntroAmbientAudio.preload = "auto";
+    aboutIntroAmbientAudio.preload = "metadata";
     aboutIntroAmbientAudio.loop = true;
     aboutIntroAmbientAudio.volume = ABOUT_INTRO_AMBIENT_VOLUME;
     aboutIntroAmbientAudio.muted = true;
@@ -561,7 +558,7 @@ function updateAboutTitleIntro(progressValue) {
         0,
         1,
         ABOUT_INTRO_TITLE_START_SIZE,
-        ABOUT_INTRO_TITLE_MAX_SIZE
+        getAboutIntroTitleMaxSize()
     );
 
     const backgroundTransitionProgress = smoothstep(

@@ -12,6 +12,25 @@ const AUTO_MOVE_DELAY =
 
 let autoMoveTimer = null;
 
+function getMenuLogoTargetMetrics() {
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 1024;
+
+    if (viewportWidth <= 480) {
+        return { size: 30, borderWidth: 9, top: 14 };
+    }
+
+    if (viewportWidth <= 768) {
+        return { size: 34, borderWidth: 10, top: 14 };
+    }
+
+    return { size: 40, borderWidth: 12, top: 20 };
+}
+
+function getLogoBorderWidth() {
+    const borderWidth = Number.parseFloat(window.getComputedStyle(dom.logo).borderTopWidth);
+
+    return Number.isFinite(borderWidth) ? borderWidth : 25;
+}
 function revealUI() {
     if (!dom.main) return;
 
@@ -45,7 +64,7 @@ export function moveLogoToMenuTop() {
     logoClone.style.zIndex = "10001";
     logoClone.style.transition = `all ${LOGO_TO_MENU_DURATION}ms cubic-bezier(0.7, 0, 0.2, 1)`;
     logoClone.style.pointerEvents = "none";
-    logoClone.style.border = "25px solid rgb(255, 0, 0)";
+    logoClone.style.border = `${getLogoBorderWidth()}px solid rgb(255, 0, 0)`;
     logoClone.style.borderRadius = "50%";
     logoClone.style.backgroundColor = "transparent";
     logoClone.style.opacity = "0.8";
